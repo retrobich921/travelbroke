@@ -1,4 +1,4 @@
-import type { FeatureCollection, Point } from "geojson";
+import type { FeatureCollection, LineString, Point } from "geojson";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -22,6 +22,7 @@ import { readState, writeState } from "./urlState";
 const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 const SOURCE = "reachable";
 const ORIGIN_SOURCE = "origin";
+const ROUTE_SOURCE = "route";
 
 interface MapPoint {
   reach: ReachOut;
@@ -94,6 +95,29 @@ function originGeoJSON(city: CityOut | null): FeatureCollection<Point> {
   };
 }
 
+/** Линия выбранного маршрута: из точки отправления, при необходимости через хаб. */
+function routeGeoJSON(
+  origin: CityOut | null,
+  target: ReachOut | null,
+  byName: Map<string, CityOut>,
+): FeatureCollection<LineString> {
+  if (!origin || !target) return { type: "FeatureCollection", features: [] };
+  const hub = target.via ? byName.get(target.via) : undefined;
+  const coordinates: [number, number][] = [[origin.lon, origin.lat]];
+  if (hub) coordinates.push([hub.lon, hub.lat]);
+  coordinates.push([target.lon, target.lat]);
+  return {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: { type: "LineString", coordinates },
+        properties: { via: Boolean(hub) },
+      },
+    ],
+  };
+}
+
 export default function App() {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
@@ -144,6 +168,24 @@ export default function App() {
       instance.addSource(ORIGIN_SOURCE, {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
+      });
+      instance.addSource(ROUTE_SOURCE, {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+      });
+
+      // Линия маршрута рисуется под точками, чтобы не перекрывать города.
+      instance.addLayer({
+        id: "route-line",
+        type: "line",
+        source: ROUTE_SOURCE,
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": ["case", ["get", "via"], "#d0ff1a", "#7b61ff"],
+          "line-width": 2.5,
+          "line-opacity": 0.85,
+          "line-dasharray": [2, 1.5],
+        },
       });
 
       // Мягкое свечение под самыми дешёвыми городами — глаз находит их первыми.
@@ -283,6 +325,8 @@ export default function App() {
     source?.setData(originGeoJSON(data?.origin ?? null));
   }, [ready, data]);
 
+  const byName = useMemo(() => new Map(cities.map((city) => [city.name, city])), [cities]);
+
   const search = useCallback(
     async (city: string, when: string, withTransfers: boolean) => {
       setLoading(true);
@@ -329,6 +373,13 @@ export default function App() {
   }, []);
 
   const chosen = data?.cities.find((reach) => reach.slug === selected) ?? null;
+
+  useEffect(() => {
+    if (!ready || !map.current) return;
+    const source = map.current.getSource(ROUTE_SOURCE) as maplibregl.GeoJSONSource | undefined;
+    source?.setData(routeGeoJSON(data?.origin ?? null, chosen, byName));
+  }, [ready, data, chosen, byName]);
+
   const cheapest = visible.reduce<MapPoint | null>(
     (best, point) =>
       best === null || (point.price ?? Infinity) < (best.price ?? Infinity) ? point : best,

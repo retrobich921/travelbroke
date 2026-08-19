@@ -1,5 +1,6 @@
-import { MODE_LABELS, MODES, type CityOut, type Mode } from "../api";
-import { formatPrice } from "../api";
+import { useState } from "react";
+
+import { MODE_LABELS, MODES, formatPrice, type CityOut, type Mode } from "../api";
 
 interface Props {
   cities: CityOut[];
@@ -38,6 +39,15 @@ export function ControlPanel(props: Props) {
     onDeep,
     onSearch,
   } = props;
+
+  const [copied, setCopied] = useState(false);
+
+  /** Весь вид карты описан адресной строкой, так что делиться нечем, кроме неё. */
+  const share = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <aside className="pointer-events-auto w-84 max-w-[calc(100vw-3rem)] rounded-3xl bg-tb-ink/92 p-6 shadow-2xl ring-1 ring-white/10 backdrop-blur-xl">
@@ -155,6 +165,14 @@ export function ControlPanel(props: Props) {
         className="mt-6 w-full rounded-2xl bg-tb-cheap px-4 py-3 text-base font-black text-tb-ink transition hover:brightness-110 disabled:cursor-progress disabled:opacity-60"
       >
         {loading ? "Считаем маршруты…" : "Куда я могу уехать"}
+      </button>
+
+      <button
+        type="button"
+        onClick={share}
+        className="mt-2 w-full rounded-2xl bg-white/8 px-4 py-2 text-sm font-semibold text-tb-muted transition hover:bg-white/15 hover:text-white"
+      >
+        {copied ? "Ссылка скопирована" : "Поделиться этим видом"}
       </button>
     </aside>
   );
