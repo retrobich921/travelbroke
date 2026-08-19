@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 
 from travelbroke import __version__, cities, reach
 from tutukit.cache import CacheMode, DiskCache
-from tutukit.client import TutuMCP
+from tutukit.client import TutuError, TutuMCP
 
 TransportMode = Literal["avia", "railway", "bus", "etrain"]
 
@@ -57,6 +57,7 @@ class CityOut(BaseModel):
     lat: float
     lon: float
     hub: bool
+    country: str = "Россия"
 
 
 class VariantOut(BaseModel):
@@ -70,6 +71,9 @@ class VariantOut(BaseModel):
     arrival_at: str | None = None
     checkout_url: str | None = None
     route: str | None = None
+    checkout_ref: dict[str, Any] | None = Field(
+        default=None, description="Ссылка на конкретный рейс строится из него через /api/checkout"
+    )
 
 
 class ReachOut(BaseModel):
@@ -122,6 +126,9 @@ class ReachableRequest(BaseModel):
     deep: bool = Field(
         default=False, description="Искать составные маршруты через хабы (медленнее)"
     )
+    passengers: int = Field(
+        default=1, ge=1, le=6, description="Сколько человек едет — уходит в поиск как adults"
+    )
 
 
 class ReachableResponse(BaseModel):
@@ -132,6 +139,20 @@ class ReachableResponse(BaseModel):
     cities: list[ReachOut]
     calls: int = Field(description="Сколько вызовов MCP потребовалось")
     cached: int = Field(description="Из них отдано кэшем")
+
+
+class CheckoutRequest(BaseModel):
+    """Запрос ссылки на покупку конкретного рейса."""
+
+    checkout_ref: dict[str, Any] = Field(description="Объект checkout_ref из варианта поездки")
+    passengers: int = Field(default=1, ge=1, le=6, description="Сколько мест нужно")
+
+
+class CheckoutResponse(BaseModel):
+    """Готовая ссылка на оформление."""
+
+    url: str
+    kind: str = Field(default="deeplink", description="deeplink или fallback на страницу поиска")
 
 
 class Health(BaseModel):
@@ -152,6 +173,7 @@ def _variant_out(variant: reach.Variant) -> VariantOut:
         arrival_at=variant.arrival_at,
         checkout_url=variant.checkout_url,
         route=variant.route,
+        checkout_ref=variant.checkout_ref,
     )
 
 
@@ -197,7 +219,8 @@ async def health() -> Health:
 async def list_cities() -> list[CityOut]:
     """Города-кандидаты с координатами — карте они нужны до первого расчёта."""
     return [
-        CityOut(slug=c.slug, name=c.name, lat=c.lat, lon=c.lon, hub=c.hub) for c in cities.CITIES
+        CityOut(slug=c.slug, name=c.name, lat=c.lat, lon=c.lon, hub=c.hub, country=c.country)
+        for c in cities.CITIES
     ]
 
 
@@ -222,22 +245,57 @@ async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableRespo
         modes=tuple(request.modes),
         price_max=request.price_max,
         limit=request.limit,
+        adults=request.passengers,
     )
     if request.deep:
         results = await reach.deepen(
-            mcp, origin, request.date, results, cities.HUBS, modes=tuple(request.modes)
+            mcp,
+            origin,
+            request.date,
+            results,
+            cities.HUBS,
+            modes=tuple(request.modes),
+            adults=request.passengers,
         )
 
     calls = mcp.stats[before:]
     return ReachableResponse(
         origin=CityOut(
-            slug=origin.slug, name=origin.name, lat=origin.lat, lon=origin.lon, hub=origin.hub
+            slug=origin.slug,
+            name=origin.name,
+            lat=origin.lat,
+            lon=origin.lon,
+            hub=origin.hub,
+            country=origin.country,
         ),
         date=request.date,
         cities=[_reach_out(item) for item in results],
         calls=len(calls),
         cached=sum(1 for call in calls if call.cached),
     )
+
+
+@app.post("/api/checkout", response_model=CheckoutResponse, summary="Ссылка на конкретный рейс")
+async def checkout(request: Annotated[CheckoutRequest, ...]) -> CheckoutResponse:
+    """Строит ссылку на оформление конкретного рейса, а не на страницу поиска.
+
+    `create_checkout_link` принимает поля `checkout_ref` **развёрнутыми**, объект
+    целиком он не берёт — это одна из известных ловушек схемы MCP Туту.
+    """
+    mcp: TutuMCP = app.state.mcp
+    args = dict(request.checkout_ref)
+    if request.passengers > 1:
+        args.setdefault("passengers", request.passengers)
+    try:
+        data = await mcp.call("create_checkout_link", **args)
+    except TutuError as exc:
+        raise HTTPException(status_code=502, detail=f"Туту не отдал ссылку: {exc}") from exc
+
+    url = data.get("url") or data.get("checkout_url") or data.get("fallback_url")
+    if not isinstance(url, str) or not url:
+        raise HTTPException(status_code=502, detail="в ответе Туту нет ссылки на оформление")
+    kind = data.get("kind")
+    return CheckoutResponse(url=url, kind=str(kind) if isinstance(kind, str) else "deeplink")
 
 
 # Собранный фронтенд монтируется последним, чтобы не перехватывать /api.

@@ -322,12 +322,13 @@ export default function App() {
   const [maxHours, setMaxHours] = useState(initial.maxHours);
   const [modes, setModes] = useState<Mode[]>(initial.modes);
   const [deep, setDeep] = useState(initial.deep);
+  const [passengers, setPassengers] = useState(initial.passengers);
   const [selected, setSelected] = useState<string | null>(initial.selected);
   const [panelOpen, setPanelOpen] = useState(true);
 
   useEffect(() => {
-    writeState({ origin, date, budget, maxHours, modes, deep, selected });
-  }, [origin, date, budget, maxHours, modes, deep, selected]);
+    writeState({ origin, date, budget, maxHours, modes, deep, passengers, selected });
+  }, [origin, date, budget, maxHours, modes, deep, passengers, selected]);
 
   useEffect(() => {
     fetchCities()
@@ -445,7 +446,8 @@ export default function App() {
     source?.setData(routeGeoJSON(data?.origin ?? null, chosen, byName));
   }, [styleEpoch, data, chosen, byName]);
 
-  const search = useCallback(async (city: string, when: string, withTransfers: boolean) => {
+  const search = useCallback(
+    async (city: string, when: string, withTransfers: boolean, people: number) => {
     setLoading(true);
     setError(null);
     setSelected(null);
@@ -455,6 +457,7 @@ export default function App() {
         date: when,
         modes: [...MODES],
         deep: withTransfers,
+        passengers: people,
       });
       setData(response);
       map.current?.easeTo({
@@ -467,15 +470,17 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  },
+    [],
+  );
 
   // Первый расчёт запускаем сами: пустая карта на старте — потерянное впечатление.
   const started = useRef(false);
   useEffect(() => {
     if (started.current) return;
     started.current = true;
-    void search(origin, date, deep);
-  }, [search, origin, date, deep]);
+    void search(origin, date, deep, passengers);
+  }, [search, origin, date, deep, passengers]);
 
   const toggleMode = useCallback((mode: Mode) => {
     setModes((current) =>
@@ -507,7 +512,7 @@ export default function App() {
         </div>
       )}
 
-      <header className="pointer-events-none absolute top-0 left-0 z-10 flex max-h-full max-w-[min(19rem,calc(100vw-9rem))] flex-col gap-3 overflow-y-auto p-4 sm:p-6 lg:max-h-[calc(100vh-9rem)]">
+      <header className="tb-scroll pointer-events-none absolute top-0 left-0 z-10 flex max-h-full max-w-[min(19rem,calc(100vw-9rem))] flex-col gap-3 overflow-y-auto p-4 sm:p-6 lg:max-h-[calc(100vh-9rem)]">
         <div className="shrink-0">
           <h1 className="text-2xl font-black tracking-tight text-tb-hero sm:text-4xl">
             TravelBroke
@@ -608,13 +613,16 @@ export default function App() {
           onMaxHours={setMaxHours}
           onToggleMode={toggleMode}
           onDeep={setDeep}
-          onSearch={() => void search(origin, date, deep)}
+          passengers={passengers}
+          onPassengers={setPassengers}
+          onSearch={() => void search(origin, date, deep, passengers)}
         />
         </div>
         {chosen && (
           <TripCard
             reach={chosen}
             origin={data?.origin.name ?? origin}
+            passengers={passengers}
             filtered={points.some((point) => point.reach.slug === chosen.slug && !point.passes)}
             onClose={() => setSelected(null)}
           />

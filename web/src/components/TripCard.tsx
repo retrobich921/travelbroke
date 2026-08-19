@@ -1,5 +1,8 @@
+import { useState } from "react";
+
 import {
   MODE_LABELS,
+  fetchCheckout,
   formatHours,
   formatMinutes,
   formatPrice,
@@ -77,29 +80,67 @@ function Transfer({ reach }: { reach: ReachOut }) {
   );
 }
 
+interface BuyProps {
+  variant: VariantOut;
+  caption: string;
+  passengers: number;
+  primary: boolean;
+}
+
+/**
+ * Кнопка покупки конкретного рейса.
+ *
+ * Ссылку строим по клику через `create_checkout_link`: она ведёт на страницу
+ * выбора мест именно этого рейса, а не на общий поиск. Там же проверяется,
+ * хватает ли мест на всю компанию.
+ */
+function BuyButton({ variant, caption, passengers, primary }: BuyProps) {
+  const [busy, setBusy] = useState(false);
+
+  const open = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const url = variant.checkout_ref
+        ? await fetchCheckout(variant.checkout_ref, passengers)
+        : variant.checkout_url;
+      if (url) window.open(url, "_blank", "noopener");
+    } catch {
+      // Точную ссылку построить не удалось — отправляем на поиск по направлению.
+      if (variant.checkout_url) window.open(variant.checkout_url, "_blank", "noopener");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={open}
+      disabled={busy}
+      className={`block w-full rounded-xl px-4 py-2.5 text-center text-[13px] font-black transition hover:brightness-110 disabled:cursor-progress ${
+        primary ? "bg-tb-accent text-white" : "bg-tb-fill text-tb-ink ring-1 ring-tb-accent/40"
+      }`}
+    >
+      {busy ? "Открываем Туту…" : caption}
+    </button>
+  );
+}
+
 interface Props {
   reach: ReachOut;
   origin: string;
+  passengers: number;
   /** Город не проходит по текущим фильтрам — показан только потому, что выбран. */
   filtered?: boolean;
   onClose: () => void;
 }
 
 /** Карточка выбранного города: из чего складывается поездка и где её купить. */
-export function TripCard({ reach, origin, filtered = false, onClose }: Props) {
+export function TripCard({ reach, origin, passengers, filtered = false, onClose }: Props) {
   const legs = reach.via_legs;
   const composite = legs !== null && reach.beats_direct_by !== null;
   const total = composite ? legs.reduce((sum, leg) => sum + leg.price, 0) : reach.price;
-
-  // У составного маршрута два независимых билета, поэтому и ссылок на покупку две.
-  const purchases: { label: string; url: string }[] = composite
-    ? [
-        { label: `${origin} → ${reach.via}`, url: legs[0].checkout_url ?? "" },
-        { label: `${reach.via} → ${reach.name}`, url: legs[1].checkout_url ?? "" },
-      ].filter((item) => item.url !== "")
-    : reach.direct?.checkout_url
-      ? [{ label: `${origin} → ${reach.name}`, url: reach.direct.checkout_url }]
-      : [];
 
   return (
     <section className="tb-rise pointer-events-auto flex w-full min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain rounded-3xl bg-tb-panel/97 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl">
@@ -141,6 +182,12 @@ export function TripCard({ reach, origin, filtered = false, onClose }: Props) {
                 </span>
               )}
             </div>
+            {passengers > 1 && total !== null && (
+              <div className="mt-1 text-[11px] text-tb-muted">
+                На {passengers} чел. — {formatPrice(total * passengers)}. Наличие мест
+                проверяется на странице оформления.
+              </div>
+            )}
 
             {composite && reach.beats_direct_by !== null && (
               <div className="mt-3 rounded-2xl bg-tb-cheap/20 px-4 py-3 text-sm ring-1 ring-tb-accent/30">
@@ -172,30 +219,36 @@ export function TripCard({ reach, origin, filtered = false, onClose }: Props) {
             </p>
           )}
 
-          {purchases.length > 0 && (
-            <div className="m-5 flex flex-col gap-2">
-              {composite && (
-                <div className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
+          <div className="m-5 flex flex-col gap-1.5">
+            {composite ? (
+              <>
+                <div className="text-[10px] font-semibold tracking-[0.08em] text-tb-muted uppercase">
                   Билеты — покупаются отдельно
                 </div>
-              )}
-              {purchases.map((item, index) => (
-                <a
-                  key={item.url}
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`block rounded-2xl px-4 py-3 text-center text-sm font-black transition hover:brightness-110 ${
-                    index === 0
-                      ? "bg-tb-accent text-white"
-                      : "bg-tb-fill text-tb-ink ring-1 ring-tb-accent/40"
-                  }`}
-                >
-                  {composite ? `${index + 1}. ${item.label}` : "Купить на Туту"}
-                </a>
-              ))}
-            </div>
-          )}
+                <BuyButton
+                  variant={legs[0]}
+                  caption={`1. ${origin} → ${reach.via}`}
+                  passengers={passengers}
+                  primary
+                />
+                <BuyButton
+                  variant={legs[1]}
+                  caption={`2. ${reach.via} → ${reach.name}`}
+                  passengers={passengers}
+                  primary={false}
+                />
+              </>
+            ) : (
+              reach.direct && (
+                <BuyButton
+                  variant={reach.direct}
+                  caption="Выбрать места на Туту"
+                  passengers={passengers}
+                  primary
+                />
+              )
+            )}
+          </div>
         </>
       )}
     </section>

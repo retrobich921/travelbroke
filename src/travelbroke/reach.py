@@ -65,6 +65,8 @@ class Variant:
     arrival_point: str | None = None
     checkout_url: str | None = None
     route: str | None = None
+    checkout_ref: dict[str, Any] | None = None
+    """Сырой reference оффера: из него `create_checkout_link` делает ссылку на конкретный рейс."""
 
     @property
     def hours(self) -> float:
@@ -249,7 +251,7 @@ def _endpoints(raw: dict[str, Any]) -> tuple[str | None, str | None]:
     return first.get("from"), last.get("to")
 
 
-def parse_variants(data: dict[str, Any], limit: int = 8) -> list[Variant]:
+def parse_variants(data: dict[str, Any], limit: int = 12) -> list[Variant]:
     """Достаёт из ответа `search_multitransport` то немногое, что нужно карте."""
     variants: list[Variant] = []
     for raw in (data.get("variants") or [])[:limit]:
@@ -274,6 +276,9 @@ def parse_variants(data: dict[str, Any], limit: int = 8) -> list[Variant]:
                 arrival_point=arrival_point,
                 checkout_url=raw.get("checkout_url") or raw.get("search_results_url"),
                 route=route,
+                checkout_ref=raw.get("checkout_ref")
+                if isinstance(raw.get("checkout_ref"), dict)
+                else None,
             )
         )
     return variants
@@ -310,6 +315,9 @@ async def _search_pair(
     when: dt.date,
     modes: tuple[str, ...],
     price_max: int | None,
+    *,
+    adults: int = 1,
+    page_size: int | None = None,
 ) -> tuple[list[Variant], dict[str, int], dict[str, int], str | None, str | None]:
     """Один поиск между парой городов. Ошибку инструмента считаем пустым результатом."""
     args: dict[str, Any] = {
@@ -319,6 +327,10 @@ async def _search_pair(
         "optimize_for": "price",
         "view": "compact",
     }
+    if adults > 1:
+        args["adults"] = adults
+    if page_size is not None:
+        args["page_size"] = page_size
     if modes and set(modes) != set(ALL_MODES):
         args["modes"] = list(modes)
     if price_max is not None:
@@ -349,13 +361,14 @@ async def fan_out(
     modes: tuple[str, ...] = ALL_MODES,
     price_max: int | None = None,
     limit: int | None = None,
+    adults: int = 1,
 ) -> list[Reach]:
     """Фаза 1: прямая досягаемость каждого города-кандидата из точки отправления."""
     targets = destinations(origin, limit)
 
     async def one(target: City) -> Reach:
         variants, by_mode, by_minutes, reason, message = await _search_pair(
-            mcp, origin.name, target.name, when, modes, price_max
+            mcp, origin.name, target.name, when, modes, price_max, adults=adults
         )
         cheapest = min(variants, key=lambda variant: variant.price) if variants else None
         return Reach(
@@ -393,6 +406,7 @@ async def deepen(
     modes: tuple[str, ...] = ALL_MODES,
     top_expensive: int = 20,
     hubs_per_city: int = 2,
+    adults: int = 1,
 ) -> list[Reach]:
     """Фаза 2: ищет составные маршруты туда, где прямой вариант дорогой.
 
@@ -420,7 +434,11 @@ async def deepen(
             cached = leg_cache.get(key)
         if cached is not None:
             return cached
-        variants, _, _, _, _ = await _search_pair(mcp, start, finish, day, modes, None)
+        # Плечам нужен запас вариантов по времени отправления, иначе выполнимой
+        # стыковки может не найтись там, где она есть.
+        variants, _, _, _, _ = await _search_pair(
+            mcp, start, finish, day, modes, None, adults=adults, page_size=20
+        )
         async with lock:
             leg_cache[key] = variants
         return variants

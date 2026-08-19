@@ -14,6 +14,7 @@ export interface MapState {
   maxHours: number;
   modes: Mode[];
   deep: boolean;
+  passengers: number;
   selected: string | null;
 }
 
@@ -24,6 +25,7 @@ export const DEFAULT_STATE: MapState = {
   maxHours: 24,
   modes: [...MODES],
   deep: true,
+  passengers: 1,
   selected: null,
 };
 
@@ -48,6 +50,7 @@ export function readState(search: string = window.location.search): MapState {
     maxHours: parseNumber(params.get("hours"), DEFAULT_STATE.maxHours),
     modes: parseModes(params.get("modes")),
     deep: params.get("deep") !== "0",
+    passengers: Math.min(6, Math.max(1, parseNumber(params.get("pax"), 1))),
     selected: params.get("city"),
   };
 }
@@ -61,6 +64,7 @@ export function writeState(state: MapState): void {
   params.set("hours", String(state.maxHours));
   if (state.modes.length !== MODES.length) params.set("modes", state.modes.join(","));
   if (!state.deep) params.set("deep", "0");
+  if (state.passengers > 1) params.set("pax", String(state.passengers));
   if (state.selected) params.set("city", state.selected);
   window.history.replaceState(null, "", `?${params.toString()}`);
 }

@@ -106,3 +106,51 @@ body {
     overscroll-behavior: contain;
   }
 }
+
+/* Свои полосы прокрутки со стрелками: системные в тёмной теме выглядят чужеродно. */
+.tb-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tb-muted) transparent;
+}
+
+.tb-scroll::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.tb-scroll::-webkit-scrollbar-track {
+  background: var(--tb-fill);
+  border-radius: 999px;
+}
+
+.tb-scroll::-webkit-scrollbar-thumb {
+  background: var(--tb-muted);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+.tb-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-tb-accent);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+.tb-scroll::-webkit-scrollbar-button:single-button {
+  display: block;
+  height: 12px;
+  background-color: var(--tb-fill);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 8px;
+}
+
+.tb-scroll::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path d='M4 1.5 7 6H1z' fill='%237b61ff'/></svg>");
+  border-radius: 999px 999px 0 0;
+}
+
+.tb-scroll::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path d='M4 6.5 1 2h6z' fill='%237b61ff'/></svg>");
+  border-radius: 0 0 999px 999px;
+}

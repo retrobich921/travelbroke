@@ -16,6 +16,7 @@ export interface CityOut {
   lat: number;
   lon: number;
   hub: boolean;
+  country: string;
 }
 
 export interface VariantOut {
@@ -27,6 +28,7 @@ export interface VariantOut {
   arrival_at: string | null;
   checkout_url: string | null;
   route: string | null;
+  checkout_ref: Record<string, unknown> | null;
 }
 
 export interface ReachOut extends CityOut {
@@ -69,6 +71,7 @@ export async function fetchReachable(params: {
   date: string;
   modes: Mode[];
   deep: boolean;
+  passengers: number;
 }): Promise<ReachableResponse> {
   return json<ReachableResponse>(
     await fetch("/api/reachable", {
@@ -77,6 +80,26 @@ export async function fetchReachable(params: {
       body: JSON.stringify(params),
     }),
   );
+}
+
+/**
+ * Ссылка на оформление конкретного рейса.
+ *
+ * Строится сервером через `create_checkout_link`, потому что в ответе поиска
+ * лежит только reference оффера. Запрашиваем лениво — по клику, а не для всех
+ * восьмидесяти городов сразу.
+ */
+export async function fetchCheckout(
+  ref: Record<string, unknown>,
+  passengers: number,
+): Promise<string> {
+  const response = await fetch("/api/checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ checkout_ref: ref, passengers }),
+  });
+  const payload = await json<{ url: string }>(response);
+  return payload.url;
 }
 
 /** Ближайшая суббота — самая частая дата короткой поездки. */
