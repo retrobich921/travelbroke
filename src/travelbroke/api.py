@@ -24,13 +24,15 @@ TransportMode = Literal["avia", "railway", "bus", "etrain"]
 
 CACHE_DIR = Path(os.environ.get("TB_CACHE_DIR", ".mcp_cache"))
 CACHE_MODE: CacheMode = os.environ.get("TB_CACHE_MODE", "record")  # type: ignore[assignment]
+CACHE_TTL_S = float(os.environ.get("TB_CACHE_TTL_S", 7 * 24 * 3600))
+"""Неделя вместо шести часов по умолчанию: прогретый кэш должен пережить показ."""
 STATIC_DIR = Path(__file__).resolve().parents[2] / "static"
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> Any:
     """Один клиент MCP на всё приложение: соединения и кэш переживают запросы."""
-    cache = DiskCache(root=CACHE_DIR, mode=CACHE_MODE)
+    cache = DiskCache(root=CACHE_DIR, mode=CACHE_MODE, ttl_s=CACHE_TTL_S)
     async with TutuMCP(cache=cache, concurrency=8) as mcp:
         app.state.mcp = mcp
         yield

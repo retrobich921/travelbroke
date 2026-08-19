@@ -8,7 +8,6 @@ import {
   fetchCities,
   fetchReachable,
   formatPrice,
-  nextSaturday,
   type CityOut,
   type Mode,
   type ReachOut,
@@ -17,6 +16,7 @@ import {
 import { ControlPanel } from "./components/ControlPanel";
 import { TripCard } from "./components/TripCard";
 import { UNREACHABLE, legendStops, priceColor, priceRatio } from "./palette";
+import { readState, writeState } from "./urlState";
 
 /** Тёмная подложка на данных OpenStreetMap: без ключей, без регистрации. */
 const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
@@ -104,14 +104,20 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [origin, setOrigin] = useState("Москва");
-  const [date, setDate] = useState(nextSaturday);
-  const [budget, setBudget] = useState(6000);
-  const [maxHours, setMaxHours] = useState(24);
-  const [modes, setModes] = useState<Mode[]>([...MODES]);
-  const [deep, setDeep] = useState(true);
-  const [selected, setSelected] = useState<string | null>(null);
+  // Начальное состояние берём из адресной строки: ссылкой можно поделиться.
+  const initial = useRef(readState()).current;
+  const [origin, setOrigin] = useState(initial.origin);
+  const [date, setDate] = useState(initial.date);
+  const [budget, setBudget] = useState(initial.budget);
+  const [maxHours, setMaxHours] = useState(initial.maxHours);
+  const [modes, setModes] = useState<Mode[]>(initial.modes);
+  const [deep, setDeep] = useState(initial.deep);
+  const [selected, setSelected] = useState<string | null>(initial.selected);
   const [panelOpen, setPanelOpen] = useState(true);
+
+  useEffect(() => {
+    writeState({ origin, date, budget, maxHours, modes, deep, selected });
+  }, [origin, date, budget, maxHours, modes, deep, selected]);
 
   useEffect(() => {
     fetchCities()

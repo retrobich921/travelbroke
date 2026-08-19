@@ -38,9 +38,10 @@ async def warm(
     *,
     deep: bool = False,
     cache_dir: Path = Path(".mcp_cache"),
+    ttl_s: float = 7 * 24 * 3600,
 ) -> None:
     """Проходит все пары «город отправления × дата» и складывает ответы в кэш."""
-    cache = DiskCache(root=cache_dir)
+    cache = DiskCache(root=cache_dir, ttl_s=ttl_s)
     async with TutuMCP(cache=cache, concurrency=8) as mcp:
         for name in origins:
             origin = cities.resolve(name)

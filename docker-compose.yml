@@ -6,6 +6,7 @@ services:
     environment:
       TUTU_MCP_URL: https://mcp.tutu.ru/mcp
       TB_CACHE_DIR: /app/data/cache
+      TB_CACHE_TTL_S: "604800"
     volumes:
       - tb-data:/app/data
     ports:
