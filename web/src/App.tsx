@@ -1,7 +1,6 @@
 import type { FeatureCollection, LineString, Point } from "geojson";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -17,44 +16,63 @@ import {
 import { ControlPanel } from "./components/ControlPanel";
 import { TripCard } from "./components/TripCard";
 import { UNREACHABLE, legendStops, priceColor, priceRatio } from "./palette";
+import { useTheme, type Theme } from "./theme";
 import { readState, writeState } from "./urlState";
 
-/** Тёмная подложка на данных OpenStreetMap: без ключей, без регистрации. */
-const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
-
-/**
- * Запасная подложка на растровых тайлах.
- *
- * Векторный стиль тянет отдельно tiles.json, шрифты и спрайты — точек отказа
- * больше. Растр требует одного запроса на тайл, поэтому переживает плохую сеть
- * там, где вектор не поднимается. Демонстрация не должна зависеть от этого.
- */
-const RASTER_FALLBACK: maplibregl.StyleSpecification = {
-  version: 8,
-  sources: {
-    carto: {
-      type: "raster",
-      tiles: [
-        "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-        "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-        "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-      ],
-      tileSize: 256,
-      attribution: "© CARTO, © OpenStreetMap contributors",
-    },
-  },
-  layers: [{ id: "carto", type: "raster", source: "carto" }],
-};
-
-/** Сколько ждём векторный стиль, прежде чем откатиться на растровый. */
-const STYLE_TIMEOUT_MS = 6000;
 // Воркер и его общий чанк лежат статикой в public/ (см. scripts/copy-maplibre-worker.mjs):
-// сборщик эмитить эту пару не умеет, а без воркера карта не рендерится.
+// сборщик эмитить эту пару не умеет, а без воркера карта не рендерится вовсе.
 maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
 const SOURCE = "reachable";
 const ORIGIN_SOURCE = "origin";
 const ROUTE_SOURCE = "route";
+
+/** Векторные подложки на данных OpenStreetMap: без ключей и регистрации. */
+const VECTOR_STYLE: Record<Theme, string> = {
+  dark: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+  light: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+};
+
+/**
+ * Запасная подложка на растровых тайлах.
+ *
+ * Векторный стиль тянет отдельно tiles.json, шрифты и спрайты — точек отказа
+ * больше. Растр требует одного запроса на тайл и переживает плохую сеть там,
+ * где вектор не поднимается.
+ */
+function rasterStyle(theme: Theme): maplibregl.StyleSpecification {
+  const flavour = theme === "dark" ? "dark_all" : "light_all";
+  return {
+    version: 8,
+    sources: {
+      carto: {
+        type: "raster",
+        tiles: ["a", "b", "c"].map(
+          (host) => `https://${host}.basemaps.cartocdn.com/${flavour}/{z}/{x}/{y}.png`,
+        ),
+        tileSize: 256,
+        attribution: "© CARTO, © OpenStreetMap contributors",
+      },
+    },
+    layers: [{ id: "carto", type: "raster", source: "carto" }],
+  };
+}
+
+/** Сколько ждём векторный стиль, прежде чем откатиться на растровый. */
+const STYLE_TIMEOUT_MS = 6000;
+
+interface Palette {
+  label: string;
+  halo: string;
+  saved: string;
+  origin: string;
+}
+
+function paletteFor(theme: Theme): Palette {
+  return theme === "dark"
+    ? { label: "#ffffff", halo: "rgba(13,10,43,0.92)", saved: "#d0ff1a", origin: "#7b61ff" }
+    : { label: "#151047", halo: "rgba(255,255,255,0.92)", saved: "#3f22b8", origin: "#4b2fc9" };
+}
 
 interface MapPoint {
   reach: ReachOut;
@@ -150,11 +168,115 @@ function routeGeoJSON(
   };
 }
 
+/** Ставит источники и слои поверх текущего стиля. Вызывается заново при смене темы. */
+function installLayers(instance: maplibregl.Map, palette: Palette): void {
+  const empty: FeatureCollection<Point> = { type: "FeatureCollection", features: [] };
+  for (const id of [SOURCE, ORIGIN_SOURCE, ROUTE_SOURCE]) {
+    if (!instance.getSource(id)) instance.addSource(id, { type: "geojson", data: empty });
+  }
+
+  // Линия маршрута рисуется под точками, чтобы не перекрывать города.
+  instance.addLayer({
+    id: "route-line",
+    type: "line",
+    source: ROUTE_SOURCE,
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": ["case", ["get", "via"], palette.saved, palette.origin],
+      "line-width": 2.5,
+      "line-opacity": 0.85,
+      "line-dasharray": [2, 1.5],
+    },
+  });
+
+  // Мягкое свечение под самыми дешёвыми городами — глаз находит их первыми.
+  instance.addLayer({
+    id: "cities-glow",
+    type: "circle",
+    source: SOURCE,
+    filter: ["==", ["get", "cheap"], true],
+    paint: {
+      "circle-radius": ["*", ["get", "radius"], 2.6],
+      "circle-color": ["get", "color"],
+      "circle-opacity": 0.16,
+      "circle-blur": 0.9,
+      "circle-radius-transition": { duration: 450 },
+    },
+  });
+
+  instance.addLayer({
+    id: "cities",
+    type: "circle",
+    source: SOURCE,
+    paint: {
+      "circle-radius": ["get", "radius"],
+      "circle-color": ["get", "color"],
+      "circle-opacity": ["get", "opacity"],
+      "circle-stroke-width": 1,
+      "circle-stroke-color": palette.halo,
+      "circle-radius-transition": { duration: 450 },
+      "circle-color-transition": { duration: 450 },
+    },
+  });
+
+  instance.addLayer({
+    id: "cities-label",
+    type: "symbol",
+    source: SOURCE,
+    layout: {
+      "text-field": ["get", "label"],
+      "text-size": 11,
+      "text-offset": [0, 1.3],
+      "text-anchor": "top",
+    },
+    paint: {
+      "text-color": palette.label,
+      "text-halo-color": palette.halo,
+      "text-halo-width": 1.4,
+      "text-opacity": ["get", "opacity"],
+    },
+  });
+
+  // Бейдж скрытой пересадки — главная фича должна быть видна прямо на карте.
+  instance.addLayer({
+    id: "cities-saved",
+    type: "symbol",
+    source: SOURCE,
+    filter: [">", ["get", "saved"], 0],
+    layout: {
+      "text-field": ["get", "savedLabel"],
+      "text-size": 11,
+      "text-offset": [0, -1.5],
+      "text-anchor": "bottom",
+      "text-allow-overlap": true,
+    },
+    paint: {
+      "text-color": palette.saved,
+      "text-halo-color": palette.halo,
+      "text-halo-width": 1.6,
+    },
+  });
+
+  instance.addLayer({
+    id: "origin-point",
+    type: "circle",
+    source: ORIGIN_SOURCE,
+    paint: {
+      "circle-radius": 7,
+      "circle-color": palette.origin,
+      "circle-stroke-width": 3,
+      "circle-stroke-color": palette.halo,
+    },
+  });
+}
+
 export default function App() {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const usedFallback = useRef(false);
-  const [ready, setReady] = useState(false);
+
+  const [theme, toggleTheme] = useTheme();
+  const [styleEpoch, setStyleEpoch] = useState(0);
   const [mapNote, setMapNote] = useState<string | null>(null);
 
   const [cities, setCities] = useState<CityOut[]>([]);
@@ -183,11 +305,15 @@ export default function App() {
       .catch(() => setError("не удалось загрузить справочник городов"));
   }, []);
 
+  // Карта создаётся один раз, поэтому текущую тему держим в ref.
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
+
   useEffect(() => {
     if (!container.current || map.current) return;
     const instance = new maplibregl.Map({
       container: container.current,
-      style: BASEMAP,
+      style: VECTOR_STYLE[themeRef.current],
       center: [55, 57],
       zoom: 3.1,
       attributionControl: { compact: true },
@@ -195,113 +321,7 @@ export default function App() {
     instance.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
 
     const install = () => {
-      instance.addSource(SOURCE, {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: [] },
-      });
-      instance.addSource(ORIGIN_SOURCE, {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: [] },
-      });
-      instance.addSource(ROUTE_SOURCE, {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: [] },
-      });
-
-      // Линия маршрута рисуется под точками, чтобы не перекрывать города.
-      instance.addLayer({
-        id: "route-line",
-        type: "line",
-        source: ROUTE_SOURCE,
-        layout: { "line-cap": "round", "line-join": "round" },
-        paint: {
-          "line-color": ["case", ["get", "via"], "#d0ff1a", "#7b61ff"],
-          "line-width": 2.5,
-          "line-opacity": 0.85,
-          "line-dasharray": [2, 1.5],
-        },
-      });
-
-      // Мягкое свечение под самыми дешёвыми городами — глаз находит их первыми.
-      instance.addLayer({
-        id: "cities-glow",
-        type: "circle",
-        source: SOURCE,
-        filter: ["==", ["get", "cheap"], true],
-        paint: {
-          "circle-radius": ["*", ["get", "radius"], 2.6],
-          "circle-color": ["get", "color"],
-          "circle-opacity": 0.16,
-          "circle-blur": 0.9,
-          "circle-radius-transition": { duration: 450 },
-        },
-      });
-
-      instance.addLayer({
-        id: "cities",
-        type: "circle",
-        source: SOURCE,
-        paint: {
-          "circle-radius": ["get", "radius"],
-          "circle-color": ["get", "color"],
-          "circle-opacity": ["get", "opacity"],
-          "circle-stroke-width": 1,
-          "circle-stroke-color": "rgba(21,16,71,0.85)",
-          "circle-radius-transition": { duration: 450 },
-          "circle-color-transition": { duration: 450 },
-        },
-      });
-
-      instance.addLayer({
-        id: "cities-label",
-        type: "symbol",
-        source: SOURCE,
-        layout: {
-          "text-field": ["get", "label"],
-          "text-size": 11,
-          "text-offset": [0, 1.3],
-          "text-anchor": "top",
-        },
-        paint: {
-          "text-color": "#ffffff",
-          "text-halo-color": "rgba(21,16,71,0.92)",
-          "text-halo-width": 1.4,
-          "text-opacity": ["get", "opacity"],
-        },
-      });
-
-      // Бейдж скрытой пересадки — главная фича должна быть видна прямо на карте.
-      instance.addLayer({
-        id: "cities-saved",
-        type: "symbol",
-        source: SOURCE,
-        filter: [">", ["get", "saved"], 0],
-        layout: {
-          "text-field": ["get", "savedLabel"],
-          "text-size": 11,
-          "text-offset": [0, -1.5],
-          "text-anchor": "bottom",
-          "text-allow-overlap": true,
-        },
-        paint: {
-          "text-color": "#d0ff1a",
-          "text-halo-color": "rgba(21,16,71,0.95)",
-          "text-halo-width": 1.6,
-        },
-      });
-
-      instance.addLayer({
-        id: "origin-point",
-        type: "circle",
-        source: ORIGIN_SOURCE,
-        paint: {
-          "circle-radius": 7,
-          "circle-color": "#7b61ff",
-          "circle-stroke-width": 3,
-          "circle-stroke-color": "#ffffff",
-        },
-      });
-
+      installLayers(instance, paletteFor(themeRef.current));
       instance.on("click", "cities", (event) => {
         const slug = event.features?.[0]?.properties?.slug;
         if (typeof slug === "string") setSelected(slug);
@@ -312,7 +332,7 @@ export default function App() {
       instance.on("mouseleave", "cities", () => {
         instance.getCanvas().style.cursor = "";
       });
-      setReady(true);
+      setStyleEpoch((epoch) => epoch + 1);
     };
 
     instance.on("load", install);
@@ -322,7 +342,7 @@ export default function App() {
       if (usedFallback.current || instance.isStyleLoaded()) return;
       usedFallback.current = true;
       setMapNote("Подложка загружается запасным способом.");
-      instance.setStyle(RASTER_FALLBACK);
+      instance.setStyle(rasterStyle(themeRef.current));
       instance.once("styledata", install);
     };
     const timer = window.setTimeout(fallback, STYLE_TIMEOUT_MS);
@@ -336,9 +356,21 @@ export default function App() {
       window.clearTimeout(timer);
       instance.remove();
       map.current = null;
-      setReady(false);
     };
   }, []);
+
+  // Смена темы меняет подложку целиком, поэтому слои ставим заново.
+  const appliedTheme = useRef(theme);
+  useEffect(() => {
+    const instance = map.current;
+    if (!instance || styleEpoch === 0 || appliedTheme.current === theme) return;
+    appliedTheme.current = theme;
+    instance.setStyle(usedFallback.current ? rasterStyle(theme) : VECTOR_STYLE[theme]);
+    instance.once("styledata", () => {
+      installLayers(instance, paletteFor(theme));
+      setStyleEpoch((epoch) => epoch + 1);
+    });
+  }, [theme, styleEpoch]);
 
   const points = useMemo(
     () => (data ? data.cities.map((reach) => effective(reach, modes)) : []),
@@ -365,47 +397,51 @@ export default function App() {
   }, [visible]);
 
   useEffect(() => {
-    if (!ready || !map.current) return;
+    if (!styleEpoch || !map.current) return;
     const source = map.current.getSource(SOURCE) as maplibregl.GeoJSONSource | undefined;
     source?.setData(toGeoJSON(visible, bounds.min, bounds.max));
-  }, [ready, visible, bounds]);
+  }, [styleEpoch, visible, bounds]);
 
   useEffect(() => {
-    if (!ready || !map.current) return;
+    if (!styleEpoch || !map.current) return;
     const source = map.current.getSource(ORIGIN_SOURCE) as maplibregl.GeoJSONSource | undefined;
     source?.setData(originGeoJSON(data?.origin ?? null));
-  }, [ready, data]);
+  }, [styleEpoch, data]);
 
   const byName = useMemo(() => new Map(cities.map((city) => [city.name, city])), [cities]);
+  const chosen = data?.cities.find((reach) => reach.slug === selected) ?? null;
 
-  const search = useCallback(
-    async (city: string, when: string, withTransfers: boolean) => {
-      setLoading(true);
-      setError(null);
-      setSelected(null);
-      try {
-        const response = await fetchReachable({
-          origin: city,
-          date: when,
-          modes: [...MODES],
-          deep: withTransfers,
-        });
-        setData(response);
-        map.current?.easeTo({
-          center: [response.origin.lon, response.origin.lat],
-          zoom: 3.5,
-          duration: 900,
-        });
-      } catch (cause) {
-        setError(cause instanceof Error ? cause.message : "расчёт не удался");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [],
-  );
+  useEffect(() => {
+    if (!styleEpoch || !map.current) return;
+    const source = map.current.getSource(ROUTE_SOURCE) as maplibregl.GeoJSONSource | undefined;
+    source?.setData(routeGeoJSON(data?.origin ?? null, chosen, byName));
+  }, [styleEpoch, data, chosen, byName]);
 
-  // Первый расчёт запускаем сами: пустая карта на старте — потерянное первое впечатление.
+  const search = useCallback(async (city: string, when: string, withTransfers: boolean) => {
+    setLoading(true);
+    setError(null);
+    setSelected(null);
+    try {
+      const response = await fetchReachable({
+        origin: city,
+        date: when,
+        modes: [...MODES],
+        deep: withTransfers,
+      });
+      setData(response);
+      map.current?.easeTo({
+        center: [response.origin.lon, response.origin.lat],
+        zoom: 3.5,
+        duration: 900,
+      });
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "расчёт не удался");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Первый расчёт запускаем сами: пустая карта на старте — потерянное впечатление.
   const started = useRef(false);
   useEffect(() => {
     if (started.current) return;
@@ -423,14 +459,6 @@ export default function App() {
     );
   }, []);
 
-  const chosen = data?.cities.find((reach) => reach.slug === selected) ?? null;
-
-  useEffect(() => {
-    if (!ready || !map.current) return;
-    const source = map.current.getSource(ROUTE_SOURCE) as maplibregl.GeoJSONSource | undefined;
-    source?.setData(routeGeoJSON(data?.origin ?? null, chosen, byName));
-  }, [ready, data, chosen, byName]);
-
   const cheapest = visible.reduce<MapPoint | null>(
     (best, point) =>
       best === null || (point.price ?? Infinity) < (best.price ?? Infinity) ? point : best,
@@ -439,38 +467,40 @@ export default function App() {
   const hidden = points.filter((point) => point.reach.beats_direct_by).length;
   const unreachable = points.length - visible.length;
 
+  const card = "rounded-2xl bg-tb-panel/90 px-4 py-3 ring-1 ring-tb-line backdrop-blur";
+
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden bg-tb-bg">
       <div ref={container} className="absolute inset-0" />
 
       {loading && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-1 overflow-hidden bg-white/10">
-          <div className="h-full w-1/3 animate-[slide_1.4s_ease-in-out_infinite] bg-tb-cheap" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-1 overflow-hidden bg-tb-fill">
+          <div className="h-full w-1/3 animate-[slide_1.4s_ease-in-out_infinite] bg-tb-accent" />
         </div>
       )}
 
-      <header className="pointer-events-none absolute top-0 left-0 z-10 max-w-[min(20rem,calc(100vw-2rem))] p-5 sm:p-6">
-        <h1 className="text-3xl font-black tracking-tight text-tb-cheap sm:text-4xl">
-          TravelBroke
-        </h1>
-        <p className="mt-1 text-sm text-tb-muted">Ты на мели. Мы всё равно тебя увезём.</p>
+      <header className="pointer-events-none absolute top-0 left-0 z-10 max-w-[min(20rem,calc(100vw-7rem))] p-4 sm:p-6">
+        <h1 className="text-2xl font-black tracking-tight text-tb-hero sm:text-4xl">TravelBroke</h1>
+        <p className="mt-1 text-xs text-tb-muted sm:text-sm">
+          Ты на мели. Мы всё равно тебя увезём.
+        </p>
 
         {data && !loading && (
-          <div className="pointer-events-auto mt-4 rounded-2xl bg-tb-ink/85 px-4 py-3 ring-1 ring-white/10 backdrop-blur">
-            <div className="text-white">
-              <span className="text-3xl font-black text-tb-cheap">{visible.length}</span>{" "}
+          <div className={`tb-rise pointer-events-auto mt-4 ${card}`}>
+            <div className="text-tb-ink">
+              <span className="text-3xl font-black text-tb-hero">{visible.length}</span>{" "}
               <span className="text-sm">
                 {visible.length === 1 ? "город" : "городов"} по карману
               </span>
             </div>
-            {cheapest?.price !== null && cheapest && (
+            {cheapest?.price != null && (
               <div className="mt-1 text-xs text-tb-muted">
                 Дешевле всего — {cheapest.reach.name} за {formatPrice(cheapest.price)}
               </div>
             )}
             {hidden > 0 && (
-              <div className="mt-2 rounded-xl bg-tb-cheap/12 px-3 py-2 text-xs ring-1 ring-tb-cheap/25">
-                <span className="font-bold text-tb-cheap">Найдено скрытых пересадок: {hidden}</span>
+              <div className="mt-2 rounded-xl bg-tb-cheap/20 px-3 py-2 text-xs ring-1 ring-tb-accent/25">
+                <span className="font-bold text-tb-ink">Скрытых пересадок: {hidden}</span>
                 <span className="text-tb-muted"> — там дешевле ехать не напрямую.</span>
               </div>
             )}
@@ -482,33 +512,23 @@ export default function App() {
         )}
 
         {loading && (
-          <div className="pointer-events-auto mt-4 rounded-2xl bg-tb-ink/85 px-4 py-3 text-sm text-tb-muted ring-1 ring-white/10 backdrop-blur">
+          <div className={`pointer-events-auto mt-4 text-sm text-tb-muted ${card}`}>
             Опрашиваем Туту по всем городам сразу.
             {deep && <> Ищем ещё и составные маршруты — это дольше.</>}
           </div>
         )}
 
         {!loading && data && visible.length === 0 && (
-          <div className="pointer-events-auto mt-4 rounded-2xl bg-tb-ink/85 px-4 py-3 text-sm ring-1 ring-white/10 backdrop-blur">
-            <div className="font-semibold text-white">За эти деньги — никуда.</div>
+          <div className={`tb-rise pointer-events-auto mt-4 text-sm ${card}`}>
+            <div className="font-semibold text-tb-ink">За эти деньги — никуда.</div>
             <div className="mt-1 text-xs text-tb-muted">
-              Самый дешёвый вариант на эту дату —{" "}
-              {points
-                .filter((point) => point.price !== null)
-                .reduce<MapPoint | null>(
-                  (best, point) =>
-                    best === null || (point.price ?? 0) < (best.price ?? 0) ? point : best,
-                  null,
-                )?.reach.name ?? "не найден"}
-              . Подвинь бюджет или добавь часов в пути.
+              Подвинь бюджет или добавь часов в пути.
             </div>
           </div>
         )}
 
         {mapNote && (
-          <div className="pointer-events-auto mt-3 rounded-2xl bg-white/8 px-4 py-2 text-xs text-tb-muted ring-1 ring-white/10 backdrop-blur">
-            {mapNote}
-          </div>
+          <div className={`pointer-events-auto mt-3 text-xs text-tb-muted ${card}`}>{mapNote}</div>
         )}
 
         {error && (
@@ -518,18 +538,28 @@ export default function App() {
         )}
       </header>
 
-      <button
-        type="button"
-        onClick={() => setPanelOpen((open) => !open)}
-        className="absolute top-5 right-5 z-30 rounded-full bg-tb-ink/90 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur lg:hidden"
-      >
-        {panelOpen ? "Скрыть" : "Настроить"}
-      </button>
+      <div className="absolute top-4 right-4 z-30 flex gap-2 sm:top-6 sm:right-6">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label="Переключить тему оформления"
+          className="rounded-full bg-tb-panel/90 px-3 py-2 text-base leading-none ring-1 ring-tb-line backdrop-blur transition hover:brightness-105"
+        >
+          {theme === "dark" ? "☀" : "☾"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setPanelOpen((open) => !open)}
+          className="rounded-full bg-tb-panel/90 px-4 py-2 text-sm font-semibold text-tb-ink ring-1 ring-tb-line backdrop-blur lg:hidden"
+        >
+          {panelOpen ? "Скрыть" : "Настроить"}
+        </button>
+      </div>
 
       <div
-        className={`pointer-events-none absolute z-20 flex flex-col gap-4 overflow-y-auto ${
+        className={`pointer-events-none absolute z-20 flex-col gap-3 ${
           panelOpen ? "flex" : "hidden lg:flex"
-        } inset-x-4 bottom-4 max-h-[70vh] items-stretch pt-16 lg:inset-x-auto lg:top-6 lg:right-6 lg:bottom-6 lg:max-h-none lg:items-end lg:pt-0`}
+        } inset-x-3 bottom-3 items-stretch sm:inset-x-4 sm:bottom-4 lg:inset-x-auto lg:top-20 lg:right-6 lg:bottom-6 lg:w-84 lg:items-end lg:overflow-y-auto`}
       >
         <ControlPanel
           cities={cities}
@@ -557,7 +587,9 @@ export default function App() {
         )}
       </div>
 
-      <div className="pointer-events-none absolute bottom-6 left-6 z-10 hidden w-64 rounded-2xl bg-tb-ink/85 px-4 py-3 ring-1 ring-white/10 backdrop-blur sm:block">
+      <div
+        className={`pointer-events-none absolute bottom-6 left-6 z-10 hidden w-64 lg:block ${card}`}
+      >
         <div className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
           Цена поездки
         </div>

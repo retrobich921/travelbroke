@@ -36,6 +36,9 @@ export interface ReachOut extends CityOut {
   via: string | null;
   via_legs: VariantOut[] | null;
   beats_direct_by: number | null;
+  transfer_wait_minutes: number | null;
+  transfer_required_minutes: number | null;
+  transfer_overnight: boolean;
   by_mode: Partial<Record<Mode, number>>;
   by_mode_minutes: Partial<Record<Mode, number>>;
   empty_reason: string | null;
@@ -85,6 +88,14 @@ export function nextSaturday(): string {
 
 export function formatPrice(value: number): string {
   return `${value.toLocaleString("ru-RU")} ₽`;
+}
+
+/** Минуты в человеческий вид: «3 ч 20 мин». */
+export function formatMinutes(value: number): string {
+  const whole = Math.floor(value / 60);
+  const minutes = Math.round(value % 60);
+  if (!whole) return `${minutes} мин`;
+  return minutes ? `${whole} ч ${minutes} мин` : `${whole} ч`;
 }
 
 export function formatHours(value: number): string {

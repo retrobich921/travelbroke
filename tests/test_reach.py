@@ -9,15 +9,44 @@ import pytest
 
 from travelbroke.cities import BY_NAME, HUBS, City, resolve
 from travelbroke.reach import (
+    BASE_BUFFER_MIN,
+    Connection,
     Reach,
     Variant,
+    best_connection,
     build_graph,
     cheapest_paths,
     detour_ratio,
     hub_candidates,
     parse_modes_summary,
     parse_variants,
+    required_buffer,
+    same_station,
 )
+
+
+def leg(
+    transport: str,
+    price: int,
+    *,
+    departure: str | None = None,
+    arrival: str | None = None,
+    from_point: str | None = None,
+    to_point: str | None = None,
+    minutes: int = 300,
+) -> Variant:
+    """Короткий конструктор плеча для тестов."""
+    return Variant(
+        transport=transport,
+        price=price,
+        duration_min=minutes,
+        transfers=0,
+        departure_at=departure,
+        arrival_at=arrival,
+        departure_point=from_point,
+        arrival_point=to_point,
+    )
+
 
 RAW = Path(__file__).resolve().parents[1] / "recon" / "raw" / "05_search_multitransport.json"
 
@@ -89,28 +118,103 @@ def test_hub_candidates_drops_far_hubs() -> None:
 
 def test_best_price_prefers_cheaper_composite_route() -> None:
     target = City("Сочи", 43.5855, 39.7231)
-    direct = Variant(transport="railway", price=6800, duration_min=1440, transfers=0)
-    legs = (
-        Variant(transport="bus", price=2200, duration_min=900, transfers=0),
-        Variant(transport="etrain", price=1700, duration_min=300, transfers=0),
+    direct = leg("railway", 6800, minutes=1440)
+    connection = Connection(
+        first=leg("bus", 2200, minutes=900),
+        second=leg("etrain", 1700, minutes=300),
+        wait_min=120,
+        required_min=120,
     )
-    reach = Reach(city=target, direct=direct, via=BY_NAME["Ростов-на-Дону"], via_legs=legs)
+    reach = Reach(city=target, direct=direct, via=BY_NAME["Ростов-на-Дону"], connection=connection)
 
     assert reach.best_price == 3900
     assert reach.beats_direct_by == 2900
+    # Время пересадки входит в общую длительность, а не теряется между плечами.
+    assert connection.duration_min == 900 + 120 + 300
 
 
 def test_beats_direct_by_is_none_when_composite_is_worse() -> None:
     target = City("Сочи", 43.5855, 39.7231)
-    direct = Variant(transport="railway", price=3000, duration_min=1440, transfers=0)
-    legs = (
-        Variant(transport="bus", price=2500, duration_min=900, transfers=0),
-        Variant(transport="etrain", price=2500, duration_min=300, transfers=0),
+    direct = leg("railway", 3000, minutes=1440)
+    connection = Connection(
+        first=leg("bus", 2500, minutes=900),
+        second=leg("etrain", 2500, minutes=300),
+        wait_min=90,
+        required_min=60,
     )
-    reach = Reach(city=target, direct=direct, via=BY_NAME["Тула"], via_legs=legs)
+    reach = Reach(city=target, direct=direct, via=BY_NAME["Тула"], connection=connection)
 
     assert reach.best_price == 3000
     assert reach.beats_direct_by is None
+
+
+def test_required_buffer_grows_for_flights_and_station_change() -> None:
+    same = leg("railway", 100, to_point="Казань (2060500)")
+    next_same = leg("railway", 100, from_point="Казань (2060500)")
+    assert required_buffer(same, next_same) == BASE_BUFFER_MIN
+
+    other = leg("railway", 100, from_point="Казань-2 (2060501)")
+    assert required_buffer(same, other) == BASE_BUFFER_MIN + 60
+
+    flight = leg("avia", 100, from_point="Казань (2060500)")
+    assert required_buffer(same, flight) == BASE_BUFFER_MIN + 90
+
+
+def test_same_station_assumes_worst_without_data() -> None:
+    """Нет названий станций — считаем их разными и закладываем лишний час."""
+    assert not same_station(leg("railway", 100), leg("bus", 100))
+
+
+def test_best_connection_rejects_impossible_transfer() -> None:
+    first = leg(
+        "railway",
+        1000,
+        arrival="2026-09-01T12:00:00+03:00",
+        to_point="Казань (2060500)",
+    )
+    too_soon = leg(
+        "railway",
+        500,
+        departure="2026-09-01T12:30:00+03:00",
+        from_point="Казань (2060500)",
+    )
+
+    assert best_connection([first], [too_soon]) is None
+
+
+def test_best_connection_picks_cheapest_feasible_pair() -> None:
+    first = leg(
+        "railway",
+        1000,
+        arrival="2026-09-01T12:00:00+03:00",
+        to_point="Казань (2060500)",
+    )
+    too_soon = leg(
+        "railway", 300, departure="2026-09-01T12:30:00+03:00", from_point="Казань (2060500)"
+    )
+    feasible = leg(
+        "railway", 800, departure="2026-09-01T14:00:00+03:00", from_point="Казань (2060500)"
+    )
+
+    found = best_connection([first], [too_soon, feasible])
+
+    assert found is not None
+    assert found.second is feasible
+    assert found.wait_min == 120
+    assert found.required_min == BASE_BUFFER_MIN
+    assert not found.overnight
+
+
+def test_best_connection_marks_overnight_wait() -> None:
+    first = leg("railway", 1000, arrival="2026-09-01T22:00:00+03:00", to_point="Казань (2060500)")
+    morning = leg(
+        "railway", 700, departure="2026-09-02T09:00:00+03:00", from_point="Казань (2060500)"
+    )
+
+    found = best_connection([first], [morning])
+
+    assert found is not None
+    assert found.overnight
 
 
 def test_graph_finds_cheapest_path_through_hub() -> None:
@@ -119,11 +223,13 @@ def test_graph_finds_cheapest_path_through_hub() -> None:
     reaches = [
         Reach(
             city=sochi,
-            direct=Variant(transport="railway", price=6800, duration_min=1440, transfers=0),
+            direct=leg("railway", 6800, minutes=1440),
             via=BY_NAME["Ростов-на-Дону"],
-            via_legs=(
-                Variant(transport="bus", price=2200, duration_min=900, transfers=0),
-                Variant(transport="etrain", price=1700, duration_min=300, transfers=0),
+            connection=Connection(
+                first=leg("bus", 2200, minutes=900),
+                second=leg("etrain", 1700, minutes=300),
+                wait_min=120,
+                required_min=120,
             ),
         )
     ]

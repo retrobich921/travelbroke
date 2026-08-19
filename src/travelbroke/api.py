@@ -84,6 +84,15 @@ class ReachOut(BaseModel):
     direct: VariantOut | None = None
     via: str | None = Field(default=None, description="Город пересадки, если так дешевле")
     via_legs: list[VariantOut] | None = None
+    transfer_wait_minutes: int | None = Field(
+        default=None, description="Запас между прибытием и отправлением на пересадке, минуты"
+    )
+    transfer_required_minutes: int | None = Field(
+        default=None, description="Сколько запаса потребовала проверка выполнимости, минуты"
+    )
+    transfer_overnight: bool = Field(
+        default=False, description="Ожидание на пересадке превышает восемь часов"
+    )
     beats_direct_by: int | None = Field(
         default=None, description="Экономия составного маршрута против прямого, ₽"
     )
@@ -147,14 +156,16 @@ def _variant_out(variant: reach.Variant) -> VariantOut:
 
 
 def _reach_out(item: reach.Reach) -> ReachOut:
+    """Доменный результат по городу в модель ответа.
+
+    Время составного маршрута считается вместе с ожиданием на пересадке —
+    показывать сумму двух плеч без стыковочного часа было бы враньём.
+    """
+    connection = item.connection
     legs = item.via_legs
-    total_hours = None
-    if item.direct is not None:
-        total_hours = item.direct.hours
-    if legs is not None:
-        via_hours = round(sum(leg.duration_min for leg in legs) / 60, 1)
-        if total_hours is None or sum(leg.price for leg in legs) < (item.direct or legs[0]).price:
-            total_hours = via_hours
+    total_hours = item.direct.hours if item.direct is not None else None
+    if connection is not None and (item.direct is None or connection.price < item.direct.price):
+        total_hours = round(connection.duration_min / 60, 1)
     return ReachOut(
         slug=item.city.slug,
         name=item.city.name,
@@ -165,6 +176,9 @@ def _reach_out(item: reach.Reach) -> ReachOut:
         direct=_variant_out(item.direct) if item.direct else None,
         via=item.via.name if item.via else None,
         via_legs=[_variant_out(leg) for leg in legs] if legs else None,
+        transfer_wait_minutes=connection.wait_min if connection else None,
+        transfer_required_minutes=connection.required_min if connection else None,
+        transfer_overnight=connection.overnight if connection else False,
         beats_direct_by=item.beats_direct_by,
         by_mode=item.by_mode,
         by_mode_minutes=item.by_mode_minutes,

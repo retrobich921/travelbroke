@@ -20,6 +20,10 @@ interface Props {
   onSearch: () => void;
 }
 
+const LABEL = "text-[11px] font-semibold tracking-wider text-tb-muted uppercase";
+const FIELD =
+  "mt-1 w-full rounded-xl bg-tb-fill px-3 py-2 text-sm font-medium text-tb-ink outline-none focus:ring-2 focus:ring-tb-accent";
+
 /** Панель управления картой: откуда, когда, за сколько и на чём. */
 export function ControlPanel(props: Props) {
   const {
@@ -50,44 +54,34 @@ export function ControlPanel(props: Props) {
   };
 
   return (
-    <aside className="pointer-events-auto w-84 max-w-[calc(100vw-3rem)] rounded-3xl bg-tb-ink/92 p-6 shadow-2xl ring-1 ring-white/10 backdrop-blur-xl">
+    <aside className="tb-sheet pointer-events-auto w-full rounded-3xl bg-tb-panel/95 p-5 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl sm:p-6 lg:w-84">
       <div className="grid grid-cols-2 gap-3">
-        <label className="col-span-1">
-          <span className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
-            Откуда
-          </span>
-          <select
-            value={origin}
-            onChange={(e) => onOrigin(e.target.value)}
-            className="mt-1 w-full rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-tb-accent"
-          >
+        <label>
+          <span className={LABEL}>Откуда</span>
+          <select value={origin} onChange={(e) => onOrigin(e.target.value)} className={FIELD}>
             {cities.map((city) => (
-              <option key={city.slug} value={city.name} className="text-tb-ink">
+              <option key={city.slug} value={city.name}>
                 {city.name}
               </option>
             ))}
           </select>
         </label>
 
-        <label className="col-span-1">
-          <span className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
-            Когда
-          </span>
+        <label>
+          <span className={LABEL}>Когда</span>
           <input
             type="date"
             value={date}
             onChange={(e) => onDate(e.target.value)}
-            className="mt-1 w-full rounded-xl bg-white/10 px-3 py-2 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-tb-accent"
+            className={FIELD}
           />
         </label>
       </div>
 
-      <div className="mt-6">
-        <div className="flex items-baseline justify-between">
-          <span className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
-            Бюджет
-          </span>
-          <span className="text-2xl font-black text-tb-cheap">{formatPrice(budget)}</span>
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between gap-2">
+          <span className={LABEL}>Бюджет</span>
+          <span className="text-2xl font-black text-tb-hero">{formatPrice(budget)}</span>
         </div>
         <input
           type="range"
@@ -97,15 +91,14 @@ export function ControlPanel(props: Props) {
           value={budget}
           onChange={(e) => onBudget(Number(e.target.value))}
           className="mt-2 w-full accent-tb-accent"
+          aria-label="Бюджет поездки"
         />
       </div>
 
-      <div className="mt-5">
-        <div className="flex items-baseline justify-between">
-          <span className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
-            Не дольше
-          </span>
-          <span className="text-2xl font-black text-tb-expensive">{maxHours} ч</span>
+      <div className="mt-4">
+        <div className="flex items-baseline justify-between gap-2">
+          <span className={LABEL}>Не дольше</span>
+          <span className="text-2xl font-black text-tb-accent">{maxHours} ч</span>
         </div>
         <input
           type="range"
@@ -115,13 +108,12 @@ export function ControlPanel(props: Props) {
           value={maxHours}
           onChange={(e) => onMaxHours(Number(e.target.value))}
           className="mt-2 w-full accent-tb-accent"
+          aria-label="Максимум часов в пути"
         />
       </div>
 
-      <div className="mt-6">
-        <span className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
-          Транспорт
-        </span>
+      <div className="mt-5">
+        <span className={LABEL}>Транспорт</span>
         <div className="mt-2 grid grid-cols-2 gap-2">
           {MODES.map((mode) => {
             const active = modes.includes(mode);
@@ -134,7 +126,7 @@ export function ControlPanel(props: Props) {
                 className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${
                   active
                     ? "bg-tb-accent text-white"
-                    : "bg-white/8 text-tb-muted hover:bg-white/15"
+                    : "bg-tb-fill text-tb-muted hover:text-tb-ink"
                 }`}
               >
                 {MODE_LABELS[mode]}
@@ -144,17 +136,18 @@ export function ControlPanel(props: Props) {
         </div>
       </div>
 
-      <label className="mt-5 flex cursor-pointer items-start gap-3">
+      <label className="mt-4 flex cursor-pointer items-start gap-3">
         <input
           type="checkbox"
           checked={deep}
           onChange={(e) => onDeep(e.target.checked)}
-          className="mt-1 size-4 accent-tb-accent"
+          className="mt-1 size-4 shrink-0 accent-tb-accent"
         />
         <span className="text-sm text-tb-muted">
-          <span className="font-semibold text-white">Искать пересадки</span>
+          <span className="font-semibold text-tb-ink">Искать пересадки</span>
           <br />
-          Составные маршруты бывают дешевле прямых. Считается дольше.
+          Составные маршруты бывают дешевле прямых. На стыковку закладываем запас
+          времени, считается дольше.
         </span>
       </label>
 
@@ -162,7 +155,7 @@ export function ControlPanel(props: Props) {
         type="button"
         onClick={onSearch}
         disabled={loading}
-        className="mt-6 w-full rounded-2xl bg-tb-cheap px-4 py-3 text-base font-black text-tb-ink transition hover:brightness-110 disabled:cursor-progress disabled:opacity-60"
+        className="mt-5 w-full rounded-2xl bg-tb-accent px-4 py-3 text-base font-black text-white transition hover:brightness-110 disabled:cursor-progress disabled:opacity-60"
       >
         {loading ? "Считаем маршруты…" : "Куда я могу уехать"}
       </button>
@@ -170,7 +163,7 @@ export function ControlPanel(props: Props) {
       <button
         type="button"
         onClick={share}
-        className="mt-2 w-full rounded-2xl bg-white/8 px-4 py-2 text-sm font-semibold text-tb-muted transition hover:bg-white/15 hover:text-white"
+        className="mt-2 w-full rounded-2xl bg-tb-fill px-4 py-2 text-sm font-semibold text-tb-muted transition hover:text-tb-ink"
       >
         {copied ? "Ссылка скопирована" : "Поделиться этим видом"}
       </button>

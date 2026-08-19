@@ -1,16 +1,55 @@
 @import "tailwindcss";
 
-/* Палитра TravelBroke под фирменный стиль Туту.
-   Цена кодируется цветом: лайм — дёшево, фиолетовый — дорого. */
+/* Фирменные цвета не зависят от темы: лайм и фиолет остаются собой. */
 @theme {
   --color-tb-cheap: #d0ff1a;
   --color-tb-expensive: #c1acff;
   --color-tb-accent: #7b61ff;
-  --color-tb-ink: #151047;
-  --color-tb-bg: #f3f2ff;
-  --color-tb-muted: #b9b6d6;
 
   --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+/* Семантические токены ссылаются на переменные, которые переключает тема. */
+@theme inline {
+  --color-tb-bg: var(--tb-bg);
+  --color-tb-panel: var(--tb-panel);
+  --color-tb-ink: var(--tb-ink);
+  --color-tb-muted: var(--tb-muted);
+  --color-tb-line: var(--tb-line);
+  --color-tb-hero: var(--tb-hero);
+  --color-tb-fill: var(--tb-fill);
+}
+
+/* Светлая тема — значение по умолчанию. */
+:root {
+  --tb-bg: #eeecff;
+  --tb-panel: #ffffff;
+  --tb-ink: #151047;
+  --tb-muted: #6b6790;
+  --tb-line: rgba(21, 16, 71, 0.12);
+  --tb-hero: #4b2fc9;
+  --tb-fill: rgba(21, 16, 71, 0.06);
+
+  --tb-halo: rgba(255, 255, 255, 0.92);
+  --tb-label: #151047;
+
+  color-scheme: light;
+}
+
+/* Тёмная тема — по выбору пользователя. */
+:root[data-theme="dark"] {
+  --tb-bg: #0d0a2b;
+  --tb-panel: #151047;
+  --tb-ink: #f3f2ff;
+  --tb-muted: #b9b6d6;
+  --tb-line: rgba(255, 255, 255, 0.12);
+  --tb-hero: #d0ff1a;
+  --tb-fill: rgba(255, 255, 255, 0.08);
+
+  --tb-halo: rgba(13, 10, 43, 0.92);
+  --tb-label: #ffffff;
+
+  color-scheme: dark;
 }
 
 html,
@@ -21,9 +60,10 @@ body,
 }
 
 body {
-  background: var(--color-tb-ink);
-  color: var(--color-tb-bg);
+  background: var(--tb-bg);
+  color: var(--tb-ink);
   font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
 }
 
 /* MapLibre подтягивает свои стили сам, но контейнер обязан иметь высоту. */
@@ -39,5 +79,30 @@ body {
   }
   100% {
     transform: translateX(400%);
+  }
+}
+
+/* Карточки появляются мягко, а не рывком. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tb-rise {
+  animation: rise 0.22s ease-out both;
+}
+
+/* На узких экранах панель прокручивается внутри себя, а не растягивает страницу. */
+@media (max-width: 1023px) {
+  .tb-sheet {
+    max-height: 62vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }

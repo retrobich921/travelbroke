@@ -3,11 +3,14 @@
 Две фазы, как описано в ADR-0001:
 
 1. **Веер.** Один `search_multitransport` на каждый город-кандидат. Даёт прямую
-   цену и время, а заодно `modes_summary` — минимальную цену по каждому виду
-   транспорта, из которой работают тумблеры на карте.
+   цену и время, а заодно `modes_summary` — минимальную цену и длительность по
+   каждому виду транспорта, из которых работают тумблеры на карте.
 2. **Граф.** Для городов, куда прямой маршрут дорогой, пробуем добраться через
    хаб. Хабы отбираются геометрически: крюк через хаб не должен быть длиннее
    прямого пути более чем в ``MAX_DETOUR`` раз, иначе перебор не окупается.
+
+Составной маршрут засчитывается, только если пересадка **физически выполнима** —
+см. `required_buffer` и ADR-0004.
 
 Модуль ничего не знает про HTTP и про формат ответов MCP — за первое отвечает
 ``travelbroke.api``, за второе ``tutukit``.
@@ -16,10 +19,10 @@
 from __future__ import annotations
 
 import asyncio
+import datetime as dt
 import logging
 import math
 from dataclasses import dataclass, field
-from datetime import date as Date
 from typing import Any, cast
 
 import networkx as nx
@@ -35,11 +38,17 @@ ALL_MODES: tuple[str, ...] = ("avia", "railway", "bus", "etrain")
 MAX_DETOUR = 1.35
 """Во сколько раз крюк через хаб может быть длиннее прямого пути по прямой."""
 
-TRANSFER_BUFFER_MIN = 60
-"""Минимальный запас между прибытием и отправлением на пересадке, минуты."""
+BASE_BUFFER_MIN = 60
+"""Базовый запас на пересадку: дойти, найти платформу, не бежать."""
 
-TRANSFER_PENALTY_MIN = 90
-"""Штраф ко времени поездки за каждую пересадку — пересадка стоит не только минут."""
+AVIA_BUFFER_MIN = 90
+"""Добавка, если хотя бы одно плечо — самолёт: регистрация, багаж, досмотр."""
+
+STATION_CHANGE_BUFFER_MIN = 60
+"""Добавка, если прибытие и отправление на разных вокзалах: переезд по городу."""
+
+MAX_BUFFER_MIN = 20 * 60
+"""Потолок ожидания: сутки на вокзале — это уже не пересадка, а вторая поездка."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,12 +61,48 @@ class Variant:
     transfers: int
     departure_at: str | None = None
     arrival_at: str | None = None
+    departure_point: str | None = None
+    arrival_point: str | None = None
     checkout_url: str | None = None
     route: str | None = None
 
     @property
     def hours(self) -> float:
         return round(self.duration_min / 60, 1)
+
+    @property
+    def departure_dt(self) -> dt.datetime | None:
+        return _parse_dt(self.departure_at)
+
+    @property
+    def arrival_dt(self) -> dt.datetime | None:
+        return _parse_dt(self.arrival_at)
+
+
+@dataclass(frozen=True, slots=True)
+class Connection:
+    """Составной маршрут: два плеча и проверенная пересадка между ними."""
+
+    first: Variant
+    second: Variant
+    wait_min: int
+    """Фактический запас между прибытием первого плеча и отправлением второго."""
+    required_min: int
+    """Сколько запаса потребовала проверка — по нему объясняем решение пользователю."""
+
+    @property
+    def price(self) -> int:
+        return self.first.price + self.second.price
+
+    @property
+    def duration_min(self) -> int:
+        """Полное время двери-в-двери, включая ожидание на пересадке."""
+        return self.first.duration_min + self.wait_min + self.second.duration_min
+
+    @property
+    def overnight(self) -> bool:
+        """Ожидание больше восьми часов — это ночёвка, о ней надо предупредить."""
+        return self.wait_min >= 8 * 60
 
 
 @dataclass(slots=True)
@@ -67,7 +112,7 @@ class Reach:
     city: City
     direct: Variant | None = None
     via: City | None = None
-    via_legs: tuple[Variant, Variant] | None = None
+    connection: Connection | None = None
     by_mode: dict[str, int] = field(default_factory=dict)
     """Минимальная цена по каждому виду транспорта — для тумблеров на клиенте."""
     by_mode_minutes: dict[str, int] = field(default_factory=dict)
@@ -76,20 +121,95 @@ class Reach:
     empty_message: str | None = None
 
     @property
+    def via_legs(self) -> tuple[Variant, Variant] | None:
+        """Плечи составного маршрута, если он найден."""
+        if self.connection is None:
+            return None
+        return (self.connection.first, self.connection.second)
+
+    @property
     def best_price(self) -> int | None:
         """Цена лучшего из найденных маршрутов: прямого или составного."""
-        prices = [v.price for v in (self.direct,) if v is not None]
-        if self.via_legs is not None:
-            prices.append(sum(leg.price for leg in self.via_legs))
+        prices = [variant.price for variant in (self.direct,) if variant is not None]
+        if self.connection is not None:
+            prices.append(self.connection.price)
         return min(prices) if prices else None
 
     @property
     def beats_direct_by(self) -> int | None:
         """Насколько составной маршрут дешевле прямого, если он вообще дешевле."""
-        if self.via_legs is None or self.direct is None:
+        if self.connection is None or self.direct is None:
             return None
-        saved = self.direct.price - sum(leg.price for leg in self.via_legs)
+        saved = self.direct.price - self.connection.price
         return saved if saved > 0 else None
+
+
+def _parse_dt(raw: str | None) -> dt.datetime | None:
+    """ISO-строка из ответа Туту в datetime. Ошибку разбора считаем отсутствием данных."""
+    if not raw:
+        return None
+    try:
+        return dt.datetime.fromisoformat(raw)
+    except ValueError:
+        log.debug("не разобрал дату %r", raw)
+        return None
+
+
+def _normalize_point(raw: str | None) -> str:
+    """Название станции без кода в скобках и без регистра — для сравнения вокзалов."""
+    if not raw:
+        return ""
+    head = raw.split("(")[0]
+    return " ".join(head.replace("—", " ").replace("·", " ").split()).casefold()
+
+
+def same_station(first: Variant, second: Variant) -> bool:
+    """Прибытие и отправление происходят на одной и той же станции.
+
+    Когда данных о станциях нет, считаем их разными: осторожная оценка добавит
+    лишний час запаса, а не отправит пассажира на невыполнимую пересадку.
+    """
+    arrival = _normalize_point(first.arrival_point)
+    departure = _normalize_point(second.departure_point)
+    if not arrival or not departure:
+        return False
+    return arrival == departure
+
+
+def required_buffer(first: Variant, second: Variant) -> int:
+    """Сколько минут запаса нужно между плечами, чтобы пересадка была выполнимой.
+
+    Расписание Туту не знает о фактических задержках, поэтому запас закладываем
+    структурно: час на саму пересадку, плюс полтора часа, если в связке есть
+    самолёт, плюс час на переезд, если вокзалы разные. Обоснование — в ADR-0004.
+    """
+    buffer = BASE_BUFFER_MIN
+    if "avia" in (first.transport, second.transport):
+        buffer += AVIA_BUFFER_MIN
+    if not same_station(first, second):
+        buffer += STATION_CHANGE_BUFFER_MIN
+    return buffer
+
+
+def best_connection(firsts: list[Variant], seconds: list[Variant]) -> Connection | None:
+    """Самая дешёвая пара плеч, между которыми пересадка физически выполнима."""
+    best: Connection | None = None
+    for first in firsts:
+        arrival = first.arrival_dt
+        if arrival is None:
+            continue
+        for second in seconds:
+            departure = second.departure_dt
+            if departure is None:
+                continue
+            wait = round((departure - arrival).total_seconds() / 60)
+            need = required_buffer(first, second)
+            if wait < need or wait > MAX_BUFFER_MIN:
+                continue
+            candidate = Connection(first=first, second=second, wait_min=wait, required_min=need)
+            if best is None or candidate.price < best.price:
+                best = candidate
+    return best
 
 
 def _haversine_km(a: City, b: City) -> float:
@@ -118,7 +238,18 @@ def _to_int_price(raw: Any) -> int | None:
     return None
 
 
-def parse_variants(data: dict[str, Any], limit: int = 5) -> list[Variant]:
+def _endpoints(raw: dict[str, Any]) -> tuple[str | None, str | None]:
+    """Станции отправления и прибытия из первого и последнего плеча варианта."""
+    legs = raw.get("legs")
+    if not isinstance(legs, list) or not legs:
+        return None, None
+    first, last = legs[0], legs[-1]
+    if not isinstance(first, dict) or not isinstance(last, dict):
+        return None, None
+    return first.get("from"), last.get("to")
+
+
+def parse_variants(data: dict[str, Any], limit: int = 8) -> list[Variant]:
     """Достаёт из ответа `search_multitransport` то немногое, что нужно карте."""
     variants: list[Variant] = []
     for raw in (data.get("variants") or [])[:limit]:
@@ -127,6 +258,10 @@ def parse_variants(data: dict[str, Any], limit: int = 5) -> list[Variant]:
         if price is None or not isinstance(duration, int):
             continue
         segments = raw.get("segments_count")
+        departure_point, arrival_point = _endpoints(raw)
+        route = (
+            f"{departure_point} → {arrival_point}" if departure_point and arrival_point else None
+        )
         variants.append(
             Variant(
                 transport=str(raw.get("transport") or "unknown"),
@@ -135,22 +270,13 @@ def parse_variants(data: dict[str, Any], limit: int = 5) -> list[Variant]:
                 transfers=max(segments - 1, 0) if isinstance(segments, int) else 0,
                 departure_at=raw.get("departure_at"),
                 arrival_at=raw.get("arrival_at"),
+                departure_point=departure_point,
+                arrival_point=arrival_point,
                 checkout_url=raw.get("checkout_url") or raw.get("search_results_url"),
-                route=_route_label(raw),
+                route=route,
             )
         )
     return variants
-
-
-def _route_label(raw: dict[str, Any]) -> str | None:
-    legs = raw.get("legs")
-    if not isinstance(legs, list) or not legs:
-        return None
-    first = legs[0]
-    if not isinstance(first, dict):
-        return None
-    origin, target = first.get("from"), first.get("to")
-    return f"{origin} → {target}" if origin and target else None
 
 
 def parse_modes_summary(data: dict[str, Any]) -> tuple[dict[str, int], dict[str, int]]:
@@ -181,7 +307,7 @@ async def _search_pair(
     mcp: TutuMCP,
     origin: str,
     target: str,
-    when: Date,
+    when: dt.date,
     modes: tuple[str, ...],
     price_max: int | None,
 ) -> tuple[list[Variant], dict[str, int], dict[str, int], str | None, str | None]:
@@ -218,7 +344,7 @@ async def _search_pair(
 async def fan_out(
     mcp: TutuMCP,
     origin: City,
-    when: Date,
+    when: dt.date,
     *,
     modes: tuple[str, ...] = ALL_MODES,
     price_max: int | None = None,
@@ -231,7 +357,7 @@ async def fan_out(
         variants, by_mode, by_minutes, reason, message = await _search_pair(
             mcp, origin.name, target.name, when, modes, price_max
         )
-        cheapest = min(variants, key=lambda v: v.price) if variants else None
+        cheapest = min(variants, key=lambda variant: variant.price) if variants else None
         return Reach(
             city=target,
             direct=cheapest,
@@ -257,6 +383,67 @@ def hub_candidates(origin: City, target: City, hubs: tuple[City, ...]) -> list[C
     )
 
 
+async def deepen(
+    mcp: TutuMCP,
+    origin: City,
+    when: dt.date,
+    reaches: list[Reach],
+    hubs: tuple[City, ...],
+    *,
+    modes: tuple[str, ...] = ALL_MODES,
+    top_expensive: int = 20,
+    hubs_per_city: int = 2,
+) -> list[Reach]:
+    """Фаза 2: ищет составные маршруты туда, где прямой вариант дорогой.
+
+    Работает поверх результатов веера и правит их на месте. Считается только для
+    ``top_expensive`` худших городов и не более чем через ``hubs_per_city`` хабов
+    на город — иначе число запросов растёт быстрее, чем польза.
+
+    Второе плечо ищется и на следующий день: пересадка с ночёвкой — нормальный
+    вариант для дальнего направления, а вот пересадка, на которую не успеваешь, —
+    нет.
+    """
+    ranked = sorted(
+        reaches,
+        key=lambda reach: (reach.best_price is not None, reach.best_price or 0),
+        reverse=True,
+    )[:top_expensive]
+
+    # Плечо «отправление → хаб» одно и то же для всех городов, считаем его один раз.
+    leg_cache: dict[tuple[str, str, dt.date], list[Variant]] = {}
+    lock = asyncio.Lock()
+
+    async def leg(start: str, finish: str, day: dt.date) -> list[Variant]:
+        key = (start, finish, day)
+        async with lock:
+            cached = leg_cache.get(key)
+        if cached is not None:
+            return cached
+        variants, _, _, _, _ = await _search_pair(mcp, start, finish, day, modes, None)
+        async with lock:
+            leg_cache[key] = variants
+        return variants
+
+    async def one(reach: Reach) -> None:
+        for hub in hub_candidates(origin, reach.city, hubs)[:hubs_per_city]:
+            firsts = await leg(origin.name, hub.name, when)
+            if not firsts:
+                continue
+            seconds = await leg(hub.name, reach.city.name, when)
+            seconds = seconds + await leg(hub.name, reach.city.name, when + dt.timedelta(days=1))
+            candidate = best_connection(firsts, seconds)
+            if candidate is None:
+                continue
+            if reach.best_price is not None and candidate.price >= reach.best_price:
+                continue
+            reach.via = hub
+            reach.connection = candidate
+
+    await asyncio.gather(*(one(reach) for reach in ranked))
+    return reaches
+
+
 def build_graph(origin: City, reaches: list[Reach]) -> nx.DiGraph[str]:
     """Граф маршрутов: узлы — города, рёбра — найденные варианты поездки.
 
@@ -275,8 +462,8 @@ def build_graph(origin: City, reaches: list[Reach]) -> nx.DiGraph[str]:
                 minutes=reach.direct.duration_min,
                 transport=reach.direct.transport,
             )
-        if reach.via is not None and reach.via_legs is not None:
-            first, second = reach.via_legs
+        if reach.via is not None and reach.connection is not None:
+            first, second = reach.connection.first, reach.connection.second
             graph.add_edge(
                 origin.name,
                 reach.via.name,
@@ -301,54 +488,3 @@ def cheapest_paths(graph: nx.DiGraph[str], origin: str) -> dict[str, tuple[int, 
     costs = cast(dict[str, float], lengths)
     routes = cast(dict[str, list[str]], paths)
     return {city: (round(cost), routes[city]) for city, cost in costs.items() if city != origin}
-
-
-async def deepen(
-    mcp: TutuMCP,
-    origin: City,
-    when: Date,
-    reaches: list[Reach],
-    hubs: tuple[City, ...],
-    *,
-    modes: tuple[str, ...] = ALL_MODES,
-    top_expensive: int = 20,
-    hubs_per_city: int = 2,
-) -> list[Reach]:
-    """Фаза 2: ищет составные маршруты туда, где прямой вариант дорогой или отсутствует.
-
-    Работает поверх результатов веера и правит их на месте. Считается только для
-    ``top_expensive`` худших городов и не более чем через ``hubs_per_city`` хабов
-    на город — иначе число запросов растёт быстрее, чем польза.
-    """
-    ranked = sorted(
-        reaches,
-        key=lambda r: (r.best_price is not None, r.best_price or 0),
-        reverse=True,
-    )[:top_expensive]
-
-    # Плечо «отправление → хаб» одно и то же для всех городов, считаем его один раз.
-    leg_cache: dict[str, Variant | None] = {}
-
-    async def leg(a: str, b: str) -> Variant | None:
-        key = f"{a}→{b}"
-        if key not in leg_cache:
-            variants, _, _, _, _ = await _search_pair(mcp, a, b, when, modes, None)
-            leg_cache[key] = min(variants, key=lambda v: v.price) if variants else None
-        return leg_cache[key]
-
-    async def one(reach: Reach) -> None:
-        for hub in hub_candidates(origin, reach.city, hubs)[:hubs_per_city]:
-            first = await leg(origin.name, hub.name)
-            if first is None:
-                continue
-            second = await leg(hub.name, reach.city.name)
-            if second is None:
-                continue
-            total = first.price + second.price
-            if reach.best_price is not None and total >= reach.best_price:
-                continue
-            reach.via = hub
-            reach.via_legs = (first, second)
-
-    await asyncio.gather(*(one(reach) for reach in ranked))
-    return reaches
