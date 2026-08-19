@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Данные и кэш
+.mcp_cache/
+*.sqlite
+*.db
+data/raw/
+
+# Node
+node_modules/
+web/dist/
+
+# Окружение
+.env
+.env.local
+
+# Редакторы и ОС
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

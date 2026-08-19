@@ -1,0 +1,36 @@
+[project]
+name = "travelbroke"
+version = "0.1.0"
+description = "Куда можно уехать за эти деньги — тепловая карта досягаемости на данных Туту"
+readme = "README.md"
+authors = [{ name = "retrobich921", email = "albert1yandex@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = ["httpx>=0.28.1"]
+
+[build-system]
+requires = ["uv_build>=0.9.16,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = ["tutukit", "travelbroke"]
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "pytest-asyncio>=1.4.0", "ruff>=0.16.3", "mypy>=1.14"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+# Комментарии и строки в проекте на русском — правила про «неоднозначную кириллицу» тут только шумят.
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
