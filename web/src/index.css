@@ -31,3 +31,13 @@ body {
   height: 100%;
   width: 100%;
 }
+
+/* Бегунок прогресса поверх карты, пока идёт расчёт. */
+@keyframes slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}

@@ -1,4 +1,10 @@
-import { MODE_LABELS, formatHours, formatPrice, type Mode, type ReachOut, type VariantOut } from "../api";
+import {
+  MODE_LABELS,
+  formatHours,
+  formatPrice,
+  type ReachOut,
+  type VariantOut,
+} from "../api";
 
 const TRANSPORT_LABEL: Record<string, string> = {
   ...MODE_LABELS,
@@ -35,7 +41,6 @@ function Leg({ variant, index }: { variant: VariantOut; index?: number }) {
 interface Props {
   reach: ReachOut;
   origin: string;
-  modes: Mode[];
   onClose: () => void;
 }
 
