@@ -27,7 +27,7 @@ from typing import Any, cast
 
 import networkx as nx
 
-from travelbroke.cities import City, destinations
+from travelbroke.cities import MAJOR_HUBS, City, destinations
 from tutukit.client import ToolCallError, TutuError, TutuMCP
 from tutukit.diagnose import diagnose
 
@@ -372,9 +372,10 @@ async def fan_out(
     price_max: int | None = None,
     limit: int | None = None,
     adults: int = 1,
+    abroad_only: bool = False,
 ) -> list[Reach]:
     """Фаза 1: прямая досягаемость каждого города-кандидата из точки отправления."""
-    targets = destinations(origin, limit)
+    targets = destinations(origin, limit, abroad_only=abroad_only)
 
     async def one(target: City) -> Reach:
         variants, by_mode, by_minutes, reason, message = await _search_pair(
@@ -408,7 +409,12 @@ async def fan_out(
 
 
 def hub_candidates(origin: City, target: City, hubs: tuple[City, ...]) -> list[City]:
-    """Хабы, через которые есть смысл искать составной маршрут."""
+    """Хабы, через которые есть смысл искать составной маршрут.
+
+    Одной геометрии мало: по прямой между Набережными Челнами и Стамбулом лежат
+    Ростов и Воронеж, а рейсы туда идут через Москву. Поэтому крупные
+    пересадочные узлы проверяются первыми, а уже потом — просто попутные города.
+    """
     return sorted(
         (
             hub
@@ -416,7 +422,7 @@ def hub_candidates(origin: City, target: City, hubs: tuple[City, ...]) -> list[C
             if hub.name not in (origin.name, target.name)
             and detour_ratio(origin, hub, target) <= MAX_DETOUR
         ),
-        key=lambda hub: detour_ratio(origin, hub, target),
+        key=lambda hub: (hub.name not in MAJOR_HUBS, detour_ratio(origin, hub, target)),
     )
 
 
@@ -428,8 +434,8 @@ async def deepen(
     hubs: tuple[City, ...],
     *,
     modes: tuple[str, ...] = ALL_MODES,
-    top_expensive: int = 20,
-    hubs_per_city: int = 2,
+    top_expensive: int = 40,
+    hubs_per_city: int = 3,
     adults: int = 1,
 ) -> list[Reach]:
     """Фаза 2: ищет составные маршруты туда, где прямой вариант дорогой.
@@ -442,11 +448,15 @@ async def deepen(
     вариант для дальнего направления, а вот пересадка, на которую не успеваешь, —
     нет.
     """
-    ranked = sorted(
-        reaches,
-        key=lambda reach: (reach.best_price is not None, reach.best_price or 0),
+    # Сначала города, куда прямого пути нет вовсе: составной маршрут нужен там
+    # больше всего. За ними — самые дорогие прямые.
+    unreachable = [reach for reach in reaches if reach.best_price is None]
+    priced = sorted(
+        (reach for reach in reaches if reach.best_price is not None),
+        key=lambda reach: reach.best_price or 0,
         reverse=True,
-    )[:top_expensive]
+    )
+    ranked = (unreachable + priced)[:top_expensive]
 
     # Плечо «отправление → хаб» одно и то же для всех городов, считаем его один раз.
     leg_cache: dict[tuple[str, str, dt.date], list[Variant]] = {}

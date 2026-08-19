@@ -88,6 +88,7 @@ export async function fetchReachable(params: {
   round_trip: boolean;
   stay_min: number;
   stay_max: number;
+  abroad_only: boolean;
 }): Promise<ReachableResponse> {
   return json<ReachableResponse>(
     await fetch("/api/reachable", {

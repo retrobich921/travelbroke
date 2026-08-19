@@ -15,6 +15,7 @@ export interface MapState {
   modes: Mode[];
   deep: boolean;
   passengers: number;
+  abroadOnly: boolean;
   roundTrip: boolean;
   stayMin: number;
   stayMax: number;
@@ -32,6 +33,7 @@ export const DEFAULT_STATE: MapState = {
   modes: [...MODES],
   deep: true,
   passengers: 1,
+  abroadOnly: false,
   roundTrip: false,
   stayMin: 1,
   stayMax: 3,
@@ -62,6 +64,7 @@ export function readState(search: string = window.location.search): MapState {
     modes: parseModes(params.get("modes")),
     deep: params.get("deep") !== "0",
     passengers: Math.min(6, Math.max(1, parseNumber(params.get("pax"), 1))),
+    abroadOnly: params.get("abroad") === "1",
     roundTrip: params.get("rt") === "1",
     stayMin: parseNumber(params.get("smin"), 1),
     stayMax: parseNumber(params.get("smax"), 3),
@@ -81,6 +84,7 @@ export function writeState(state: MapState): void {
   if (state.modes.length !== MODES.length) params.set("modes", state.modes.join(","));
   if (!state.deep) params.set("deep", "0");
   if (state.passengers > 1) params.set("pax", String(state.passengers));
+  if (state.abroadOnly) params.set("abroad", "1");
   if (state.roundTrip) {
     params.set("rt", "1");
     params.set("smin", String(state.stayMin));

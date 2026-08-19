@@ -10,6 +10,7 @@ MCP Туту резолвит города по названию и отдаёт
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any
 
@@ -108,19 +109,67 @@ CITIES: tuple[City, ...] = (
     City("Улан-Удэ", 51.8335, 107.5841),
     City("Магнитогорск", 53.4186, 58.9797),
     City("Новокузнецк", 53.7557, 87.1099),
+    City("Набережные Челны", 55.7436, 52.3958),
+    City("Нижний Тагил", 57.9195, 59.9650),
+    City("Курган", 55.4500, 65.3333),
+    City("Череповец", 59.1269, 37.9094),
+    City("Новороссийск", 44.7239, 37.7686),
+    City("Симферополь", 44.9521, 34.1024),
+    City("Севастополь", 44.6167, 33.5254),
+    City("Грозный", 43.3169, 45.6981),
     # Заграница: MCP Туту резолвит эти города и продаёт до них билеты.
-    City("Минск", 53.9006, 27.5590, country="Беларусь"),
+    City("Минск", 53.9006, 27.5590, hub=True, country="Беларусь"),
     City("Сухум", 43.0015, 41.0234, country="Абхазия"),
-    City("Тбилиси", 41.7151, 44.8271, country="Грузия"),
-    City("Ереван", 40.1792, 44.4991, country="Армения"),
-    City("Баку", 40.4093, 49.8671, country="Азербайджан"),
-    City("Астана", 51.1694, 71.4491, country="Казахстан"),
-    City("Алматы", 43.2220, 76.8512, country="Казахстан"),
-    City("Бишкек", 42.8746, 74.5698, country="Киргизия"),
-    City("Ташкент", 41.2995, 69.2401, country="Узбекистан"),
-    City("Стамбул", 41.0082, 28.9784, country="Турция"),
+    City("Гагра", 43.2800, 40.2667, country="Абхазия"),
+    City("Тбилиси", 41.7151, 44.8271, hub=True, country="Грузия"),
+    City("Батуми", 41.6168, 41.6367, country="Грузия"),
+    City("Кутаиси", 42.2679, 42.6946, country="Грузия"),
+    City("Ереван", 40.1792, 44.4991, hub=True, country="Армения"),
+    City("Гюмри", 40.7894, 43.8475, country="Армения"),
+    City("Баку", 40.4093, 49.8671, hub=True, country="Азербайджан"),
+    City("Астана", 51.1694, 71.4491, hub=True, country="Казахстан"),
+    City("Алматы", 43.2220, 76.8512, hub=True, country="Казахстан"),
+    City("Актау", 43.6410, 51.1980, country="Казахстан"),
+    City("Караганда", 49.8047, 73.1094, country="Казахстан"),
+    City("Шымкент", 42.3417, 69.5901, country="Казахстан"),
+    City("Бишкек", 42.8746, 74.5698, hub=True, country="Киргизия"),
+    City("Ош", 40.5283, 72.7985, country="Киргизия"),
+    City("Ташкент", 41.2995, 69.2401, hub=True, country="Узбекистан"),
+    City("Самарканд", 39.6270, 66.9750, country="Узбекистан"),
+    City("Бухара", 39.7747, 64.4286, country="Узбекистан"),
+    City("Душанбе", 38.5598, 68.7870, country="Таджикистан"),
+    City("Ашхабад", 37.9601, 58.3261, country="Туркменистан"),
+    City("Кишинёв", 47.0105, 28.8638, country="Молдова"),
+    City("Стамбул", 41.0082, 28.9784, hub=True, country="Турция"),
     City("Анталья", 36.8969, 30.7133, country="Турция"),
-    City("Дубай", 25.2048, 55.2708, country="ОАЭ"),
+    City("Анкара", 39.9334, 32.8597, country="Турция"),
+    City("Измир", 38.4237, 27.1428, country="Турция"),
+    City("Дубай", 25.2048, 55.2708, hub=True, country="ОАЭ"),
+    City("Абу-Даби", 24.4539, 54.3773, country="ОАЭ"),
+    City("Шарджа", 25.3463, 55.4209, country="ОАЭ"),
+    City("Тель-Авив", 32.0853, 34.7818, country="Израиль"),
+    City("Каир", 30.0444, 31.2357, country="Египет"),
+    City("Хургада", 27.2579, 33.8116, country="Египет"),
+    City("Шарм-эль-Шейх", 27.9158, 34.3300, country="Египет"),
+    City("Пекин", 39.9042, 116.4074, hub=True, country="Китай"),
+    City("Шанхай", 31.2304, 121.4737, country="Китай"),
+    City("Харбин", 45.8038, 126.5349, country="Китай"),
+    City("Улан-Батор", 47.8864, 106.9057, country="Монголия"),
+    City("Бангкок", 13.7563, 100.5018, country="Таиланд"),
+    City("Пхукет", 7.8804, 98.3923, country="Таиланд"),
+    City("Дели", 28.6139, 77.2090, country="Индия"),
+    City("Белград", 44.7866, 20.4489, country="Сербия"),
+    City("Будапешт", 47.4979, 19.0402, country="Венгрия"),
+    City("Прага", 50.0755, 14.4378, country="Чехия"),
+    City("Хельсинки", 60.1699, 24.9384, country="Финляндия"),
+    City("Рига", 56.9496, 24.1052, country="Латвия"),
+    City("Таллин", 59.4370, 24.7536, country="Эстония"),
+    City("Вильнюс", 54.6872, 25.2797, country="Литва"),
+    City("Варшава", 52.2297, 21.0122, country="Польша"),
+    City("Берлин", 52.5200, 13.4050, country="Германия"),
+    City("Париж", 48.8566, 2.3522, country="Франция"),
+    City("Рим", 41.9028, 12.4964, country="Италия"),
+    City("Барселона", 41.3851, 2.1734, country="Испания"),
 )
 
 BY_NAME: dict[str, City] = {city.name: city for city in CITIES}
@@ -134,10 +183,46 @@ def resolve(name: str) -> City | None:
     return BY_NAME.get(key) or BY_SLUG.get(key.lower().replace(" ", "-").replace("ё", "е"))
 
 
-def destinations(origin: City, limit: int | None = None) -> tuple[City, ...]:
-    """Список городов, до которых считаем досягаемость из точки отправления."""
-    others = tuple(city for city in CITIES if city.name != origin.name)
-    return others if limit is None else others[:limit]
+MAJOR_HUBS: frozenset[str] = frozenset(
+    {"Москва", "Санкт-Петербург", "Стамбул", "Дубай", "Алматы", "Минск"}
+)
+"""Узлы, через которые реально летают и ездят. Их проверяем первыми."""
+
+MAX_DESTINATIONS = 70
+"""Потолок городов в одном веере: дальше время расчёта растёт быстрее пользы."""
+
+
+def distance_km(a: City, b: City) -> float:
+    """Расстояние по прямой между городами, километры."""
+    radius = 6371.0
+    lat1, lat2 = math.radians(a.lat), math.radians(b.lat)
+    dlat = lat2 - lat1
+    dlon = math.radians(b.lon - a.lon)
+    h = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    return 2 * radius * math.asin(math.sqrt(h))
+
+
+def destinations(
+    origin: City, limit: int | None = None, *, abroad_only: bool = False
+) -> tuple[City, ...]:
+    """Список городов, до которых считаем досягаемость из точки отправления.
+
+    Пул делится по стране отправления: либо ищем поездки по своей стране, либо
+    только за границу. Держать оба пула сразу дорого — веер по всем городам
+    справочника не укладывается в разумное время.
+    """
+    others = [
+        city
+        for city in CITIES
+        if city.name != origin.name
+        and ((city.country != origin.country) if abroad_only else (city.country == origin.country))
+    ]
+    # Если кандидатов слишком много, оставляем ближайшие: из Дубая нет смысла
+    # считать Владивосток, а веер на сто с лишним городов не успеет отработать.
+    if len(others) > MAX_DESTINATIONS:
+        others.sort(key=lambda city: distance_km(origin, city))
+        others = others[:MAX_DESTINATIONS]
+    return tuple(others if limit is None else others[:limit])
 
 
 _GEOCODE_CACHE: dict[str, City | None] = {}

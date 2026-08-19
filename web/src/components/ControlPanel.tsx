@@ -14,6 +14,7 @@ interface Props {
   modes: Mode[];
   deep: boolean;
   passengers: number;
+  abroadOnly: boolean;
   roundTrip: boolean;
   stayMin: number;
   stayMax: number;
@@ -28,6 +29,7 @@ interface Props {
   onToggleMode: (mode: Mode) => void;
   onDeep: (value: boolean) => void;
   onPassengers: (value: number) => void;
+  onAbroadOnly: (value: boolean) => void;
   onRoundTrip: (value: boolean) => void;
   onStay: (min: number, max: number) => void;
   onDepartAfter: (value: number) => void;
@@ -58,6 +60,7 @@ export function ControlPanel(props: Props) {
     modes,
     deep,
     passengers,
+    abroadOnly,
     roundTrip,
     stayMin,
     stayMax,
@@ -72,6 +75,7 @@ export function ControlPanel(props: Props) {
     onToggleMode,
     onDeep,
     onPassengers,
+    onAbroadOnly,
     onRoundTrip,
     onStay,
     onDepartAfter,
@@ -179,6 +183,19 @@ export function ControlPanel(props: Props) {
       </div>
 
       <label className="mt-3.5 flex cursor-pointer items-start gap-2.5">
+        <input
+          type="checkbox"
+          checked={abroadOnly}
+          onChange={(event) => onAbroadOnly(event.target.checked)}
+          className="mt-0.5 size-3.5 shrink-0 accent-tb-accent"
+        />
+        <span className="text-[12px] leading-snug text-tb-muted">
+          <span className="font-semibold text-tb-ink">Только за границу.</span> В выдаче
+          останутся города других стран; пересадка по своей стране всё равно найдётся.
+        </span>
+      </label>
+
+      <label className="mt-3 flex cursor-pointer items-start gap-2.5">
         <input
           type="checkbox"
           checked={roundTrip}

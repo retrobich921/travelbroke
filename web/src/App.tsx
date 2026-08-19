@@ -28,6 +28,7 @@ maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 const SOURCE = "reachable";
 const ORIGIN_SOURCE = "origin";
 const ROUTE_SOURCE = "route";
+const TRANSFER_SOURCE = "transfer";
 
 /** Векторные подложки на данных OpenStreetMap: без ключей и регистрации. */
 const VECTOR_STYLE: Record<Theme, string> = {
@@ -278,7 +279,7 @@ function routeGeoJSON(
 /** Ставит источники и слои поверх текущего стиля. Вызывается заново при смене темы. */
 function installLayers(instance: maplibregl.Map, palette: Palette): void {
   const empty: FeatureCollection<Point> = { type: "FeatureCollection", features: [] };
-  for (const id of [SOURCE, ORIGIN_SOURCE, ROUTE_SOURCE]) {
+  for (const id of [SOURCE, ORIGIN_SOURCE, ROUTE_SOURCE, TRANSFER_SOURCE]) {
     if (!instance.getSource(id)) instance.addSource(id, { type: "geojson", data: empty });
   }
 
@@ -439,6 +440,38 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
     },
   });
 
+  // Город пересадки появляется на карте только вместе с выбранным маршрутом:
+  // в выдаче его может не быть вовсе (например, при поиске только за границу).
+  instance.addLayer({
+    id: "transfer-point",
+    type: "circle",
+    source: TRANSFER_SOURCE,
+    paint: {
+      "circle-radius": 6,
+      "circle-color": palette.saved,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": palette.halo,
+    },
+  });
+
+  instance.addLayer({
+    id: "transfer-label",
+    type: "symbol",
+    source: TRANSFER_SOURCE,
+    layout: {
+      "text-field": ["concat", "пересадка · ", ["get", "name"]],
+      "text-size": 11,
+      "text-offset": [0, 1.2],
+      "text-anchor": "top",
+      "text-allow-overlap": true,
+    },
+    paint: {
+      "text-color": palette.saved,
+      "text-halo-color": palette.halo,
+      "text-halo-width": 1.6,
+    },
+  });
+
   // Точку отправления тоже подписываем — иначе непонятно, откуда идёт линия.
   instance.addLayer({
     id: "origin-label",
@@ -482,6 +515,7 @@ export default function App() {
   const [modes, setModes] = useState<Mode[]>(initial.modes);
   const [deep, setDeep] = useState(initial.deep);
   const [passengers, setPassengers] = useState(initial.passengers);
+  const [abroadOnly, setAbroadOnly] = useState(initial.abroadOnly);
   const [roundTrip, setRoundTrip] = useState(initial.roundTrip);
   const [stayMin, setStayMin] = useState(initial.stayMin);
   const [stayMax, setStayMax] = useState(initial.stayMax);
@@ -516,6 +550,7 @@ export default function App() {
       modes,
       deep,
       passengers,
+      abroadOnly,
       roundTrip,
       stayMin,
       stayMax,
@@ -531,6 +566,7 @@ export default function App() {
     modes,
     deep,
     passengers,
+    abroadOnly,
     roundTrip,
     stayMin,
     stayMax,
@@ -687,6 +723,8 @@ export default function App() {
     );
   }, [styleEpoch, data, chosenRoute, chosenTrip, byName]);
 
+  const abroadRef = useRef(abroadOnly);
+  abroadRef.current = abroadOnly;
   const roundTripRef = useRef(roundTrip);
   roundTripRef.current = roundTrip;
   const stayRef = useRef<[number, number]>([stayMin, stayMax]);
@@ -704,6 +742,7 @@ export default function App() {
         modes: [...MODES],
         deep: withTransfers,
         passengers: people,
+        abroad_only: abroadRef.current,
         round_trip: roundTripRef.current,
         stay_min: stayRef.current[0],
         stay_max: stayRef.current[1],
@@ -886,6 +925,8 @@ export default function App() {
           passengers={passengers}
           needsSearch={needsSearch}
           onPassengers={setPassengers}
+          abroadOnly={abroadOnly}
+          onAbroadOnly={setAbroadOnly}
           roundTrip={roundTrip}
           stayMin={stayMin}
           stayMax={stayMax}

@@ -141,6 +141,10 @@ class ReachableRequest(BaseModel):
     passengers: int = Field(
         default=1, ge=1, le=6, description="Сколько человек едет — уходит в поиск как adults"
     )
+    abroad_only: bool = Field(
+        default=False,
+        description="Искать только за границу: города страны отправления в выдачу не попадают",
+    )
     round_trip: bool = Field(default=False, description="Подбирать ещё и обратный билет")
     stay_min: int = Field(default=1, ge=1, le=30, description="Минимум дней на месте")
     stay_max: int = Field(default=3, ge=1, le=30, description="Максимум дней на месте")
@@ -286,6 +290,7 @@ async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableRespo
         price_max=request.price_max,
         limit=request.limit,
         adults=request.passengers,
+        abroad_only=request.abroad_only,
     )
     if request.deep:
         results = await reach.deepen(

@@ -264,3 +264,32 @@ def test_resolve_accepts_slug_and_name() -> None:
     assert resolve("Москва") is BY_NAME["Москва"]
     assert resolve("санкт-петербург") is BY_NAME["Санкт-Петербург"]
     assert resolve("Нью-Йорк") is None
+
+
+def test_destinations_split_by_country() -> None:
+    """Пул назначений делится по стране отправления, а не смешивается."""
+    from travelbroke.cities import destinations
+
+    chelny = BY_NAME["Набережные Челны"]
+
+    home = destinations(chelny)
+    abroad = destinations(chelny, abroad_only=True)
+
+    assert home, "по своей стране ехать всегда есть куда"
+    assert all(city.country == "Россия" for city in home)
+    assert abroad and all(city.country != "Россия" for city in abroad)
+    assert "Москва" not in {city.name for city in abroad}
+
+
+def test_destinations_capped_for_far_origins() -> None:
+    """Из Дубая не считаем весь мир: остаются ближайшие кандидаты."""
+    from travelbroke.cities import MAX_DESTINATIONS, destinations
+
+    assert len(destinations(BY_NAME["Дубай"], abroad_only=True)) <= MAX_DESTINATIONS
+
+
+def test_major_hubs_are_checked_first() -> None:
+    """По прямой между Челнами и Стамбулом лежит Ростов, а рейсы идут через Москву."""
+    candidates = hub_candidates(BY_NAME["Набережные Челны"], BY_NAME["Стамбул"], HUBS)
+
+    assert candidates[0].name == "Москва"
