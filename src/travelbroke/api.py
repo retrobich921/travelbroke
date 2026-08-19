@@ -86,7 +86,10 @@ class ReachOut(BaseModel):
         default=None, description="Экономия составного маршрута против прямого, ₽"
     )
     by_mode: dict[str, int] = Field(
-        default_factory=dict, description="Минимальная цена по каждому виду транспорта"
+        default_factory=dict, description="Минимальная цена по каждому виду транспорта, ₽"
+    )
+    by_mode_minutes: dict[str, int] = Field(
+        default_factory=dict, description="Минимальное время по каждому виду транспорта, минуты"
     )
     empty_reason: str | None = None
     empty_message: str | None = None
@@ -162,6 +165,7 @@ def _reach_out(item: reach.Reach) -> ReachOut:
         via_legs=[_variant_out(leg) for leg in legs] if legs else None,
         beats_direct_by=item.beats_direct_by,
         by_mode=item.by_mode,
+        by_mode_minutes=item.by_mode_minutes,
         empty_reason=item.empty_reason,
         empty_message=item.empty_message,
     )

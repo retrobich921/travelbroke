@@ -57,15 +57,16 @@ def test_parse_variants_survives_garbage() -> None:
 
 
 def test_parse_modes_summary(multitransport: dict) -> None:
-    summary = parse_modes_summary(multitransport)
+    prices, minutes = parse_modes_summary(multitransport)
 
-    assert summary, "meta.modes_summary есть в ответе"
-    assert all(isinstance(price, int) and price > 0 for price in summary.values())
+    assert prices, "meta.modes_summary есть в ответе"
+    assert all(isinstance(price, int) and price > 0 for price in prices.values())
+    assert all(isinstance(value, int) and value > 0 for value in minutes.values())
 
 
 def test_parse_modes_summary_tolerates_missing_meta() -> None:
-    assert parse_modes_summary({"variants": []}) == {}
-    assert parse_modes_summary({"meta": {"modes_summary": "чепуха"}}) == {}
+    assert parse_modes_summary({"variants": []}) == ({}, {})
+    assert parse_modes_summary({"meta": {"modes_summary": "чепуха"}}) == ({}, {})
 
 
 def test_detour_ratio_prefers_hub_on_the_way() -> None:

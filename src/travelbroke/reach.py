@@ -70,6 +70,8 @@ class Reach:
     via_legs: tuple[Variant, Variant] | None = None
     by_mode: dict[str, int] = field(default_factory=dict)
     """Минимальная цена по каждому виду транспорта — для тумблеров на клиенте."""
+    by_mode_minutes: dict[str, int] = field(default_factory=dict)
+    """Минимальное время по каждому виду транспорта, минуты."""
     empty_reason: str | None = None
     empty_message: str | None = None
 
@@ -151,18 +153,28 @@ def _route_label(raw: dict[str, Any]) -> str | None:
     return f"{origin} → {target}" if origin and target else None
 
 
-def parse_modes_summary(data: dict[str, Any]) -> dict[str, int]:
-    """Минимальная цена по каждому виду транспорта из `meta.modes_summary`."""
+def parse_modes_summary(data: dict[str, Any]) -> tuple[dict[str, int], dict[str, int]]:
+    """Минимумы по каждому виду транспорта из `meta.modes_summary`.
+
+    Возвращает две карты: цена в рублях и длительность в минутах. Из них на
+    клиенте работают тумблеры видов транспорта — без единого нового запроса.
+    """
     meta = data.get("meta")
     summary = meta.get("modes_summary") if isinstance(meta, dict) else None
     if not isinstance(summary, dict):
-        return {}
-    out: dict[str, int] = {}
+        return {}, {}
+    prices: dict[str, int] = {}
+    minutes: dict[str, int] = {}
     for mode, stats in summary.items():
-        price = _to_int_price(stats.get("min_price")) if isinstance(stats, dict) else None
+        if not isinstance(stats, dict):
+            continue
+        price = _to_int_price(stats.get("min_price"))
         if price is not None:
-            out[str(mode)] = price
-    return out
+            prices[str(mode)] = price
+        duration = stats.get("min_duration_min")
+        if isinstance(duration, int | float):
+            minutes[str(mode)] = round(duration)
+    return prices, minutes
 
 
 async def _search_pair(
@@ -172,7 +184,7 @@ async def _search_pair(
     when: Date,
     modes: tuple[str, ...],
     price_max: int | None,
-) -> tuple[list[Variant], dict[str, int], str | None, str | None]:
+) -> tuple[list[Variant], dict[str, int], dict[str, int], str | None, str | None]:
     """Один поиск между парой городов. Ошибку инструмента считаем пустым результатом."""
     args: dict[str, Any] = {
         "origin": origin,
@@ -190,16 +202,17 @@ async def _search_pair(
         data = await mcp.call("search_multitransport", **args)
     except ToolCallError as exc:
         # Нерезолвящийся город — штатная ситуация, а не падение расчёта.
-        return [], {}, "unresolved", str(exc)
+        return [], {}, {}, "unresolved", str(exc)
     except TutuError as exc:
         log.warning("поиск %s → %s не удался: %s", origin, target, exc)
-        return [], {}, "transport_error", str(exc)
+        return [], {}, {}, "transport_error", str(exc)
 
     verdict = diagnose("search_multitransport", args, data)
     variants = parse_variants(data)
     reason = None if variants else str(verdict.reason)
     message = None if variants else verdict.message
-    return variants, parse_modes_summary(data), reason, message
+    prices, minutes = parse_modes_summary(data)
+    return variants, prices, minutes, reason, message
 
 
 async def fan_out(
@@ -215,7 +228,7 @@ async def fan_out(
     targets = destinations(origin, limit)
 
     async def one(target: City) -> Reach:
-        variants, by_mode, reason, message = await _search_pair(
+        variants, by_mode, by_minutes, reason, message = await _search_pair(
             mcp, origin.name, target.name, when, modes, price_max
         )
         cheapest = min(variants, key=lambda v: v.price) if variants else None
@@ -223,6 +236,7 @@ async def fan_out(
             city=target,
             direct=cheapest,
             by_mode=by_mode,
+            by_mode_minutes=by_minutes,
             empty_reason=reason,
             empty_message=message,
         )
@@ -315,7 +329,7 @@ async def deepen(
     async def leg(a: str, b: str) -> Variant | None:
         key = f"{a}→{b}"
         if key not in leg_cache:
-            variants, _, _, _ = await _search_pair(mcp, a, b, when, modes, None)
+            variants, _, _, _, _ = await _search_pair(mcp, a, b, when, modes, None)
             leg_cache[key] = min(variants, key=lambda v: v.price) if variants else None
         return leg_cache[key]
 

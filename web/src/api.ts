@@ -1,0 +1,95 @@
+/** Типы ответов бэкенда и тонкие обёртки над fetch. */
+
+export const MODES = ["avia", "railway", "bus", "etrain"] as const;
+export type Mode = (typeof MODES)[number];
+
+export const MODE_LABELS: Record<Mode, string> = {
+  avia: "Самолёт",
+  railway: "Поезд",
+  bus: "Автобус",
+  etrain: "Электричка",
+};
+
+export interface CityOut {
+  slug: string;
+  name: string;
+  lat: number;
+  lon: number;
+  hub: boolean;
+}
+
+export interface VariantOut {
+  transport: string;
+  price: number;
+  hours: number;
+  transfers: number;
+  departure_at: string | null;
+  arrival_at: string | null;
+  checkout_url: string | null;
+  route: string | null;
+}
+
+export interface ReachOut extends CityOut {
+  price: number | null;
+  hours: number | null;
+  direct: VariantOut | null;
+  via: string | null;
+  via_legs: VariantOut[] | null;
+  beats_direct_by: number | null;
+  by_mode: Partial<Record<Mode, number>>;
+  by_mode_minutes: Partial<Record<Mode, number>>;
+  empty_reason: string | null;
+  empty_message: string | null;
+}
+
+export interface ReachableResponse {
+  origin: CityOut;
+  date: string;
+  cities: ReachOut[];
+  calls: number;
+  cached: number;
+}
+
+async function json<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+  return (await response.json()) as T;
+}
+
+export async function fetchCities(): Promise<CityOut[]> {
+  return json<CityOut[]>(await fetch("/api/cities"));
+}
+
+export async function fetchReachable(params: {
+  origin: string;
+  date: string;
+  modes: Mode[];
+  deep: boolean;
+}): Promise<ReachableResponse> {
+  return json<ReachableResponse>(
+    await fetch("/api/reachable", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(params),
+    }),
+  );
+}
+
+/** Ближайшая суббота — самая частая дата короткой поездки. */
+export function nextSaturday(): string {
+  const day = new Date();
+  day.setDate(day.getDate() + ((6 - day.getDay() + 7) % 7 || 7));
+  return day.toISOString().slice(0, 10);
+}
+
+export function formatPrice(value: number): string {
+  return `${value.toLocaleString("ru-RU")} ₽`;
+}
+
+export function formatHours(value: number): string {
+  if (value < 1) return `${Math.round(value * 60)} мин`;
+  const whole = Math.floor(value);
+  const minutes = Math.round((value - whole) * 60);
+  return minutes ? `${whole} ч ${minutes} мин` : `${whole} ч`;
+}
