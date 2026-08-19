@@ -36,6 +36,12 @@ FILTER_KEYS = (
 
 
 class EmptyReason(StrEnum):
+    """Почему поиск ничего не вернул.
+
+    MCP Туту отдаёт все четыре случая одинаково — пустым списком. Их различение
+    и есть ценность модуля: «дата прошла» и «рейсов нет» требуют разных советов.
+    """
+
     OK = "ok"
     PAST_DATE = "past_date"
     BEYOND_HORIZON = "beyond_horizon"
@@ -45,6 +51,8 @@ class EmptyReason(StrEnum):
 
 @dataclass(slots=True)
 class Diagnosis:
+    """Разбор пустого ответа: причина, текст пользователю и что делать дальше."""
+
     reason: EmptyReason
     message: str
     hint: str | None = None

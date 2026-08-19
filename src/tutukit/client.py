@@ -40,6 +40,12 @@ class TransportError(TutuError):
 
 @dataclass(slots=True)
 class CallStat:
+    """Учёт одного вызова MCP: чем он был и во что обошёлся.
+
+    По этим записям считается и строка «N запросов к Туту, M из кэша» в
+    интерфейсе, и полоса расчёта на стартовом экране.
+    """
+
     tool: str
     elapsed_s: float
     size_b: int

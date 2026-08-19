@@ -22,6 +22,11 @@ CACHE_DIR = Path(__file__).resolve().parents[2] / ".mcp_cache"
 
 
 async def run(args: argparse.Namespace) -> int:
+    """Выполняет один поиск через MCP и печатает разбор ответа.
+
+    Смоук-проверка: поднимает ли сервер Туту нужный инструмент, что он отдаёт
+    и как это классифицирует `diagnose`. Печать идёт в stdout — это CLI.
+    """
     tool = f"search_{args.mode}"
     if args.mode == "hotels":
         params = {
@@ -61,6 +66,7 @@ async def run(args: argparse.Namespace) -> int:
 
 
 def main() -> int:
+    """Точка входа `python -m tutukit`: разбирает аргументы и запускает `run`."""
     p = argparse.ArgumentParser(prog="tutukit", description="смоук-проверка MCP Туту")
     p.add_argument("mode", choices=MODES)
     p.add_argument("origin")
