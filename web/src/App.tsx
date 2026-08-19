@@ -76,6 +76,25 @@ function paletteFor(theme: Theme): Palette {
     : { label: "#151047", halo: "rgba(255,255,255,0.92)", saved: "#3f22b8", origin: "#4b2fc9" };
 }
 
+/**
+ * Окно поездки: не выезжать раньше и быть на месте не позже.
+ *
+ * Наша аудитория отталкивается от цены, а не от даты, поэтому время — мягкий
+ * фильтр поверх уже загруженной матрицы: он не требует новых запросов к Туту.
+ */
+function withinTimeWindow(reach: ReachOut, after: number, before: number): boolean {
+  if (after <= 0 && before >= 24) return true;
+  const trip = reach.via_legs ? reach.via_legs[0] : reach.direct;
+  const finish = reach.via_legs ? reach.via_legs[1] : reach.direct;
+  if (!trip?.departure_at || !finish?.arrival_at) return true;
+  const departure = new Date(trip.departure_at);
+  const arrival = new Date(finish.arrival_at);
+  if (Number.isNaN(departure.getTime()) || Number.isNaN(arrival.getTime())) return true;
+  if (departure.getHours() < after) return false;
+  if (before < 24 && arrival.getHours() >= before) return false;
+  return true;
+}
+
 interface MapPoint {
   reach: ReachOut;
   price: number | null;
@@ -463,6 +482,11 @@ export default function App() {
   const [modes, setModes] = useState<Mode[]>(initial.modes);
   const [deep, setDeep] = useState(initial.deep);
   const [passengers, setPassengers] = useState(initial.passengers);
+  const [roundTrip, setRoundTrip] = useState(initial.roundTrip);
+  const [stayMin, setStayMin] = useState(initial.stayMin);
+  const [stayMax, setStayMax] = useState(initial.stayMax);
+  const [departAfter, setDepartAfter] = useState(initial.departAfter);
+  const [arriveBefore, setArriveBefore] = useState(initial.arriveBefore);
   const [selected, setSelected] = useState<string | null>(initial.selected);
   const [panelOpen, setPanelOpen] = useState(true);
   const [lastSearch, setLastSearch] = useState<{
@@ -484,8 +508,36 @@ export default function App() {
   });
 
   useEffect(() => {
-    writeState({ origin, date, budget, maxHours, modes, deep, passengers, selected });
-  }, [origin, date, budget, maxHours, modes, deep, passengers, selected]);
+    writeState({
+      origin,
+      date,
+      budget,
+      maxHours,
+      modes,
+      deep,
+      passengers,
+      roundTrip,
+      stayMin,
+      stayMax,
+      departAfter,
+      arriveBefore,
+      selected,
+    });
+  }, [
+    origin,
+    date,
+    budget,
+    maxHours,
+    modes,
+    deep,
+    passengers,
+    roundTrip,
+    stayMin,
+    stayMax,
+    departAfter,
+    arriveBefore,
+    selected,
+  ]);
 
   useEffect(() => {
     fetchCities()
@@ -567,10 +619,11 @@ export default function App() {
       const passes =
         point.price !== null &&
         point.price <= budget &&
-        (point.hours === null || point.hours <= maxHours);
+        (point.hours === null || point.hours <= maxHours) &&
+        withinTimeWindow(reach, departAfter, arriveBefore);
       return { ...point, passes };
     });
-  }, [data, modes, budget, maxHours]);
+  }, [data, modes, budget, maxHours, departAfter, arriveBefore]);
 
   const visible = useMemo(() => points.filter((point) => point.passes), [points]);
 
@@ -634,6 +687,11 @@ export default function App() {
     );
   }, [styleEpoch, data, chosenRoute, chosenTrip, byName]);
 
+  const roundTripRef = useRef(roundTrip);
+  roundTripRef.current = roundTrip;
+  const stayRef = useRef<[number, number]>([stayMin, stayMax]);
+  stayRef.current = [stayMin, stayMax];
+
   const search = useCallback(
     async (city: string, when: string, withTransfers: boolean, people: number) => {
     setLoading(true);
@@ -646,6 +704,9 @@ export default function App() {
         modes: [...MODES],
         deep: withTransfers,
         passengers: people,
+        round_trip: roundTripRef.current,
+        stay_min: stayRef.current[0],
+        stay_max: stayRef.current[1],
       });
       setData(response);
       setLastSearch({ origin: city, date: when, deep: withTransfers, passengers: people });
@@ -825,6 +886,18 @@ export default function App() {
           passengers={passengers}
           needsSearch={needsSearch}
           onPassengers={setPassengers}
+          roundTrip={roundTrip}
+          stayMin={stayMin}
+          stayMax={stayMax}
+          departAfter={departAfter}
+          arriveBefore={arriveBefore}
+          onRoundTrip={setRoundTrip}
+          onStay={(min, max) => {
+            setStayMin(min);
+            setStayMax(max);
+          }}
+          onDepartAfter={setDepartAfter}
+          onArriveBefore={setArriveBefore}
           onSearch={() => void search(origin, date, deep, passengers)}
         />
         </div>

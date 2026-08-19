@@ -15,6 +15,12 @@ export interface MapState {
   modes: Mode[];
   deep: boolean;
   passengers: number;
+  roundTrip: boolean;
+  stayMin: number;
+  stayMax: number;
+  /** Часы: не выезжать раньше и быть на месте не позже. */
+  departAfter: number;
+  arriveBefore: number;
   selected: string | null;
 }
 
@@ -26,6 +32,11 @@ export const DEFAULT_STATE: MapState = {
   modes: [...MODES],
   deep: true,
   passengers: 1,
+  roundTrip: false,
+  stayMin: 1,
+  stayMax: 3,
+  departAfter: 0,
+  arriveBefore: 24,
   selected: null,
 };
 
@@ -51,6 +62,11 @@ export function readState(search: string = window.location.search): MapState {
     modes: parseModes(params.get("modes")),
     deep: params.get("deep") !== "0",
     passengers: Math.min(6, Math.max(1, parseNumber(params.get("pax"), 1))),
+    roundTrip: params.get("rt") === "1",
+    stayMin: parseNumber(params.get("smin"), 1),
+    stayMax: parseNumber(params.get("smax"), 3),
+    departAfter: Number(params.get("after") ?? 0) || 0,
+    arriveBefore: Number(params.get("before") ?? 24) || 24,
     selected: params.get("city"),
   };
 }
@@ -65,6 +81,13 @@ export function writeState(state: MapState): void {
   if (state.modes.length !== MODES.length) params.set("modes", state.modes.join(","));
   if (!state.deep) params.set("deep", "0");
   if (state.passengers > 1) params.set("pax", String(state.passengers));
+  if (state.roundTrip) {
+    params.set("rt", "1");
+    params.set("smin", String(state.stayMin));
+    params.set("smax", String(state.stayMax));
+  }
+  if (state.departAfter > 0) params.set("after", String(state.departAfter));
+  if (state.arriveBefore < 24) params.set("before", String(state.arriveBefore));
   if (state.selected) params.set("city", state.selected);
   window.history.replaceState(null, "", `?${params.toString()}`);
 }

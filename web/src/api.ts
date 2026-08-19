@@ -43,6 +43,10 @@ export interface ReachOut extends CityOut {
   transfer_wait_minutes: number | null;
   transfer_required_minutes: number | null;
   transfer_overnight: boolean;
+  options: VariantOut[];
+  back: VariantOut | null;
+  back_date: string | null;
+  round_trip_price: number | null;
   by_mode: Partial<Record<Mode, number>>;
   by_mode_minutes: Partial<Record<Mode, number>>;
   empty_reason: string | null;
@@ -81,6 +85,9 @@ export async function fetchReachable(params: {
   modes: Mode[];
   deep: boolean;
   passengers: number;
+  round_trip: boolean;
+  stay_min: number;
+  stay_max: number;
 }): Promise<ReachableResponse> {
   return json<ReachableResponse>(
     await fetch("/api/reachable", {

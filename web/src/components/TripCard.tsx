@@ -259,6 +259,53 @@ export function TripCard({ reach, trip, origin, passengers, onClose }: Props) {
           </div>
         </>
       )}
+
+          {reach.back && (
+            <div className="mx-4 mb-4 rounded-xl bg-tb-fill p-3">
+              <div className="text-[10px] font-semibold tracking-[0.08em] text-tb-muted uppercase">
+                Обратно
+                {reach.back_date &&
+                  ` · ${new Date(reach.back_date).toLocaleDateString("ru-RU", {
+                    day: "numeric",
+                    month: "short",
+                  })}`}
+              </div>
+              <Leg variant={reach.back} />
+              {reach.round_trip_price !== null && (
+                <div className="mb-2 text-[12px] font-bold text-tb-ink">
+                  Туда и обратно — {formatPrice(reach.round_trip_price)}
+                  {passengers > 1 && ` · на ${passengers} чел. ${formatPrice(reach.round_trip_price * passengers)}`}
+                </div>
+              )}
+              <BuyButton
+                variant={reach.back}
+                caption="Билет обратно"
+                passengers={passengers}
+                primary={false}
+              />
+            </div>
+          )}
+
+          {reach.options.length > 1 && (
+            <details className="mx-4 mb-4 rounded-xl bg-tb-fill p-3">
+              <summary className="cursor-pointer text-[12px] font-semibold text-tb-ink">
+                Ещё варианты туда ({reach.options.length - 1})
+              </summary>
+              <div className="mt-1 divide-y divide-tb-line">
+                {reach.options.slice(1, 5).map((option, index) => (
+                  <div key={`${option.transport}-${option.price}-${index}`}>
+                    <Leg variant={option} />
+                    <BuyButton
+                      variant={option}
+                      caption="Выбрать этот рейс"
+                      passengers={passengers}
+                      primary={false}
+                    />
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
     </section>
   );
 }

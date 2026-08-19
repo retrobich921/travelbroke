@@ -110,6 +110,14 @@ class ReachOut(BaseModel):
     by_mode_minutes: dict[str, int] = Field(
         default_factory=dict, description="Минимальное время по каждому виду транспорта, минуты"
     )
+    options: list[VariantOut] = Field(
+        default_factory=list, description="Несколько лучших вариантов «туда»"
+    )
+    back: VariantOut | None = Field(default=None, description="Самый дешёвый обратный билет")
+    back_date: Date | None = None
+    round_trip_price: int | None = Field(
+        default=None, description="Туда и обратно вместе, ₽ на человека"
+    )
     empty_reason: str | None = None
     empty_message: str | None = None
 
@@ -133,6 +141,9 @@ class ReachableRequest(BaseModel):
     passengers: int = Field(
         default=1, ge=1, le=6, description="Сколько человек едет — уходит в поиск как adults"
     )
+    round_trip: bool = Field(default=False, description="Подбирать ещё и обратный билет")
+    stay_min: int = Field(default=1, ge=1, le=30, description="Минимум дней на месте")
+    stay_max: int = Field(default=3, ge=1, le=30, description="Максимум дней на месте")
 
 
 class ReachableResponse(BaseModel):
@@ -209,6 +220,14 @@ def _reach_out(item: reach.Reach) -> ReachOut:
         beats_direct_by=item.beats_direct_by,
         by_mode=item.by_mode,
         by_mode_minutes=item.by_mode_minutes,
+        options=[_variant_out(option) for option in item.options],
+        back=_variant_out(item.back) if item.back else None,
+        back_date=item.back_date,
+        round_trip_price=(
+            item.best_price + item.back.price
+            if item.back is not None and item.best_price is not None
+            else None
+        ),
         empty_reason=item.empty_reason,
         empty_message=item.empty_message,
     )
@@ -275,6 +294,17 @@ async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableRespo
             request.date,
             results,
             cities.HUBS,
+            modes=tuple(request.modes),
+            adults=request.passengers,
+        )
+    if request.round_trip:
+        results = await reach.add_return_trips(
+            mcp,
+            origin,
+            request.date,
+            results,
+            stay_min=request.stay_min,
+            stay_max=request.stay_max,
             modes=tuple(request.modes),
             adults=request.passengers,
         )

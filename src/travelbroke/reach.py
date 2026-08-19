@@ -121,6 +121,12 @@ class Reach:
     """Минимальная цена по каждому виду транспорта — для тумблеров на клиенте."""
     by_mode_minutes: dict[str, int] = field(default_factory=dict)
     """Минимальное время по каждому виду транспорта, минуты."""
+    options: list[Variant] = field(default_factory=list)
+    """Несколько лучших вариантов «туда», а не только самый дешёвый."""
+    back: Variant | None = None
+    """Самый дешёвый обратный билет в заданном окне дней пребывания."""
+    back_date: dt.date | None = None
+    """Дата обратного билета."""
     empty_reason: str | None = None
     empty_message: str | None = None
 
@@ -390,6 +396,7 @@ async def fan_out(
         return Reach(
             city=target,
             direct=cheapest,
+            options=sorted(variants, key=lambda variant: variant.price)[:5],
             variants=variants,
             by_mode=by_mode,
             by_mode_minutes=by_minutes,
@@ -523,3 +530,56 @@ def cheapest_paths(graph: nx.DiGraph[str], origin: str) -> dict[str, tuple[int, 
     costs = cast(dict[str, float], lengths)
     routes = cast(dict[str, list[str]], paths)
     return {city: (round(cost), routes[city]) for city, cost in costs.items() if city != origin}
+
+
+async def add_return_trips(
+    mcp: TutuMCP,
+    origin: City,
+    when: dt.date,
+    reaches: list[Reach],
+    *,
+    stay_min: int = 1,
+    stay_max: int = 3,
+    modes: tuple[str, ...] = ALL_MODES,
+    adults: int = 1,
+    top: int = 30,
+    max_dates: int = 3,
+) -> list[Reach]:
+    """Подбирает обратный билет в окне «сколько дней я готов там пробыть».
+
+    Наша аудитория ждёт выгодного момента, а не выбирает дату заранее: поэтому
+    обратный билет ищется не на конкретный день, а по всему окну, и берётся
+    самый дешёвый. Считаем только для ``top`` самых доступных городов — обратный
+    веер по всем восьмидесяти не укладывается ни во время, ни в лимиты MCP.
+    """
+    stay_min, stay_max = max(1, stay_min), max(1, stay_max)
+    if stay_max < stay_min:
+        stay_min, stay_max = stay_max, stay_min
+
+    span = list(range(stay_min, stay_max + 1))
+    # Окно может быть широким, но каждый лишний день — это ещё один веер запросов.
+    if len(span) > max_dates:
+        step = (len(span) - 1) / (max_dates - 1) if max_dates > 1 else 0
+        span = sorted({span[round(index * step)] for index in range(max_dates)})
+
+    candidates = [reach for reach in reaches if reach.best_price is not None]
+    candidates.sort(key=lambda reach: reach.best_price or 0)
+    candidates = candidates[:top]
+
+    async def one(reach: Reach) -> None:
+        best: tuple[Variant, dt.date] | None = None
+        for days in span:
+            back_day = when + dt.timedelta(days=days)
+            variants, _, _, _, _ = await _search_pair(
+                mcp, reach.city.name, origin.name, back_day, modes, None, adults=adults
+            )
+            if not variants:
+                continue
+            cheapest = min(variants, key=lambda variant: variant.price)
+            if best is None or cheapest.price < best[0].price:
+                best = (cheapest, back_day)
+        if best is not None:
+            reach.back, reach.back_date = best
+
+    await asyncio.gather(*(one(reach) for reach in candidates))
+    return reaches
