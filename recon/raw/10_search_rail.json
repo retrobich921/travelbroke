@@ -1,0 +1,1194 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Ростов",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "offers": [
+      {
+        "offer_id": "bbbf9b40fbce9b315a561397be7b840d",
+        "transport": "railway",
+        "price": {
+          "amount": 4501.41,
+          "currency": "RUB"
+        },
+        "duration_min": 1692,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000007&arr_st=2064593&tn=275%D0%9C&date=01.09.2026+07:05:00",
+        "departure_at": "2026-09-01T07:05:00+03:00",
+        "arrival_at": "2026-09-02T11:17:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Киевский вокзал (2000007)",
+            "to": "Ростов-на-Дону — Ростов-Первомайский (2064593)",
+            "departure_at": "2026-09-01T07:05:00+03:00",
+            "arrival_at": "2026-09-02T11:17:00+03:00",
+            "duration_min": 1692,
+            "segments": [
+              {
+                "from": "Москва — Киевский вокзал (2000007)",
+                "to": "Ростов-на-Дону — Ростов-Первомайский (2064593)",
+                "departure_at": "2026-09-01T07:05:00+03:00",
+                "arrival_at": "2026-09-02T11:17:00+03:00",
+                "duration_min": 1692,
+                "carrier": "ФПК",
+                "voyage_no": "275М",
+                "from_geo_point_id": 2957768,
+                "to_geo_point_id": 2994954
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000007",
+          "arrival_station_code": "2064593",
+          "train_number": "275М",
+          "departure_at": "2026-09-01T07:05:00+03:00",
+          "departure_geo_point_id": 2957768,
+          "arrival_geo_point_id": 2994954,
+          "offer_hash": "bbbf9b40fbce9b315a561397be7b840d",
+          "segment_hash": "e1e8785c0f9c9f2b939d13f225c1e9f2",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "b2d12ae1-707f-54bc-8c47-8abf7f755fff",
+          "card_id": "892ab4a6b54308439025e208b650b636"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000007",
+          "arrival_station_code": "2064593",
+          "train_number": "275М",
+          "departure_at": "2026-09-01T07:05:00+03:00",
+          "price": {
+            "amount": 4501.41,
+            "currency": "RUB"
+          },
+          "title": "Поезд 275М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1692,
+          "arrival_at": "2026-09-02T11:17:00+03:00",
+          "review_summary": {
+            "rating": 6.1,
+            "review_count": 71,
+            "label": "⭐ 6.1/10 · 71 отзыв",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "275М",
+            "scale": 10,
+            "feedback_key": "275М"
+          }
+        },
+        "review_summary": {
+          "rating": 6.1,
+          "review_count": 71,
+          "label": "⭐ 6.1/10 · 71 отзыв",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "275М",
+          "scale": 10,
+          "feedback_key": "275М"
+        },
+        "fares": {
+          "count": 34,
+          "price_from": 4501.41,
+          "price_to": 7529.02,
+          "currency": "RUB",
+          "refundable_count": 29,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 16,
+              "price_from": 4501.41
+            },
+            "COMPARTMENT": {
+              "count": 18,
+              "price_from": 5508.08
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "35a93a06e06ef2cd94ce16efa2756200",
+        "transport": "railway",
+        "price": {
+          "amount": 4652.08,
+          "currency": "RUB"
+        },
+        "duration_min": 1353,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000005&arr_st=2064001&tn=471%D0%9C&date=01.09.2026+16:35:00",
+        "departure_at": "2026-09-01T16:35:00+03:00",
+        "arrival_at": "2026-09-02T15:08:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Павелецкий вокзал (2000005)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T16:35:00+03:00",
+            "arrival_at": "2026-09-02T15:08:00+03:00",
+            "duration_min": 1353,
+            "segments": [
+              {
+                "from": "Москва — Павелецкий вокзал (2000005)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T16:35:00+03:00",
+                "arrival_at": "2026-09-02T15:08:00+03:00",
+                "duration_min": 1353,
+                "carrier": "ФПК",
+                "voyage_no": "471М",
+                "from_geo_point_id": 2957766,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "471М",
+          "departure_at": "2026-09-01T16:35:00+03:00",
+          "departure_geo_point_id": 2957766,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "35a93a06e06ef2cd94ce16efa2756200",
+          "segment_hash": "26d50442f09cde89bcc121845f5b8262",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "f394606e-37c7-52e7-bd41-7f9a675361cb",
+          "card_id": "c33bb401f67150ebf45bb39bd7fbb5f8"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "471М",
+          "departure_at": "2026-09-01T16:35:00+03:00",
+          "price": {
+            "amount": 4652.08,
+            "currency": "RUB"
+          },
+          "title": "Поезд 471М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1353,
+          "arrival_at": "2026-09-02T15:08:00+03:00",
+          "review_summary": {
+            "rating": 7.0,
+            "review_count": 835,
+            "label": "⭐ 7/10 · 835 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "471М",
+            "scale": 10,
+            "feedback_key": "471М"
+          }
+        },
+        "review_summary": {
+          "rating": 7.0,
+          "review_count": 835,
+          "label": "⭐ 7/10 · 835 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "471М",
+          "scale": 10,
+          "feedback_key": "471М"
+        },
+        "fares": {
+          "count": 16,
+          "price_from": 4652.08,
+          "price_to": 6935.72,
+          "currency": "RUB",
+          "refundable_count": 13,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 6,
+              "price_from": 4652.08
+            },
+            "COMPARTMENT": {
+              "count": 10,
+              "price_from": 5497.88
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "d08bd4bab85ce80e02b3e2e26d86b83f",
+        "transport": "railway",
+        "price": {
+          "amount": 4652.08,
+          "currency": "RUB"
+        },
+        "duration_min": 1400,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000003&arr_st=2064001&tn=382%D0%AF&date=01.09.2026+15:34:00",
+        "departure_at": "2026-09-01T15:34:00+03:00",
+        "arrival_at": "2026-09-02T14:54:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T15:34:00+03:00",
+            "arrival_at": "2026-09-02T14:54:00+03:00",
+            "duration_min": 1400,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T15:34:00+03:00",
+                "arrival_at": "2026-09-02T14:54:00+03:00",
+                "duration_min": 1400,
+                "carrier": "ФПК",
+                "voyage_no": "382Я",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2064001",
+          "train_number": "382Я",
+          "departure_at": "2026-09-01T15:34:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "d08bd4bab85ce80e02b3e2e26d86b83f",
+          "segment_hash": "27a5e6956daa7a48f46aaaa292039e53",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "0c880815-75be-5343-943d-536bf37e8cd8",
+          "card_id": "e19cf05269b6bbe52f9336538a8e7937"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2064001",
+          "train_number": "382Я",
+          "departure_at": "2026-09-01T15:34:00+03:00",
+          "price": {
+            "amount": 4652.08,
+            "currency": "RUB"
+          },
+          "title": "Поезд 382Я",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1400,
+          "arrival_at": "2026-09-02T14:54:00+03:00",
+          "review_summary": {
+            "rating": 8.2,
+            "review_count": 1421,
+            "label": "⭐ 8.2/10 · 1 421 отзыв",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "382Я",
+            "scale": 10,
+            "feedback_key": "382Я"
+          }
+        },
+        "review_summary": {
+          "rating": 8.2,
+          "review_count": 1421,
+          "label": "⭐ 8.2/10 · 1 421 отзыв",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "382Я",
+          "scale": 10,
+          "feedback_key": "382Я"
+        },
+        "fares": {
+          "count": 14,
+          "price_from": 4652.08,
+          "price_to": 21313.08,
+          "currency": "RUB",
+          "refundable_count": 13,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 8,
+              "price_from": 4652.08
+            },
+            "COMPARTMENT": {
+              "count": 5,
+              "price_from": 7017.12
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 21313.08
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "e77034efc3e31f3e3635b93a32b3088a",
+        "transport": "railway",
+        "price": {
+          "amount": 4903.18,
+          "currency": "RUB"
+        },
+        "duration_min": 1494,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2001025&arr_st=2064001&tn=479%D0%90&date=01.09.2026+11:15:00",
+        "departure_at": "2026-09-01T11:15:00+03:00",
+        "arrival_at": "2026-09-02T12:09:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Восточный вокзал (2001025)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T11:15:00+03:00",
+            "arrival_at": "2026-09-02T12:09:00+03:00",
+            "duration_min": 1494,
+            "segments": [
+              {
+                "from": "Москва — Восточный вокзал (2001025)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T11:15:00+03:00",
+                "arrival_at": "2026-09-02T12:09:00+03:00",
+                "duration_min": 1494,
+                "carrier": "ФПК",
+                "voyage_no": "479А",
+                "from_geo_point_id": 6481916,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2001025",
+          "arrival_station_code": "2064001",
+          "train_number": "479А",
+          "departure_at": "2026-09-01T11:15:00+03:00",
+          "departure_geo_point_id": 6481916,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "e77034efc3e31f3e3635b93a32b3088a",
+          "segment_hash": "c8a101e445ef57a7c3ac18f5b7399167",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "1d28f8f0-6364-5a14-b050-e2f77c185807",
+          "card_id": "ee7756122fbf44e23d183a1b3e1dedf0"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2001025",
+          "arrival_station_code": "2064001",
+          "train_number": "479А",
+          "departure_at": "2026-09-01T11:15:00+03:00",
+          "price": {
+            "amount": 4903.18,
+            "currency": "RUB"
+          },
+          "title": "Поезд 479А",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1494,
+          "arrival_at": "2026-09-02T12:09:00+03:00",
+          "review_summary": {
+            "rating": 7.0,
+            "review_count": 2073,
+            "label": "⭐ 7/10 · 2 073 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "479А",
+            "scale": 10,
+            "feedback_key": "479А"
+          }
+        },
+        "review_summary": {
+          "rating": 7.0,
+          "review_count": 2073,
+          "label": "⭐ 7/10 · 2 073 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "479А",
+          "scale": 10,
+          "feedback_key": "479А"
+        },
+        "fares": {
+          "count": 21,
+          "price_from": 4903.18,
+          "price_to": 12785.78,
+          "currency": "RUB",
+          "refundable_count": 17,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 10,
+              "price_from": 4903.18
+            },
+            "COMPARTMENT": {
+              "count": 11,
+              "price_from": 9230.72
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "54455833ca4180868c4b16e71d85a5d2",
+        "transport": "railway",
+        "price": {
+          "amount": 5024.68,
+          "currency": "RUB"
+        },
+        "duration_min": 1327,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000005&arr_st=2064001&tn=287%D0%9C&date=01.09.2026+15:54:00",
+        "departure_at": "2026-09-01T15:54:00+03:00",
+        "arrival_at": "2026-09-02T14:01:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Павелецкий вокзал (2000005)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T15:54:00+03:00",
+            "arrival_at": "2026-09-02T14:01:00+03:00",
+            "duration_min": 1327,
+            "segments": [
+              {
+                "from": "Москва — Павелецкий вокзал (2000005)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T15:54:00+03:00",
+                "arrival_at": "2026-09-02T14:01:00+03:00",
+                "duration_min": 1327,
+                "carrier": "ФПК",
+                "voyage_no": "287М",
+                "from_geo_point_id": 2957766,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "287М",
+          "departure_at": "2026-09-01T15:54:00+03:00",
+          "departure_geo_point_id": 2957766,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "54455833ca4180868c4b16e71d85a5d2",
+          "segment_hash": "05d31d012451437e8c3309726731c3d8",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "ab6085d4-6092-58c8-b79f-a7ad8ca962c8",
+          "card_id": "34291c795bb26dc99ca2dae19aaed474"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "287М",
+          "departure_at": "2026-09-01T15:54:00+03:00",
+          "price": {
+            "amount": 5024.68,
+            "currency": "RUB"
+          },
+          "title": "Поезд 287М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1327,
+          "arrival_at": "2026-09-02T14:01:00+03:00",
+          "review_summary": {
+            "rating": 8.3,
+            "review_count": 139,
+            "label": "⭐ 8.3/10 · 139 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "287М",
+            "scale": 10,
+            "feedback_key": "287М"
+          }
+        },
+        "review_summary": {
+          "rating": 8.3,
+          "review_count": 139,
+          "label": "⭐ 8.3/10 · 139 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "287М",
+          "scale": 10,
+          "feedback_key": "287М"
+        },
+        "fares": {
+          "count": 16,
+          "price_from": 5024.68,
+          "price_to": 5700.28,
+          "currency": "RUB",
+          "refundable_count": 16,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 12,
+              "price_from": 5024.68
+            },
+            "COMPARTMENT": {
+              "count": 4,
+              "price_from": 5700.28
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "60603e19c1fdf87bf97fe2fa993a2773",
+        "transport": "railway",
+        "price": {
+          "amount": 5024.68,
+          "currency": "RUB"
+        },
+        "duration_min": 1320,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000003&arr_st=2064001&tn=126%D0%AD&date=01.09.2026+00:46:00",
+        "departure_at": "2026-09-01T00:46:00+03:00",
+        "arrival_at": "2026-09-01T22:46:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T00:46:00+03:00",
+            "arrival_at": "2026-09-01T22:46:00+03:00",
+            "duration_min": 1320,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T00:46:00+03:00",
+                "arrival_at": "2026-09-01T22:46:00+03:00",
+                "duration_min": 1320,
+                "carrier": "ФПК",
+                "voyage_no": "126Э",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2064001",
+          "train_number": "126Э",
+          "departure_at": "2026-09-01T00:46:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "60603e19c1fdf87bf97fe2fa993a2773",
+          "segment_hash": "efe3eb51ad7756559511169335426190",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "f8278e60-4084-5313-a2cf-ee4eb94e7d6f",
+          "card_id": "7ab2f7300fedbcad31bc97b2aedeaa44"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2064001",
+          "train_number": "126Э",
+          "departure_at": "2026-09-01T00:46:00+03:00",
+          "price": {
+            "amount": 5024.68,
+            "currency": "RUB"
+          },
+          "title": "Поезд 126Э",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1320,
+          "arrival_at": "2026-09-01T22:46:00+03:00",
+          "review_summary": {
+            "rating": 8.8,
+            "review_count": 2634,
+            "label": "⭐ 8.8/10 · 2 634 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "126Э",
+            "scale": 10,
+            "feedback_key": "126Э"
+          }
+        },
+        "review_summary": {
+          "rating": 8.8,
+          "review_count": 2634,
+          "label": "⭐ 8.8/10 · 2 634 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "126Э",
+          "scale": 10,
+          "feedback_key": "126Э"
+        },
+        "fares": {
+          "count": 11,
+          "price_from": 5024.68,
+          "price_to": 8938.78,
+          "currency": "RUB",
+          "refundable_count": 11,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 8,
+              "price_from": 5024.68
+            },
+            "COMPARTMENT": {
+              "count": 3,
+              "price_from": 7763.82
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "a70d859a8498591cb9e76a906834421e",
+        "transport": "railway",
+        "price": {
+          "amount": 5024.68,
+          "currency": "RUB"
+        },
+        "duration_min": 1658,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000005&arr_st=2064593&tn=233%D0%9C&date=01.09.2026+10:10:00",
+        "departure_at": "2026-09-01T10:10:00+03:00",
+        "arrival_at": "2026-09-02T13:48:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Павелецкий вокзал (2000005)",
+            "to": "Ростов-на-Дону — Ростов-Первомайский (2064593)",
+            "departure_at": "2026-09-01T10:10:00+03:00",
+            "arrival_at": "2026-09-02T13:48:00+03:00",
+            "duration_min": 1658,
+            "segments": [
+              {
+                "from": "Москва — Павелецкий вокзал (2000005)",
+                "to": "Ростов-на-Дону — Ростов-Первомайский (2064593)",
+                "departure_at": "2026-09-01T10:10:00+03:00",
+                "arrival_at": "2026-09-02T13:48:00+03:00",
+                "duration_min": 1658,
+                "carrier": "ФПК",
+                "voyage_no": "233М",
+                "from_geo_point_id": 2957766,
+                "to_geo_point_id": 2994954
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064593",
+          "train_number": "233М",
+          "departure_at": "2026-09-01T10:10:00+03:00",
+          "departure_geo_point_id": 2957766,
+          "arrival_geo_point_id": 2994954,
+          "offer_hash": "a70d859a8498591cb9e76a906834421e",
+          "segment_hash": "a440ce074ce6e0cb0e6125c767974bb3",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "de75596a-0d33-5503-9808-a234e6894c66",
+          "card_id": "61b89b9217b68c2da988f15b9bee91c4"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064593",
+          "train_number": "233М",
+          "departure_at": "2026-09-01T10:10:00+03:00",
+          "price": {
+            "amount": 5024.68,
+            "currency": "RUB"
+          },
+          "title": "Поезд 233М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 1658,
+          "arrival_at": "2026-09-02T13:48:00+03:00",
+          "review_summary": {
+            "rating": 8.0,
+            "review_count": 250,
+            "label": "⭐ 8/10 · 250 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "233М",
+            "scale": 10,
+            "feedback_key": "233М"
+          }
+        },
+        "review_summary": {
+          "rating": 8.0,
+          "review_count": 250,
+          "label": "⭐ 8/10 · 250 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "233М",
+          "scale": 10,
+          "feedback_key": "233М"
+        },
+        "fares": {
+          "count": 44,
+          "price_from": 5024.68,
+          "price_to": 17518.88,
+          "currency": "RUB",
+          "refundable_count": 35,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 16,
+              "price_from": 5024.68
+            },
+            "COMPARTMENT": {
+              "count": 27,
+              "price_from": 5700.28
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 17518.88
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "2b9459c90bf530e71566ffa15c8a0455",
+        "transport": "railway",
+        "price": {
+          "amount": 5088.88,
+          "currency": "RUB"
+        },
+        "duration_min": 1555,
+        "carriers": [
+          "ГРАНД"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000005&arr_st=2064001&tn=433%D0%9C&date=01.09.2026+17:45:00",
+        "departure_at": "2026-09-01T17:45:00+03:00",
+        "arrival_at": "2026-09-02T19:40:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Павелецкий вокзал (2000005)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T17:45:00+03:00",
+            "arrival_at": "2026-09-02T19:40:00+03:00",
+            "duration_min": 1555,
+            "segments": [
+              {
+                "from": "Москва — Павелецкий вокзал (2000005)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T17:45:00+03:00",
+                "arrival_at": "2026-09-02T19:40:00+03:00",
+                "duration_min": 1555,
+                "carrier": "ГРАНД",
+                "voyage_no": "433М",
+                "from_geo_point_id": 2957766,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "433М",
+          "departure_at": "2026-09-01T17:45:00+03:00",
+          "departure_geo_point_id": 2957766,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "2b9459c90bf530e71566ffa15c8a0455",
+          "segment_hash": "33bdaacb40c99ca3a97129704709b034",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "f06822d1-f309-5129-a337-1e211ff0f801",
+          "card_id": "89effd01dd943b6a96518aa08f01f38f"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "433М",
+          "departure_at": "2026-09-01T17:45:00+03:00",
+          "price": {
+            "amount": 5088.88,
+            "currency": "RUB"
+          },
+          "title": "Поезд 433М",
+          "carriers": [
+            "ГРАНД"
+          ],
+          "duration_min": 1555,
+          "arrival_at": "2026-09-02T19:40:00+03:00",
+          "review_summary": {
+            "rating": 7.7,
+            "review_count": 6,
+            "label": "⭐ 7.7/10 · 6 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "433М",
+            "scale": 10,
+            "feedback_key": "433М"
+          }
+        },
+        "review_summary": {
+          "rating": 7.7,
+          "review_count": 6,
+          "label": "⭐ 7.7/10 · 6 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "433М",
+          "scale": 10,
+          "feedback_key": "433М"
+        },
+        "fares": {
+          "count": 22,
+          "price_from": 5088.88,
+          "price_to": 13369.68,
+          "currency": "RUB",
+          "refundable_count": 22,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 16,
+              "price_from": 5088.88
+            },
+            "COMPARTMENT": {
+              "count": 6,
+              "price_from": 9859.88
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "433ea260d26aa64f9271048b977f268a",
+        "transport": "railway",
+        "price": {
+          "amount": 5215.68,
+          "currency": "RUB"
+        },
+        "duration_min": 1543,
+        "carriers": [
+          "ГРАНД"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000005&arr_st=2064001&tn=197%D0%A9&date=01.09.2026+00:55:00",
+        "departure_at": "2026-09-01T00:55:00+03:00",
+        "arrival_at": "2026-09-02T02:38:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Павелецкий вокзал (2000005)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T00:55:00+03:00",
+            "arrival_at": "2026-09-02T02:38:00+03:00",
+            "duration_min": 1543,
+            "segments": [
+              {
+                "from": "Москва — Павелецкий вокзал (2000005)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T00:55:00+03:00",
+                "arrival_at": "2026-09-02T02:38:00+03:00",
+                "duration_min": 1543,
+                "carrier": "ГРАНД",
+                "voyage_no": "197Щ",
+                "from_geo_point_id": 2957766,
+                "to_geo_point_id": 2961516
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "197Щ",
+          "departure_at": "2026-09-01T00:55:00+03:00",
+          "departure_geo_point_id": 2957766,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "433ea260d26aa64f9271048b977f268a",
+          "segment_hash": "662db684ffcce95540f0454cbbdb151f",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "46bbbe2c-9f5f-53d5-b7fe-ec9be3893911",
+          "card_id": "201030a211ddbd739f4c531984cd3816"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000005",
+          "arrival_station_code": "2064001",
+          "train_number": "197Щ",
+          "departure_at": "2026-09-01T00:55:00+03:00",
+          "price": {
+            "amount": 5215.68,
+            "currency": "RUB"
+          },
+          "title": "Поезд 197Щ",
+          "carriers": [
+            "ГРАНД"
+          ],
+          "duration_min": 1543,
+          "arrival_at": "2026-09-02T02:38:00+03:00",
+          "review_summary": {
+            "rating": 7.9,
+            "review_count": 23,
+            "label": "⭐ 7.9/10 · 23 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "197Щ",
+            "scale": 10,
+            "feedback_key": "197Щ"
+          }
+        },
+        "review_summary": {
+          "rating": 7.9,
+          "review_count": 23,
+          "label": "⭐ 7.9/10 · 23 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "197Щ",
+          "scale": 10,
+          "feedback_key": "197Щ"
+        },
+        "fares": {
+          "count": 16,
+          "price_from": 5215.68,
+          "price_to": 10243.08,
+          "currency": "RUB",
+          "refundable_count": 16,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 14,
+              "price_from": 5215.68
+            },
+            "COMPARTMENT": {
+              "count": 2,
+              "price_from": 9347.08
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "43b67aae5e975f8fd02e0109b6b109be",
+        "transport": "railway",
+        "price": {
+          "amount": 5215.68,
+          "currency": "RUB"
+        },
+        "duration_min": 1094,
+        "carriers": [
+          "ГРАНДТ"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2064000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656912&dep_st=2000003&arr_st=2064001&tn=092%D0%9C&date=01.09.2026+23:55:00",
+        "departure_at": "2026-09-01T23:55:00+03:00",
+        "arrival_at": "2026-09-02T18:09:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+            "departure_at": "2026-09-01T23:55:00+03:00",
+            "arrival_at": "2026-09-02T18:09:00+03:00",
+            "duration_min": 1094,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Ростов-на-Дону — Ростов-Главный (2064001)",
+                "departure_at": "2026-09-01T23:55:00+03:00",
+                "arrival_at": "2026-09-02T18:09:00+03:00",
+                "duration_min": 1094,
+                "carrier": "ГРАНДТ",
+                "voyage_no": "092М",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961516,
+                "vehicle_meta": {
+                  "name": "Таврия"
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656912,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2064001",
+          "train_number": "092М",
+          "departure_at": "2026-09-01T23:55:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961516,
+          "offer_hash": "43b67aae5e975f8fd02e0109b6b109be",
+          "segment_hash": "8bcacd8944d98b96cd262ae8e0a7efd6",
+          "search_id": "1A772493-EA5C-4545-8C2F-EDE01106562D",
+          "result_id": "3404d126-9339-5d57-844d-9d2e55dfa437",
+          "card_id": "302154c49aca99c55313444ad6369488"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2064001",
+          "train_number": "092М",
+          "departure_at": "2026-09-01T23:55:00+03:00",
+          "price": {
+            "amount": 5215.68,
+            "currency": "RUB"
+          },
+          "title": "Поезд 092М",
+          "carriers": [
+            "ГРАНДТ"
+          ],
+          "duration_min": 1094,
+          "arrival_at": "2026-09-02T18:09:00+03:00",
+          "review_summary": {
+            "rating": 8.7,
+            "review_count": 3496,
+            "label": "⭐ 8.7/10 · 3 496 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "092М",
+            "scale": 10,
+            "feedback_key": "092М"
+          }
+        },
+        "review_summary": {
+          "rating": 8.7,
+          "review_count": 3496,
+          "label": "⭐ 8.7/10 · 3 496 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "092М",
+          "scale": 10,
+          "feedback_key": "092М"
+        },
+        "fares": {
+          "count": 9,
+          "price_from": 5215.68,
+          "price_to": 25961.38,
+          "currency": "RUB",
+          "refundable_count": 9,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 6,
+              "price_from": 5215.68
+            },
+            "COMPARTMENT": {
+              "count": 2,
+              "price_from": 11366.28
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 25961.38
+            }
+          }
+        }
+      }
+    ],
+    "meta": {
+      "transport": "railway",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва"
+      },
+      "to": {
+        "name": "Ростов-на-Дону",
+        "geo_id": "2656912",
+        "region": "Ростовская область"
+      },
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "total_matched": 37,
+      "total_matched_exact": true,
+      "has_more": true,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "post_filter_dropped_wrong_train_number": 0,
+      "post_filter_dropped_wrong_seat_category": 0,
+      "post_filter_unverified_seat_category": 0,
+      "carriers_available": [
+        {
+          "name": "ФПК",
+          "offers_count": 30,
+          "price_from": 4501.41
+        },
+        {
+          "name": "ГРАНД",
+          "offers_count": 4,
+          "price_from": 5088.88
+        },
+        {
+          "name": "ГРАНДТ",
+          "offers_count": 3,
+          "price_from": 5215.68
+        }
+      ],
+      "cashback": {
+        "rate_pct": 3.0,
+        "applies_to": "all_fares",
+        "note": "Tutu loyalty points credited to the buyer's Tutu account after payment. NOT a discount: every `price` here is the full amount payable."
+      }
+    }
+  }
+}

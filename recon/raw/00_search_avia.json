@@ -1,0 +1,11 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Сочи",
+    "departure_date": "2026-09-01",
+    "passengers_full": 1
+  },
+  "data": {
+    "_tool_error": "Error executing tool search_avia: 1 validation error for search_aviaArguments\npassengers_full\n  Extra inputs are not permitted [type=extra_forbidden, input_value=1, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden"
+  }
+}

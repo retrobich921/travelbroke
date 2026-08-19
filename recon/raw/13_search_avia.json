@@ -1,0 +1,40 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Сочи",
+    "departure_date": "2020-01-01"
+  },
+  "data": {
+    "offers": [],
+    "meta": {
+      "transport": "avia",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва город федерального значения",
+        "iata": "MOW"
+      },
+      "to": {
+        "name": "Сочи",
+        "geo_id": "2656918",
+        "region": "городской округ Сочи, Краснодарский край",
+        "iata": "AER"
+      },
+      "round_trip": false,
+      "return_date": null,
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 0,
+      "total_matched": 0,
+      "total_matched_exact": true,
+      "has_more": false,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "post_filter_dropped_wrong_flight_number": 0,
+      "carriers_available": [],
+      "upstream_note": "upstream returned no offers for this one-way route and date. If you have a return date, retry with `return_date=` — some long-haul routes (e.g. Tokyo→Moscow) are sold only as round-trip packages on far-future dates."
+    }
+  }
+}

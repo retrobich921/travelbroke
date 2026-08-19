@@ -1,0 +1,1233 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Санкт-Петербург",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "offers": [
+      {
+        "offer_id": "722f943e45fccf7380e0bc2b2ce74f80",
+        "transport": "railway",
+        "price": {
+          "amount": 1140.98,
+          "currency": "RUB"
+        },
+        "duration_min": 345,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=742%D0%A3&date=01.09.2026+06:00:00",
+        "departure_at": "2026-09-01T06:00:00+03:00",
+        "arrival_at": "2026-09-01T11:45:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T06:00:00+03:00",
+            "arrival_at": "2026-09-01T11:45:00+03:00",
+            "duration_min": 345,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T06:00:00+03:00",
+                "arrival_at": "2026-09-01T11:45:00+03:00",
+                "duration_min": 345,
+                "carrier": "ФПК",
+                "voyage_no": "742У",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266,
+                "vehicle_meta": {
+                  "name": "Аврора (двухэтажный)",
+                  "is_premium": true,
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "742У",
+          "departure_at": "2026-09-01T06:00:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "722f943e45fccf7380e0bc2b2ce74f80",
+          "segment_hash": "b24ae9712887d3cc36f8bd83f924ea9c",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "41e63240-83cd-5e7d-8d9e-9fb79acc3a06",
+          "card_id": "9e2a528f221213126afe972a0f6f16ea"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "742У",
+          "departure_at": "2026-09-01T06:00:00+03:00",
+          "price": {
+            "amount": 1140.98,
+            "currency": "RUB"
+          },
+          "title": "Поезд 742У",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 345,
+          "arrival_at": "2026-09-01T11:45:00+03:00",
+          "review_summary": {
+            "rating": 9.6,
+            "review_count": 307,
+            "label": "⭐ 9.6/10 · 307 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "742У",
+            "scale": 10,
+            "feedback_key": "742У"
+          }
+        },
+        "review_summary": {
+          "rating": 9.6,
+          "review_count": 307,
+          "label": "⭐ 9.6/10 · 307 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "742У",
+          "scale": 10,
+          "feedback_key": "742У"
+        },
+        "fares": {
+          "count": 22,
+          "price_from": 1140.98,
+          "price_to": 10624.94,
+          "currency": "RUB",
+          "refundable_count": 16,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 11,
+              "price_from": 1140.98
+            },
+            "COMPARTMENT": {
+              "count": 10,
+              "price_from": 3663.45
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 10624.94
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "1c08dba6317c374f7e3f38e8888439d7",
+        "transport": "railway",
+        "price": {
+          "amount": 1301.18,
+          "currency": "RUB"
+        },
+        "duration_min": 320,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=746%D0%A3&date=01.09.2026+17:45:00",
+        "departure_at": "2026-09-01T17:45:00+03:00",
+        "arrival_at": "2026-09-01T23:05:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T17:45:00+03:00",
+            "arrival_at": "2026-09-01T23:05:00+03:00",
+            "duration_min": 320,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T17:45:00+03:00",
+                "arrival_at": "2026-09-01T23:05:00+03:00",
+                "duration_min": 320,
+                "carrier": "ФПК",
+                "voyage_no": "746У",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266,
+                "vehicle_meta": {
+                  "name": "АВРОРА",
+                  "is_premium": true,
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "746У",
+          "departure_at": "2026-09-01T17:45:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "1c08dba6317c374f7e3f38e8888439d7",
+          "segment_hash": "7bbfb545d7dded1c8c10943dfdd4df9b",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "832b6295-0803-5ffb-8e68-e68d0ea97a59",
+          "card_id": "1018a2ac865e64e0663809f923b63530"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "746У",
+          "departure_at": "2026-09-01T17:45:00+03:00",
+          "price": {
+            "amount": 1301.18,
+            "currency": "RUB"
+          },
+          "title": "Поезд 746У",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 320,
+          "arrival_at": "2026-09-01T23:05:00+03:00",
+          "review_summary": {
+            "rating": 9.4,
+            "review_count": 69,
+            "label": "⭐ 9.4/10 · 69 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "746У",
+            "scale": 10,
+            "feedback_key": "746У"
+          }
+        },
+        "review_summary": {
+          "rating": 9.4,
+          "review_count": 69,
+          "label": "⭐ 9.4/10 · 69 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "746У",
+          "scale": 10,
+          "feedback_key": "746У"
+        },
+        "fares": {
+          "count": 18,
+          "price_from": 1301.18,
+          "price_to": 10624.94,
+          "currency": "RUB",
+          "refundable_count": 14,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 7,
+              "price_from": 1301.18
+            },
+            "COMPARTMENT": {
+              "count": 10,
+              "price_from": 4035.28
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 10624.94
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "cac8601c2df9e40119d21972b1791230",
+        "transport": "railway",
+        "price": {
+          "amount": 1302.48,
+          "currency": "RUB"
+        },
+        "duration_min": 375,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=740%D0%A3&date=01.09.2026+06:30:00",
+        "departure_at": "2026-09-01T06:30:00+03:00",
+        "arrival_at": "2026-09-01T12:45:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T06:30:00+03:00",
+            "arrival_at": "2026-09-01T12:45:00+03:00",
+            "duration_min": 375,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T06:30:00+03:00",
+                "arrival_at": "2026-09-01T12:45:00+03:00",
+                "duration_min": 375,
+                "carrier": "ФПК",
+                "voyage_no": "740У",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266,
+                "vehicle_meta": {
+                  "name": "АВРОРА",
+                  "is_premium": true,
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "740У",
+          "departure_at": "2026-09-01T06:30:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "cac8601c2df9e40119d21972b1791230",
+          "segment_hash": "7bf8bcdde85df25b3290081299925d84",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "5b179381-72db-50e2-bf6b-7905bf19b14b",
+          "card_id": "1fc6d87f85449f45bc7a4aa5ab295be9"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "740У",
+          "departure_at": "2026-09-01T06:30:00+03:00",
+          "price": {
+            "amount": 1302.48,
+            "currency": "RUB"
+          },
+          "title": "Поезд 740У",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 375,
+          "arrival_at": "2026-09-01T12:45:00+03:00",
+          "review_summary": {
+            "rating": 9.2,
+            "review_count": 26,
+            "label": "⭐ 9.2/10 · 26 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "740У",
+            "scale": 10,
+            "feedback_key": "740У"
+          }
+        },
+        "review_summary": {
+          "rating": 9.2,
+          "review_count": 26,
+          "label": "⭐ 9.2/10 · 26 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "740У",
+          "scale": 10,
+          "feedback_key": "740У"
+        },
+        "fares": {
+          "count": 20,
+          "price_from": 1302.48,
+          "price_to": 13605.48,
+          "currency": "RUB",
+          "refundable_count": 15,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 10,
+              "price_from": 1302.48
+            },
+            "COMPARTMENT": {
+              "count": 8,
+              "price_from": 4454.18
+            },
+            "LUX": {
+              "count": 2,
+              "price_from": 10624.94
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "6db9f9ba0ec014012f536814b83de87f",
+        "transport": "railway",
+        "price": {
+          "amount": 2357.69,
+          "currency": "RUB"
+        },
+        "duration_min": 490,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004006&tn=160%D0%92&date=01.09.2026+16:20:00",
+        "departure_at": "2026-09-01T16:20:00+03:00",
+        "arrival_at": "2026-09-02T00:30:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Ладожский вокзал (2004006)",
+            "departure_at": "2026-09-01T16:20:00+03:00",
+            "arrival_at": "2026-09-02T00:30:00+03:00",
+            "duration_min": 490,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Ладожский вокзал (2004006)",
+                "departure_at": "2026-09-01T16:20:00+03:00",
+                "arrival_at": "2026-09-02T00:30:00+03:00",
+                "duration_min": 490,
+                "carrier": "ФПК",
+                "voyage_no": "160В",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958270,
+                "vehicle_meta": {
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004006",
+          "train_number": "160В",
+          "departure_at": "2026-09-01T16:20:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958270,
+          "offer_hash": "6db9f9ba0ec014012f536814b83de87f",
+          "segment_hash": "02adcc967a9d6c31348e876b88fb0135",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "f9898480-6adf-580a-8787-02363865ad2f",
+          "card_id": "d54e145dcbf794319a0a769d2f4d2589"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004006",
+          "train_number": "160В",
+          "departure_at": "2026-09-01T16:20:00+03:00",
+          "price": {
+            "amount": 2357.69,
+            "currency": "RUB"
+          },
+          "title": "Поезд 160В",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 490,
+          "arrival_at": "2026-09-02T00:30:00+03:00",
+          "review_summary": {
+            "rating": 9.1,
+            "review_count": 600,
+            "label": "⭐ 9.1/10 · 600 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "160В",
+            "scale": 10,
+            "feedback_key": "160В"
+          }
+        },
+        "review_summary": {
+          "rating": 9.1,
+          "review_count": 600,
+          "label": "⭐ 9.1/10 · 600 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "160В",
+          "scale": 10,
+          "feedback_key": "160В"
+        },
+        "fares": {
+          "count": 10,
+          "price_from": 2357.69,
+          "price_to": 6564.52,
+          "currency": "RUB",
+          "refundable_count": 8,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 2,
+              "price_from": 2357.69
+            },
+            "COMPARTMENT": {
+              "count": 8,
+              "price_from": 3149.58
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "f797a86b4dfb7a362458f91e84d21d8a",
+        "transport": "railway",
+        "price": {
+          "amount": 2357.69,
+          "currency": "RUB"
+        },
+        "duration_min": 503,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2001025&arr_st=2004001&tn=082%D0%92&date=01.09.2026+02:37:00",
+        "departure_at": "2026-09-01T02:37:00+03:00",
+        "arrival_at": "2026-09-01T11:00:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Восточный вокзал (2001025)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T02:37:00+03:00",
+            "arrival_at": "2026-09-01T11:00:00+03:00",
+            "duration_min": 503,
+            "segments": [
+              {
+                "from": "Москва — Восточный вокзал (2001025)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T02:37:00+03:00",
+                "arrival_at": "2026-09-01T11:00:00+03:00",
+                "duration_min": 503,
+                "carrier": "ФПК",
+                "voyage_no": "082В",
+                "from_geo_point_id": 6481916,
+                "to_geo_point_id": 2958266,
+                "vehicle_meta": {
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2001025",
+          "arrival_station_code": "2004001",
+          "train_number": "082В",
+          "departure_at": "2026-09-01T02:37:00+03:00",
+          "departure_geo_point_id": 6481916,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "f797a86b4dfb7a362458f91e84d21d8a",
+          "segment_hash": "bc911b03e9aaf0a0388eedb7cbe1c9d6",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "877042f8-7b47-5968-b756-f8d6f58fb328",
+          "card_id": "69523301f8ffd20be272d04713d8980e"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2001025",
+          "arrival_station_code": "2004001",
+          "train_number": "082В",
+          "departure_at": "2026-09-01T02:37:00+03:00",
+          "price": {
+            "amount": 2357.69,
+            "currency": "RUB"
+          },
+          "title": "Поезд 082В",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 503,
+          "arrival_at": "2026-09-01T11:00:00+03:00",
+          "review_summary": {
+            "rating": 7.8,
+            "review_count": 1132,
+            "label": "⭐ 7.8/10 · 1 132 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "082В",
+            "scale": 10,
+            "feedback_key": "082В"
+          }
+        },
+        "review_summary": {
+          "rating": 7.8,
+          "review_count": 1132,
+          "label": "⭐ 7.8/10 · 1 132 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "082В",
+          "scale": 10,
+          "feedback_key": "082В"
+        },
+        "fares": {
+          "count": 15,
+          "price_from": 2357.69,
+          "price_to": 12868.38,
+          "currency": "RUB",
+          "refundable_count": 12,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 1,
+              "price_from": 2357.69
+            },
+            "COMPARTMENT": {
+              "count": 13,
+              "price_from": 3217.68
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 12868.38
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "dd8482cdc55208118eb2c16f4076bbe0",
+        "transport": "railway",
+        "price": {
+          "amount": 2396.27,
+          "currency": "RUB"
+        },
+        "duration_min": 322,
+        "carriers": [
+          "ДОСС"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=724%D0%92&date=01.09.2026+15:45:00",
+        "departure_at": "2026-09-01T15:45:00+03:00",
+        "arrival_at": "2026-09-01T21:07:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T15:45:00+03:00",
+            "arrival_at": "2026-09-01T21:07:00+03:00",
+            "duration_min": 322,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T15:45:00+03:00",
+                "arrival_at": "2026-09-01T21:07:00+03:00",
+                "duration_min": 322,
+                "carrier": "ДОСС",
+                "voyage_no": "724В",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266,
+                "vehicle_meta": {
+                  "name": "Ласточка"
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "724В",
+          "departure_at": "2026-09-01T15:45:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "dd8482cdc55208118eb2c16f4076bbe0",
+          "segment_hash": "099088d1ae532f248f3d0696f86fb02b",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "6733a47b-fbc2-5dbe-a848-084a2ff24749",
+          "card_id": "3f8b6957fa98675bfce252805138e6ee"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "724В",
+          "departure_at": "2026-09-01T15:45:00+03:00",
+          "price": {
+            "amount": 2396.27,
+            "currency": "RUB"
+          },
+          "title": "Поезд 724В",
+          "carriers": [
+            "ДОСС"
+          ],
+          "duration_min": 322,
+          "arrival_at": "2026-09-01T21:07:00+03:00",
+          "review_summary": {
+            "rating": 8.7,
+            "review_count": 612,
+            "label": "⭐ 8.7/10 · 612 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "724В",
+            "scale": 10,
+            "feedback_key": "724В"
+          }
+        },
+        "review_summary": {
+          "rating": 8.7,
+          "review_count": 612,
+          "label": "⭐ 8.7/10 · 612 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "724В",
+          "scale": 10,
+          "feedback_key": "724В"
+        },
+        "fares": {
+          "count": 14,
+          "price_from": 2396.27,
+          "price_to": 6908.63,
+          "currency": "RUB",
+          "refundable_count": 10,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 14,
+              "price_from": 2396.27
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "5fb7d7615f1e9daee7873c33028b2052",
+        "transport": "railway",
+        "price": {
+          "amount": 2903.38,
+          "currency": "RUB"
+        },
+        "duration_min": 715,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2001025&arr_st=2004003&tn=480%D0%A1&date=01.09.2026+18:23:00",
+        "departure_at": "2026-09-01T18:23:00+03:00",
+        "arrival_at": "2026-09-02T06:18:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Восточный вокзал (2001025)",
+            "to": "Санкт-Петербург — Витебский вокзал (2004003)",
+            "departure_at": "2026-09-01T18:23:00+03:00",
+            "arrival_at": "2026-09-02T06:18:00+03:00",
+            "duration_min": 715,
+            "segments": [
+              {
+                "from": "Москва — Восточный вокзал (2001025)",
+                "to": "Санкт-Петербург — Витебский вокзал (2004003)",
+                "departure_at": "2026-09-01T18:23:00+03:00",
+                "arrival_at": "2026-09-02T06:18:00+03:00",
+                "duration_min": 715,
+                "carrier": "ФПК",
+                "voyage_no": "480С",
+                "from_geo_point_id": 6481916,
+                "to_geo_point_id": 2958267
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2001025",
+          "arrival_station_code": "2004003",
+          "train_number": "480С",
+          "departure_at": "2026-09-01T18:23:00+03:00",
+          "departure_geo_point_id": 6481916,
+          "arrival_geo_point_id": 2958267,
+          "offer_hash": "5fb7d7615f1e9daee7873c33028b2052",
+          "segment_hash": "9e369c3fc4a70f521e96ba51d72a1bd0",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "c5358df1-ec9a-515f-a638-356d6d4a6280",
+          "card_id": "82c442295088a50c5fe4b306bf2c491d"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2001025",
+          "arrival_station_code": "2004003",
+          "train_number": "480С",
+          "departure_at": "2026-09-01T18:23:00+03:00",
+          "price": {
+            "amount": 2903.38,
+            "currency": "RUB"
+          },
+          "title": "Поезд 480С",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 715,
+          "arrival_at": "2026-09-02T06:18:00+03:00",
+          "review_summary": {
+            "rating": 7.0,
+            "review_count": 2086,
+            "label": "⭐ 7/10 · 2 086 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "480С",
+            "scale": 10,
+            "feedback_key": "480С"
+          }
+        },
+        "review_summary": {
+          "rating": 7.0,
+          "review_count": 2086,
+          "label": "⭐ 7/10 · 2 086 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "480С",
+          "scale": 10,
+          "feedback_key": "480С"
+        },
+        "fares": {
+          "count": 18,
+          "price_from": 2903.38,
+          "price_to": 8229.02,
+          "currency": "RUB",
+          "refundable_count": 16,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 10,
+              "price_from": 2903.38
+            },
+            "COMPARTMENT": {
+              "count": 8,
+              "price_from": 5751.98
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "78cbc01710952e21e15c622447f9fa0e",
+        "transport": "railway",
+        "price": {
+          "amount": 2953.24,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=744%D0%A3&date=01.09.2026+13:50:00",
+        "departure_at": "2026-09-01T13:50:00+03:00",
+        "arrival_at": "2026-09-01T19:15:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T13:50:00+03:00",
+            "arrival_at": "2026-09-01T19:15:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T13:50:00+03:00",
+                "arrival_at": "2026-09-01T19:15:00+03:00",
+                "duration_min": 325,
+                "carrier": "ФПК",
+                "voyage_no": "744У",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266,
+                "vehicle_meta": {
+                  "name": "Аврора",
+                  "is_premium": true,
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "744У",
+          "departure_at": "2026-09-01T13:50:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "78cbc01710952e21e15c622447f9fa0e",
+          "segment_hash": "c596e21d2f59eaf62541ffb2434cd01c",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "8a8019d7-9fbb-5c38-b72d-e7d34480abc2",
+          "card_id": "6e63b29b6596fa248cc03a46ca3d86b7"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "744У",
+          "departure_at": "2026-09-01T13:50:00+03:00",
+          "price": {
+            "amount": 2953.24,
+            "currency": "RUB"
+          },
+          "title": "Поезд 744У",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 325,
+          "arrival_at": "2026-09-01T19:15:00+03:00",
+          "review_summary": {
+            "rating": 9.4,
+            "review_count": 436,
+            "label": "⭐ 9.4/10 · 436 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "744У",
+            "scale": 10,
+            "feedback_key": "744У"
+          }
+        },
+        "review_summary": {
+          "rating": 9.4,
+          "review_count": 436,
+          "label": "⭐ 9.4/10 · 436 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "744У",
+          "scale": 10,
+          "feedback_key": "744У"
+        },
+        "fares": {
+          "count": 24,
+          "price_from": 2953.24,
+          "price_to": 12464.78,
+          "currency": "RUB",
+          "refundable_count": 17,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 13,
+              "price_from": 2953.24
+            },
+            "COMPARTMENT": {
+              "count": 10,
+              "price_from": 4035.28
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 12464.78
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "61dd80c4e22551438c47303fd9d04de4",
+        "transport": "railway",
+        "price": {
+          "amount": 3001.48,
+          "currency": "RUB"
+        },
+        "duration_min": 441,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=196%D0%90&date=01.09.2026+23:10:00",
+        "departure_at": "2026-09-01T23:10:00+03:00",
+        "arrival_at": "2026-09-02T06:31:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T23:10:00+03:00",
+            "arrival_at": "2026-09-02T06:31:00+03:00",
+            "duration_min": 441,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T23:10:00+03:00",
+                "arrival_at": "2026-09-02T06:31:00+03:00",
+                "duration_min": 441,
+                "carrier": "ФПК",
+                "voyage_no": "196А",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "196А",
+          "departure_at": "2026-09-01T23:10:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "61dd80c4e22551438c47303fd9d04de4",
+          "segment_hash": "676401a8554c02ec2ca3d23b9efec7f7",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "68550860-d22d-5c5b-89ea-90706e1cda8b",
+          "card_id": "a02a72c49f900301d4bf551b3604e0e1"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "196А",
+          "departure_at": "2026-09-01T23:10:00+03:00",
+          "price": {
+            "amount": 3001.48,
+            "currency": "RUB"
+          },
+          "title": "Поезд 196А",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 441,
+          "arrival_at": "2026-09-02T06:31:00+03:00",
+          "review_summary": {
+            "rating": 7.3,
+            "review_count": 80,
+            "label": "⭐ 7.3/10 · 80 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "196А",
+            "scale": 10,
+            "feedback_key": "196А"
+          }
+        },
+        "review_summary": {
+          "rating": 7.3,
+          "review_count": 80,
+          "label": "⭐ 7.3/10 · 80 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "196А",
+          "scale": 10,
+          "feedback_key": "196А"
+        },
+        "fares": {
+          "count": 26,
+          "price_from": 3001.48,
+          "price_to": 5344.08,
+          "currency": "RUB",
+          "refundable_count": 25,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 16,
+              "price_from": 3001.48
+            },
+            "COMPARTMENT": {
+              "count": 10,
+              "price_from": 3694.68
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "ef722361c8b86e9b00dc1ddc6a24a450",
+        "transport": "railway",
+        "price": {
+          "amount": 3001.48,
+          "currency": "RUB"
+        },
+        "duration_min": 536,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2004000",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656915&dep_st=2006004&arr_st=2004001&tn=028%D0%90&date=01.09.2026+21:45:00",
+        "departure_at": "2026-09-01T21:45:00+03:00",
+        "arrival_at": "2026-09-02T06:41:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Ленинградский вокзал (2006004)",
+            "to": "Санкт-Петербург — Московский вокзал (2004001)",
+            "departure_at": "2026-09-01T21:45:00+03:00",
+            "arrival_at": "2026-09-02T06:41:00+03:00",
+            "duration_min": 536,
+            "segments": [
+              {
+                "from": "Москва — Ленинградский вокзал (2006004)",
+                "to": "Санкт-Петербург — Московский вокзал (2004001)",
+                "departure_at": "2026-09-01T21:45:00+03:00",
+                "arrival_at": "2026-09-02T06:41:00+03:00",
+                "duration_min": 536,
+                "carrier": "ФПК",
+                "voyage_no": "028А",
+                "from_geo_point_id": 2958868,
+                "to_geo_point_id": 2958266
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656915,
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "028А",
+          "departure_at": "2026-09-01T21:45:00+03:00",
+          "departure_geo_point_id": 2958868,
+          "arrival_geo_point_id": 2958266,
+          "offer_hash": "ef722361c8b86e9b00dc1ddc6a24a450",
+          "segment_hash": "a798a42681d529f4a3ed05298b4718db",
+          "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+          "result_id": "6e95b8e6-0378-5f1c-8e44-50daa536e4d9",
+          "card_id": "30d7ecc14ad90041eb05a5dd5f0f38fd"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2006004",
+          "arrival_station_code": "2004001",
+          "train_number": "028А",
+          "departure_at": "2026-09-01T21:45:00+03:00",
+          "price": {
+            "amount": 3001.48,
+            "currency": "RUB"
+          },
+          "title": "Поезд 028А",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 536,
+          "arrival_at": "2026-09-02T06:41:00+03:00",
+          "review_summary": {
+            "rating": 7.7,
+            "review_count": 1932,
+            "label": "⭐ 7.7/10 · 1 932 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "028А",
+            "scale": 10,
+            "feedback_key": "028А"
+          }
+        },
+        "review_summary": {
+          "rating": 7.7,
+          "review_count": 1932,
+          "label": "⭐ 7.7/10 · 1 932 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "028А",
+          "scale": 10,
+          "feedback_key": "028А"
+        },
+        "fares": {
+          "count": 41,
+          "price_from": 3001.48,
+          "price_to": 11301.1,
+          "currency": "RUB",
+          "refundable_count": 33,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 16,
+              "price_from": 3001.48
+            },
+            "COMPARTMENT": {
+              "count": 24,
+              "price_from": 4284.48
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 11301.1
+            }
+          }
+        }
+      }
+    ],
+    "meta": {
+      "transport": "railway",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва"
+      },
+      "to": {
+        "name": "Санкт-Петербург",
+        "geo_id": "2656915",
+        "region": "Санкт-Петербург"
+      },
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "total_matched": 46,
+      "total_matched_exact": true,
+      "has_more": true,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "post_filter_dropped_wrong_train_number": 0,
+      "post_filter_dropped_wrong_seat_category": 0,
+      "post_filter_unverified_seat_category": 0,
+      "carriers_available": [
+        {
+          "name": "ФПК",
+          "offers_count": 27,
+          "price_from": 1140.98
+        },
+        {
+          "name": "ДОСС",
+          "offers_count": 15,
+          "price_from": 2396.27
+        },
+        {
+          "name": "ГРАНД",
+          "offers_count": 2,
+          "price_from": 3322.97
+        },
+        {
+          "name": "ТВЕРСК",
+          "offers_count": 2,
+          "price_from": 4707.58
+        }
+      ],
+      "cashback": {
+        "rate_pct": 3.0,
+        "applies_to": "all_fares",
+        "note": "Tutu loyalty points credited to the buyer's Tutu account after payment. NOT a discount: every `price` here is the full amount payable."
+      }
+    }
+  }
+}

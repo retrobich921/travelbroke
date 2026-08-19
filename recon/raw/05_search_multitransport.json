@@ -1,0 +1,1449 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Казань",
+    "departure_date": "2026-09-01",
+    "optimize_for": "price"
+  },
+  "data": {
+    "variants": [
+      {
+        "offer_id": "9c3e39d17c0b5113986bdde4ba76ed1d",
+        "transport": "railway",
+        "price": {
+          "amount": 2507.51,
+          "currency": "RUB"
+        },
+        "duration_min": 754,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2060615",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656873&dep_st=2000003&arr_st=2060500&tn=128%D0%9C&date=01.09.2026+19:16:00",
+        "departure_at": "2026-09-01T19:16:00+03:00",
+        "arrival_at": "2026-09-02T07:50:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Казань — Казань Пасс (2060500)",
+            "departure_at": "2026-09-01T19:16:00+03:00",
+            "arrival_at": "2026-09-02T07:50:00+03:00",
+            "duration_min": 754,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Казань — Казань Пасс (2060500)",
+                "departure_at": "2026-09-01T19:16:00+03:00",
+                "arrival_at": "2026-09-02T07:50:00+03:00",
+                "duration_min": 754,
+                "carrier": "ФПК",
+                "voyage_no": "128М",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961212
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656873,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060500",
+          "train_number": "128М",
+          "departure_at": "2026-09-01T19:16:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961212,
+          "offer_hash": "9c3e39d17c0b5113986bdde4ba76ed1d",
+          "segment_hash": "b0544ffc3d3d53fc28fe7c0be533d500",
+          "search_id": "030370B8-5E50-4C55-B73B-56A0515C94D0",
+          "result_id": "a1c0447b-91a9-5f8d-b3c2-a8c0ab5f5ac2",
+          "card_id": "d7df2e0d5019225a08e49b7bc1b808ae"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060500",
+          "train_number": "128М",
+          "departure_at": "2026-09-01T19:16:00+03:00",
+          "price": {
+            "amount": 2507.51,
+            "currency": "RUB"
+          },
+          "title": "Поезд 128М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 754,
+          "arrival_at": "2026-09-02T07:50:00+03:00",
+          "review_summary": {
+            "rating": 7.2,
+            "review_count": 76,
+            "label": "⭐ 7.2/10 · 76 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "128М",
+            "scale": 10,
+            "feedback_key": "128М"
+          }
+        },
+        "review_summary": {
+          "rating": 7.2,
+          "review_count": 76,
+          "label": "⭐ 7.2/10 · 76 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "128М",
+          "scale": 10,
+          "feedback_key": "128М"
+        },
+        "fares": {
+          "count": 32,
+          "price_from": 2507.51,
+          "price_to": 14949.78,
+          "currency": "RUB",
+          "refundable_count": 25,
+          "changeable_count": 0,
+          "seat_categories": {
+            "SEDENTARY": {
+              "count": 2,
+              "price_from": 2507.51
+            },
+            "RESERVED_SEAT": {
+              "count": 8,
+              "price_from": 3462.49
+            },
+            "COMPARTMENT": {
+              "count": 20,
+              "price_from": 5056.98
+            },
+            "LUX": {
+              "count": 2,
+              "price_from": 14949.78
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "4d1cd7307338beb13d1e1c232b9f706e",
+        "transport": "bus",
+        "price": {
+          "amount": 3450.0,
+          "currency": "RUB"
+        },
+        "duration_min": 690,
+        "carriers": [
+          "ДенЛеДа"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Kazan/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T21:00:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1330021&hash=A1q1RM0mJpNEFpRKG%252BdDXLxj576oKFk7mum3nNQmDVyjtIQ%252FbLBgNggHZMWt2mqSq24eo8DwUjiz%252BO275RbpDq5z4Tcl24Mv1rYJRkZ6OiSh1SP5q3avtNaaDiIockAFWgmvOTuuGzl2Q2XQQhNR9V7h0BvJ5BATZJ3gQPO2H1J%252Fj3tGXSfqv3E%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T21:00:00+03:00",
+        "arrival_at": "2026-09-02T08:30:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автовокзал Центральный (Щёлковский)",
+            "to": "кафе Подкова",
+            "departure_at": "2026-09-01T21:00:00+03:00",
+            "arrival_at": "2026-09-02T08:30:00+03:00",
+            "duration_min": 690,
+            "segments": [
+              {
+                "from": "Автовокзал Центральный (Щёлковский)",
+                "to": "кафе Подкова",
+                "departure_at": "2026-09-01T21:00:00+03:00",
+                "arrival_at": "2026-09-02T08:30:00+03:00",
+                "duration_min": 690,
+                "carrier": "ДенЛеДа",
+                "voyage_no": null,
+                "from_geo_point_id": 2858231,
+                "to_geo_point_id": 9069705
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "9cfcc2c029283cb80dfdf4daba67549f",
+            "offer_hash": "A1q1RM0mJpNEFpRKG%2BdDXLxj576oKFk7mum3nNQmDVyjtIQ%2FbLBgNggHZMWt2mqSq24eo8DwUjiz%2BO275RbpDq5z4Tcl24Mv1rYJRkZ6OiSh1SP5q3avtNaaDiIockAFWgmvOTuuGzl2Q2XQQhNR9V7h0BvJ5BATZJ3gQPO2H1J%2Fj3tGXSfqv3E%3D",
+            "price": {
+              "amount": 3450.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1q1RM0mJpNEFpRKG%2BdDXLxj576oKFk7mum3nNQmDVyjtIQ%2FbLBgNggHZMWt2mqSq24eo8DwUjiz%2BO275RbpDq5z4Tcl24Mv1rYJRkZ6OiSh1SP5q3avtNaaDiIockAFWgmvOTuuGzl2Q2XQQhNR9V7h0BvJ5BATZJ3gQPO2H1J%2Fj3tGXSfqv3E%3D",
+          "search_id": "A99E0147-91CE-414A-B3D2-4FE72398056C",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2656873,
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_stop_id": 2858231,
+          "arrival_stop_id": 9069705,
+          "departure_stop_name": "Автовокзал Центральный (Щёлковский)",
+          "arrival_stop_name": "кафе Подкова",
+          "city_from": "Москва",
+          "city_to": "Казань",
+          "departure_at": "2026-09-01T21:00:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1q1RM0mJpNEFpRKG%2BdDXLxj576oKFk7mum3nNQmDVyjtIQ%2FbLBgNggHZMWt2mqSq24eo8DwUjiz%2BO275RbpDq5z4Tcl24Mv1rYJRkZ6OiSh1SP5q3avtNaaDiIockAFWgmvOTuuGzl2Q2XQQhNR9V7h0BvJ5BATZJ3gQPO2H1J%2Fj3tGXSfqv3E%3D",
+          "departure_stop_id": 2858231,
+          "arrival_stop_id": 9069705,
+          "departure_stop_name": "Автовокзал Центральный (Щёлковский)",
+          "arrival_stop_name": "кафе Подкова",
+          "price": {
+            "amount": 3450.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "ДенЛеДа"
+          ],
+          "duration_min": 690,
+          "departure_at": "2026-09-01T21:00:00+03:00",
+          "arrival_at": "2026-09-02T08:30:00+03:00",
+          "review_summary": {
+            "rating": 8.2,
+            "review_count": 489,
+            "label": "⭐ 8.2/10 · 489 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "ДенЛеДа",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "ДенЛеДа",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 8.9,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "ДенЛеДа",
+                "label": "⭐ 8.9/10 · Водитель"
+              },
+              {
+                "rating": 7.5,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "ДенЛеДа",
+                "label": "⭐ 7.5/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "3016"
+          }
+        },
+        "review_summary": {
+          "rating": 8.2,
+          "review_count": 489,
+          "label": "⭐ 8.2/10 · 489 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "ДенЛеДа",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "ДенЛеДа",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 8.9,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "ДенЛеДа",
+              "label": "⭐ 8.9/10 · Водитель"
+            },
+            {
+              "rating": 7.5,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "ДенЛеДа",
+              "label": "⭐ 7.5/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "3016"
+        }
+      },
+      {
+        "offer_id": "c6e928fc7a19eac706215045ad8028c4",
+        "transport": "bus",
+        "price": {
+          "amount": 3450.0,
+          "currency": "RUB"
+        },
+        "duration_min": 750,
+        "carriers": [
+          "Транспортный Мир"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Kazan/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T17:30:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1330021&hash=A1o1hc0mJpOErLdnZbHnSwwrHFVo%252FL%252FnNgEp0Ee031rzvOfH68u8GAsOObr8PhN6z%252FPjD8g1WZSyXL7%252FXnjUDolFemmHGxss7wRy%252Fy%252FFqKnZMn5EqkvOJ2kTtGli%252Fe8nH6N6ceFpY8cb%252F9M5%252F8tOAHhLLjRFKZ7kHJNyCvOjtYz1BC0RXScVvw%253D%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T17:30:00+03:00",
+        "arrival_at": "2026-09-02T06:00:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автовокзал Центральный (Щёлковский)",
+            "to": "Автовокзал Казань-2 (Северный)",
+            "departure_at": "2026-09-01T17:30:00+03:00",
+            "arrival_at": "2026-09-02T06:00:00+03:00",
+            "duration_min": 750,
+            "segments": [
+              {
+                "from": "Автовокзал Центральный (Щёлковский)",
+                "to": "Автовокзал Казань-2 (Северный)",
+                "departure_at": "2026-09-01T17:30:00+03:00",
+                "arrival_at": "2026-09-02T06:00:00+03:00",
+                "duration_min": 750,
+                "carrier": "Транспортный Мир",
+                "voyage_no": null,
+                "from_geo_point_id": 2858231,
+                "to_geo_point_id": 2863967
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "44130381978b6b216c856c3454f715be",
+            "offer_hash": "A1o1hc0mJpOErLdnZbHnSwwrHFVo%2FL%2FnNgEp0Ee031rzvOfH68u8GAsOObr8PhN6z%2FPjD8g1WZSyXL7%2FXnjUDolFemmHGxss7wRy%2Fy%2FFqKnZMn5EqkvOJ2kTtGli%2Fe8nH6N6ceFpY8cb%2F9M5%2F8tOAHhLLjRFKZ7kHJNyCvOjtYz1BC0RXScVvw%3D%3D",
+            "price": {
+              "amount": 3450.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1o1hc0mJpOErLdnZbHnSwwrHFVo%2FL%2FnNgEp0Ee031rzvOfH68u8GAsOObr8PhN6z%2FPjD8g1WZSyXL7%2FXnjUDolFemmHGxss7wRy%2Fy%2FFqKnZMn5EqkvOJ2kTtGli%2Fe8nH6N6ceFpY8cb%2F9M5%2F8tOAHhLLjRFKZ7kHJNyCvOjtYz1BC0RXScVvw%3D%3D",
+          "search_id": "A99E0147-91CE-414A-B3D2-4FE72398056C",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2656873,
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_stop_id": 2858231,
+          "arrival_stop_id": 2863967,
+          "departure_stop_name": "Автовокзал Центральный (Щёлковский)",
+          "arrival_stop_name": "Автовокзал Казань-2 (Северный)",
+          "city_from": "Москва",
+          "city_to": "Казань",
+          "departure_at": "2026-09-01T17:30:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1o1hc0mJpOErLdnZbHnSwwrHFVo%2FL%2FnNgEp0Ee031rzvOfH68u8GAsOObr8PhN6z%2FPjD8g1WZSyXL7%2FXnjUDolFemmHGxss7wRy%2Fy%2FFqKnZMn5EqkvOJ2kTtGli%2Fe8nH6N6ceFpY8cb%2F9M5%2F8tOAHhLLjRFKZ7kHJNyCvOjtYz1BC0RXScVvw%3D%3D",
+          "departure_stop_id": 2858231,
+          "arrival_stop_id": 2863967,
+          "departure_stop_name": "Автовокзал Центральный (Щёлковский)",
+          "arrival_stop_name": "Автовокзал Казань-2 (Северный)",
+          "price": {
+            "amount": 3450.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Транспортный Мир"
+          ],
+          "duration_min": 750,
+          "departure_at": "2026-09-01T17:30:00+03:00",
+          "arrival_at": "2026-09-02T06:00:00+03:00",
+          "review_summary": {
+            "rating": 9.0,
+            "review_count": 462,
+            "label": "⭐ 9/10 · 462 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Транспортный Мир",
+            "aspects": [
+              {
+                "rating": 9.1,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Транспортный Мир",
+                "label": "⭐ 9.1/10 · Автобус"
+              },
+              {
+                "rating": 9.4,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Транспортный Мир",
+                "label": "⭐ 9.4/10 · Водитель"
+              },
+              {
+                "rating": 8.6,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Транспортный Мир",
+                "label": "⭐ 8.6/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "7774"
+          }
+        },
+        "review_summary": {
+          "rating": 9.0,
+          "review_count": 462,
+          "label": "⭐ 9/10 · 462 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Транспортный Мир",
+          "aspects": [
+            {
+              "rating": 9.1,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Транспортный Мир",
+              "label": "⭐ 9.1/10 · Автобус"
+            },
+            {
+              "rating": 9.4,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Транспортный Мир",
+              "label": "⭐ 9.4/10 · Водитель"
+            },
+            {
+              "rating": 8.6,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Транспортный Мир",
+              "label": "⭐ 8.6/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "7774"
+        }
+      },
+      {
+        "offer_id": "d491ce7e68db630072faf5bda81627a1",
+        "transport": "railway",
+        "price": {
+          "amount": 3462.49,
+          "currency": "RUB"
+        },
+        "duration_min": 752,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2060615",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656873&dep_st=2000003&arr_st=2060961&tn=082%D0%98&date=01.09.2026+16:38:00",
+        "departure_at": "2026-09-01T16:38:00+03:00",
+        "arrival_at": "2026-09-02T05:10:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Казань — Казань-2 − Восстание Пасс. (2060961)",
+            "departure_at": "2026-09-01T16:38:00+03:00",
+            "arrival_at": "2026-09-02T05:10:00+03:00",
+            "duration_min": 752,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Казань — Казань-2 − Восстание Пасс. (2060961)",
+                "departure_at": "2026-09-01T16:38:00+03:00",
+                "arrival_at": "2026-09-02T05:10:00+03:00",
+                "duration_min": 752,
+                "carrier": "ФПК",
+                "voyage_no": "082И",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961376
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656873,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060961",
+          "train_number": "082И",
+          "departure_at": "2026-09-01T16:38:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961376,
+          "offer_hash": "d491ce7e68db630072faf5bda81627a1",
+          "segment_hash": "c058afec58030e39b8c608f4bee6efb7",
+          "search_id": "030370B8-5E50-4C55-B73B-56A0515C94D0",
+          "result_id": "0830ccf0-f786-56a1-9583-fc8679ac915c",
+          "card_id": "396aa3416290016b2ee9b2dd8c8f416e"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060961",
+          "train_number": "082И",
+          "departure_at": "2026-09-01T16:38:00+03:00",
+          "price": {
+            "amount": 3462.49,
+            "currency": "RUB"
+          },
+          "title": "Поезд 082И",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 752,
+          "arrival_at": "2026-09-02T05:10:00+03:00",
+          "review_summary": {
+            "rating": 7.7,
+            "review_count": 1988,
+            "label": "⭐ 7.7/10 · 1 988 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "082И",
+            "scale": 10,
+            "feedback_key": "082И"
+          }
+        },
+        "review_summary": {
+          "rating": 7.7,
+          "review_count": 1988,
+          "label": "⭐ 7.7/10 · 1 988 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "082И",
+          "scale": 10,
+          "feedback_key": "082И"
+        },
+        "fares": {
+          "count": 60,
+          "price_from": 3462.49,
+          "price_to": 9013.62,
+          "currency": "RUB",
+          "refundable_count": 54,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 40,
+              "price_from": 3462.49
+            },
+            "COMPARTMENT": {
+              "count": 20,
+              "price_from": 4722.08
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "6a8254797ebfea54099c21c88e4d5256",
+        "transport": "railway",
+        "price": {
+          "amount": 3462.49,
+          "currency": "RUB"
+        },
+        "duration_min": 757,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2060615",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656873&dep_st=2000003&arr_st=2060961&tn=096%D0%9D&date=01.09.2026+16:23:00",
+        "departure_at": "2026-09-01T16:23:00+03:00",
+        "arrival_at": "2026-09-02T05:00:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Казань — Казань-2 − Восстание Пасс. (2060961)",
+            "departure_at": "2026-09-01T16:23:00+03:00",
+            "arrival_at": "2026-09-02T05:00:00+03:00",
+            "duration_min": 757,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Казань — Казань-2 − Восстание Пасс. (2060961)",
+                "departure_at": "2026-09-01T16:23:00+03:00",
+                "arrival_at": "2026-09-02T05:00:00+03:00",
+                "duration_min": 757,
+                "carrier": "ФПК",
+                "voyage_no": "096Н",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961376
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656873,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060961",
+          "train_number": "096Н",
+          "departure_at": "2026-09-01T16:23:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961376,
+          "offer_hash": "6a8254797ebfea54099c21c88e4d5256",
+          "segment_hash": "719da7b06ee46f1a18d574ac9f8299af",
+          "search_id": "030370B8-5E50-4C55-B73B-56A0515C94D0",
+          "result_id": "69dbfb90-1808-5bfa-b599-483a0a663368",
+          "card_id": "d04265eaeb9c71cc3e7065bc0e6624e4"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060961",
+          "train_number": "096Н",
+          "departure_at": "2026-09-01T16:23:00+03:00",
+          "price": {
+            "amount": 3462.49,
+            "currency": "RUB"
+          },
+          "title": "Поезд 096Н",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 757,
+          "arrival_at": "2026-09-02T05:00:00+03:00",
+          "review_summary": {
+            "rating": 7.8,
+            "review_count": 1405,
+            "label": "⭐ 7.8/10 · 1 405 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "096Н",
+            "scale": 10,
+            "feedback_key": "096Н"
+          }
+        },
+        "review_summary": {
+          "rating": 7.8,
+          "review_count": 1405,
+          "label": "⭐ 7.8/10 · 1 405 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "096Н",
+          "scale": 10,
+          "feedback_key": "096Н"
+        },
+        "fares": {
+          "count": 46,
+          "price_from": 3462.49,
+          "price_to": 8320.22,
+          "currency": "RUB",
+          "refundable_count": 36,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 10,
+              "price_from": 3462.49
+            },
+            "COMPARTMENT": {
+              "count": 36,
+              "price_from": 4333.58
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "79350836039505cae0ca42dfe41cd3c0",
+        "transport": "railway",
+        "price": {
+          "amount": 3462.49,
+          "currency": "RUB"
+        },
+        "duration_min": 757,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2060615",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656873&dep_st=2000003&arr_st=2060961&tn=112%D0%9C&date=01.09.2026+16:15:00",
+        "departure_at": "2026-09-01T16:15:00+03:00",
+        "arrival_at": "2026-09-02T04:52:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Казань — Казань-2 − Восстание Пасс. (2060961)",
+            "departure_at": "2026-09-01T16:15:00+03:00",
+            "arrival_at": "2026-09-02T04:52:00+03:00",
+            "duration_min": 757,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Казань — Казань-2 − Восстание Пасс. (2060961)",
+                "departure_at": "2026-09-01T16:15:00+03:00",
+                "arrival_at": "2026-09-02T04:52:00+03:00",
+                "duration_min": 757,
+                "carrier": "ФПК",
+                "voyage_no": "112М",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961376
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656873,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060961",
+          "train_number": "112М",
+          "departure_at": "2026-09-01T16:15:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961376,
+          "offer_hash": "79350836039505cae0ca42dfe41cd3c0",
+          "segment_hash": "c9982c253b227a9a9d5c6aace5cb8b2d",
+          "search_id": "030370B8-5E50-4C55-B73B-56A0515C94D0",
+          "result_id": "cf396a9f-397e-52b4-8dd7-0939d7547489",
+          "card_id": "b07b23151e2e2956b8e74b2c3e5bb463"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060961",
+          "train_number": "112М",
+          "departure_at": "2026-09-01T16:15:00+03:00",
+          "price": {
+            "amount": 3462.49,
+            "currency": "RUB"
+          },
+          "title": "Поезд 112М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 757,
+          "arrival_at": "2026-09-02T04:52:00+03:00",
+          "review_summary": {
+            "rating": 7.6,
+            "review_count": 1127,
+            "label": "⭐ 7.6/10 · 1 127 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "112М",
+            "scale": 10,
+            "feedback_key": "112М"
+          }
+        },
+        "review_summary": {
+          "rating": 7.6,
+          "review_count": 1127,
+          "label": "⭐ 7.6/10 · 1 127 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "112М",
+          "scale": 10,
+          "feedback_key": "112М"
+        },
+        "fares": {
+          "count": 62,
+          "price_from": 3462.49,
+          "price_to": 7856.22,
+          "currency": "RUB",
+          "refundable_count": 50,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 24,
+              "price_from": 3462.49
+            },
+            "COMPARTMENT": {
+              "count": 38,
+              "price_from": 4497.18
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "1824be12dfd0a34cb88c683be569479e",
+        "transport": "railway",
+        "price": {
+          "amount": 3462.49,
+          "currency": "RUB"
+        },
+        "duration_min": 787,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2060615",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656873&dep_st=2000003&arr_st=2060500&tn=130%D0%A5&date=01.09.2026+00:20:00",
+        "departure_at": "2026-09-01T00:20:00+03:00",
+        "arrival_at": "2026-09-01T13:27:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Казань — Казань Пасс (2060500)",
+            "departure_at": "2026-09-01T00:20:00+03:00",
+            "arrival_at": "2026-09-01T13:27:00+03:00",
+            "duration_min": 787,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Казань — Казань Пасс (2060500)",
+                "departure_at": "2026-09-01T00:20:00+03:00",
+                "arrival_at": "2026-09-01T13:27:00+03:00",
+                "duration_min": 787,
+                "carrier": "ФПК",
+                "voyage_no": "130Х",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961212
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656873,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060500",
+          "train_number": "130Х",
+          "departure_at": "2026-09-01T00:20:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961212,
+          "offer_hash": "1824be12dfd0a34cb88c683be569479e",
+          "segment_hash": "1c5fc14d35a1d14b4b4a6af8b373da74",
+          "search_id": "030370B8-5E50-4C55-B73B-56A0515C94D0",
+          "result_id": "c86778d8-167b-588d-b6a4-b3742b554a77",
+          "card_id": "3962904d03e2725330d74ed7cf73587e"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060500",
+          "train_number": "130Х",
+          "departure_at": "2026-09-01T00:20:00+03:00",
+          "price": {
+            "amount": 3462.49,
+            "currency": "RUB"
+          },
+          "title": "Поезд 130Х",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 787,
+          "arrival_at": "2026-09-01T13:27:00+03:00",
+          "review_summary": {
+            "rating": 7.8,
+            "review_count": 73,
+            "label": "⭐ 7.8/10 · 73 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "130Х",
+            "scale": 10,
+            "feedback_key": "130Х"
+          }
+        },
+        "review_summary": {
+          "rating": 7.8,
+          "review_count": 73,
+          "label": "⭐ 7.8/10 · 73 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "130Х",
+          "scale": 10,
+          "feedback_key": "130Х"
+        },
+        "fares": {
+          "count": 40,
+          "price_from": 3462.49,
+          "price_to": 10182.1,
+          "currency": "RUB",
+          "refundable_count": 32,
+          "changeable_count": 0,
+          "seat_categories": {
+            "RESERVED_SEAT": {
+              "count": 14,
+              "price_from": 3462.49
+            },
+            "COMPARTMENT": {
+              "count": 24,
+              "price_from": 3554.28
+            },
+            "LUX": {
+              "count": 2,
+              "price_from": 10182.1
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "e4f03b59790d84f80050f42c2af2b49c",
+        "transport": "railway",
+        "price": {
+          "amount": 3607.05,
+          "currency": "RUB"
+        },
+        "duration_min": 686,
+        "carriers": [
+          "ФПК"
+        ],
+        "search_results_url": "https://www.tutu.ru/poezda/rasp_d.php?date=01.09.2026&nnst1=2000000&nnst2=2060615",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/poezda/order/?departure_st=2657260&arrival_st=2656873&dep_st=2000003&arr_st=2060500&tn=024%D0%9C&date=01.09.2026+23:23:00",
+        "departure_at": "2026-09-01T23:23:00+03:00",
+        "arrival_at": "2026-09-02T10:49:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Казанский вокзал (2000003)",
+            "to": "Казань — Казань Пасс (2060500)",
+            "departure_at": "2026-09-01T23:23:00+03:00",
+            "arrival_at": "2026-09-02T10:49:00+03:00",
+            "duration_min": 686,
+            "segments": [
+              {
+                "from": "Москва — Казанский вокзал (2000003)",
+                "to": "Казань — Казань Пасс (2060500)",
+                "departure_at": "2026-09-01T23:23:00+03:00",
+                "arrival_at": "2026-09-02T10:49:00+03:00",
+                "duration_min": 686,
+                "carrier": "ФПК",
+                "voyage_no": "024М",
+                "from_geo_point_id": 2957765,
+                "to_geo_point_id": 2961212,
+                "vehicle_meta": {
+                  "name": "Двухэтажный",
+                  "is_premium": true,
+                  "is_double_decker": true
+                }
+              }
+            ]
+          }
+        ],
+        "checkout_ref": {
+          "transport": "railway",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2656873,
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060500",
+          "train_number": "024М",
+          "departure_at": "2026-09-01T23:23:00+03:00",
+          "departure_geo_point_id": 2957765,
+          "arrival_geo_point_id": 2961212,
+          "offer_hash": "e4f03b59790d84f80050f42c2af2b49c",
+          "segment_hash": "115bd9fd3419804c151dd98918bee1ce",
+          "search_id": "030370B8-5E50-4C55-B73B-56A0515C94D0",
+          "result_id": "c92b1a2f-05d5-543c-9c0f-fa597a1017bf",
+          "card_id": "9745d05fec11f19cb8810f1f5b2c9306"
+        },
+        "details_ref": {
+          "transport": "railway",
+          "source": "seats-gateway.seats-by-params",
+          "departure_station_code": "2000003",
+          "arrival_station_code": "2060500",
+          "train_number": "024М",
+          "departure_at": "2026-09-01T23:23:00+03:00",
+          "price": {
+            "amount": 3607.05,
+            "currency": "RUB"
+          },
+          "title": "Поезд 024М",
+          "carriers": [
+            "ФПК"
+          ],
+          "duration_min": 686,
+          "arrival_at": "2026-09-02T10:49:00+03:00",
+          "review_summary": {
+            "rating": 9.1,
+            "review_count": 2359,
+            "label": "⭐ 9.1/10 · 2 359 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "train",
+            "subject": "024М",
+            "scale": 10,
+            "feedback_key": "024М"
+          }
+        },
+        "review_summary": {
+          "rating": 9.1,
+          "review_count": 2359,
+          "label": "⭐ 9.1/10 · 2 359 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "train",
+          "subject": "024М",
+          "scale": 10,
+          "feedback_key": "024М"
+        },
+        "fares": {
+          "count": 55,
+          "price_from": 3607.05,
+          "price_to": 16105.88,
+          "currency": "RUB",
+          "refundable_count": 37,
+          "changeable_count": 0,
+          "seat_categories": {
+            "COMPARTMENT": {
+              "count": 54,
+              "price_from": 3607.05
+            },
+            "LUX": {
+              "count": 1,
+              "price_from": 16105.88
+            }
+          }
+        }
+      },
+      {
+        "offer_id": "dc9c41a0ef115d9dbee1fa12e69369f7",
+        "transport": "bus",
+        "price": {
+          "amount": 4025.0,
+          "currency": "RUB"
+        },
+        "duration_min": 770,
+        "carriers": [
+          "Нева"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Kazan/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T22:30:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1330021&hash=Kxy1RM0mJlTKakJdRCT4ImUWNIStk8ZnHWHEvNhOIXuaEzviSHRfYPPT7cRJjy8k0QAnj%252BEzn5Vr%252B2jXzsfqhGQhUfKNAg8gwJ9nIt5kR6PFohkYv%252BuRj7AwEWBcWaKp8iuApcu554eDsJEDBlNObKFJLjnqI2xV%252BfbidM5ZI5E%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T22:30:00+03:00",
+        "arrival_at": "2026-09-02T11:20:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автовокзал Котельники",
+            "to": "Автовокзал Восточный",
+            "departure_at": "2026-09-01T22:30:00+03:00",
+            "arrival_at": "2026-09-02T11:20:00+03:00",
+            "duration_min": 770,
+            "segments": [
+              {
+                "from": "Автовокзал Котельники",
+                "to": "Автовокзал Восточный",
+                "departure_at": "2026-09-01T22:30:00+03:00",
+                "arrival_at": "2026-09-02T11:20:00+03:00",
+                "duration_min": 770,
+                "carrier": "Нева",
+                "voyage_no": null,
+                "from_geo_point_id": 2754359,
+                "to_geo_point_id": 2863963
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "7a4150ea04483b370969de8737ac8eae",
+            "offer_hash": "Kxy1RM0mJlTKakJdRCT4ImUWNIStk8ZnHWHEvNhOIXuaEzviSHRfYPPT7cRJjy8k0QAnj%2BEzn5Vr%2B2jXzsfqhGQhUfKNAg8gwJ9nIt5kR6PFohkYv%2BuRj7AwEWBcWaKp8iuApcu554eDsJEDBlNObKFJLjnqI2xV%2BfbidM5ZI5E%3D",
+            "price": {
+              "amount": 4025.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "Kxy1RM0mJlTKakJdRCT4ImUWNIStk8ZnHWHEvNhOIXuaEzviSHRfYPPT7cRJjy8k0QAnj%2BEzn5Vr%2B2jXzsfqhGQhUfKNAg8gwJ9nIt5kR6PFohkYv%2BuRj7AwEWBcWaKp8iuApcu554eDsJEDBlNObKFJLjnqI2xV%2BfbidM5ZI5E%3D",
+          "search_id": "A99E0147-91CE-414A-B3D2-4FE72398056C",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2656873,
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_stop_id": 2754359,
+          "arrival_stop_id": 2863963,
+          "departure_stop_name": "Автовокзал Котельники",
+          "arrival_stop_name": "Автовокзал Восточный",
+          "city_from": "Москва",
+          "city_to": "Казань",
+          "departure_at": "2026-09-01T22:30:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "Kxy1RM0mJlTKakJdRCT4ImUWNIStk8ZnHWHEvNhOIXuaEzviSHRfYPPT7cRJjy8k0QAnj%2BEzn5Vr%2B2jXzsfqhGQhUfKNAg8gwJ9nIt5kR6PFohkYv%2BuRj7AwEWBcWaKp8iuApcu554eDsJEDBlNObKFJLjnqI2xV%2BfbidM5ZI5E%3D",
+          "departure_stop_id": 2754359,
+          "arrival_stop_id": 2863963,
+          "departure_stop_name": "Автовокзал Котельники",
+          "arrival_stop_name": "Автовокзал Восточный",
+          "price": {
+            "amount": 4025.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Нева"
+          ],
+          "duration_min": 770,
+          "departure_at": "2026-09-01T22:30:00+03:00",
+          "arrival_at": "2026-09-02T11:20:00+03:00",
+          "review_summary": {
+            "rating": 8.3,
+            "review_count": 24,
+            "label": "⭐ 8.3/10 · 24 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Нева",
+            "aspects": [
+              {
+                "rating": 7.9,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Нева",
+                "label": "⭐ 7.9/10 · Автобус"
+              },
+              {
+                "rating": 9.5,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Нева",
+                "label": "⭐ 9.5/10 · Водитель"
+              },
+              {
+                "rating": 7.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Нева",
+                "label": "⭐ 7.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "7808"
+          }
+        },
+        "review_summary": {
+          "rating": 8.3,
+          "review_count": 24,
+          "label": "⭐ 8.3/10 · 24 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Нева",
+          "aspects": [
+            {
+              "rating": 7.9,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Нева",
+              "label": "⭐ 7.9/10 · Автобус"
+            },
+            {
+              "rating": 9.5,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Нева",
+              "label": "⭐ 9.5/10 · Водитель"
+            },
+            {
+              "rating": 7.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Нева",
+              "label": "⭐ 7.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "7808"
+        }
+      },
+      {
+        "offer_id": "8585c8555ec924cf889e7969f8dec98d",
+        "transport": "bus",
+        "price": {
+          "amount": 4025.0,
+          "currency": "RUB"
+        },
+        "duration_min": 870,
+        "carriers": [
+          "ТК АКМА"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Kazan/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T19:45:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1330021&hash=Kxw1JcxWJpXaknQMPmfPoXrzrAT4bnHFd4eVyVtIDiZXIlg1pcxG9gkNMH9EGyjWaoip%252F9KRcBn%252B2O7L5Dj6LwhFuuBRUzCN7twk4K21WzwaJtFnr5so73naWSD1Y5XcRTmWu8qhdAa8qrEHB9Ov%252FCYoEj%252FqY3yx4TnjdM5ZI5E%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T19:45:00+03:00",
+        "arrival_at": "2026-09-02T10:15:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автовокзал Котельники",
+            "to": "Автовокзал Столичный (Центральный)",
+            "departure_at": "2026-09-01T19:45:00+03:00",
+            "arrival_at": "2026-09-02T10:15:00+03:00",
+            "duration_min": 870,
+            "segments": [
+              {
+                "from": "Автовокзал Котельники",
+                "to": "Автовокзал Столичный (Центральный)",
+                "departure_at": "2026-09-01T19:45:00+03:00",
+                "arrival_at": "2026-09-02T10:15:00+03:00",
+                "duration_min": 870,
+                "carrier": "ТК АКМА",
+                "voyage_no": null,
+                "from_geo_point_id": 2754359,
+                "to_geo_point_id": 2860173
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "3c98898da242b0d89d3800cfc511d825",
+            "offer_hash": "Kxw1JcxWJpXaknQMPmfPoXrzrAT4bnHFd4eVyVtIDiZXIlg1pcxG9gkNMH9EGyjWaoip%2F9KRcBn%2B2O7L5Dj6LwhFuuBRUzCN7twk4K21WzwaJtFnr5so73naWSD1Y5XcRTmWu8qhdAa8qrEHB9Ov%2FCYoEj%2FqY3yx4TnjdM5ZI5E%3D",
+            "price": {
+              "amount": 4025.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "Kxw1JcxWJpXaknQMPmfPoXrzrAT4bnHFd4eVyVtIDiZXIlg1pcxG9gkNMH9EGyjWaoip%2F9KRcBn%2B2O7L5Dj6LwhFuuBRUzCN7twk4K21WzwaJtFnr5so73naWSD1Y5XcRTmWu8qhdAa8qrEHB9Ov%2FCYoEj%2FqY3yx4TnjdM5ZI5E%3D",
+          "search_id": "A99E0147-91CE-414A-B3D2-4FE72398056C",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2656873,
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_stop_id": 2754359,
+          "arrival_stop_id": 2860173,
+          "departure_stop_name": "Автовокзал Котельники",
+          "arrival_stop_name": "Автовокзал Столичный (Центральный)",
+          "city_from": "Москва",
+          "city_to": "Казань",
+          "departure_at": "2026-09-01T19:45:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1330021",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "Kxw1JcxWJpXaknQMPmfPoXrzrAT4bnHFd4eVyVtIDiZXIlg1pcxG9gkNMH9EGyjWaoip%2F9KRcBn%2B2O7L5Dj6LwhFuuBRUzCN7twk4K21WzwaJtFnr5so73naWSD1Y5XcRTmWu8qhdAa8qrEHB9Ov%2FCYoEj%2FqY3yx4TnjdM5ZI5E%3D",
+          "departure_stop_id": 2754359,
+          "arrival_stop_id": 2860173,
+          "departure_stop_name": "Автовокзал Котельники",
+          "arrival_stop_name": "Автовокзал Столичный (Центральный)",
+          "price": {
+            "amount": 4025.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "ТК АКМА"
+          ],
+          "duration_min": 870,
+          "departure_at": "2026-09-01T19:45:00+03:00",
+          "arrival_at": "2026-09-02T10:15:00+03:00",
+          "review_summary": {
+            "rating": 7.2,
+            "review_count": 389,
+            "label": "⭐ 7.2/10 · 389 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "ТК АКМА",
+            "aspects": [
+              {
+                "rating": 6.4,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "ТК АКМА",
+                "label": "⭐ 6.4/10 · Автобус"
+              },
+              {
+                "rating": 8.4,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "ТК АКМА",
+                "label": "⭐ 8.4/10 · Водитель"
+              },
+              {
+                "rating": 6.5,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "ТК АКМА",
+                "label": "⭐ 6.5/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "5745"
+          }
+        },
+        "review_summary": {
+          "rating": 7.2,
+          "review_count": 389,
+          "label": "⭐ 7.2/10 · 389 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "ТК АКМА",
+          "aspects": [
+            {
+              "rating": 6.4,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "ТК АКМА",
+              "label": "⭐ 6.4/10 · Автобус"
+            },
+            {
+              "rating": 8.4,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "ТК АКМА",
+              "label": "⭐ 8.4/10 · Водитель"
+            },
+            {
+              "rating": 6.5,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "ТК АКМА",
+              "label": "⭐ 6.5/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "5745"
+        }
+      }
+    ],
+    "meta": {
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва город федерального значения",
+        "iata": "MOW"
+      },
+      "to": {
+        "name": "Казань",
+        "geo_id": "2656873",
+        "region": "городской округ Казань, Республика Татарстан",
+        "iata": "KZN"
+      },
+      "optimize_for": "price",
+      "modes_requested": [
+        "avia",
+        "railway",
+        "bus",
+        "etrain"
+      ],
+      "modes_summary": {
+        "avia": {
+          "count": 12,
+          "min_price": 4239.09,
+          "min_duration_min": 90
+        },
+        "railway": {
+          "count": 10,
+          "min_price": 2507.51,
+          "min_duration_min": 672,
+          "cashback": {
+            "rate_pct": 3.0,
+            "applies_to": "all_fares",
+            "note": "Tutu loyalty points credited to the buyer's Tutu account after payment. NOT a discount: every `price` here is the full amount payable.",
+            "scope": "mode_page"
+          }
+        },
+        "bus": {
+          "count": 5,
+          "min_price": 3450.0,
+          "min_duration_min": 690,
+          "cashback": {
+            "rate_pct": 3.0,
+            "applies_to": "all_fares",
+            "note": "Tutu loyalty points credited to the buyer's Tutu account after payment. NOT a discount: every `price` here is the full amount payable.",
+            "scope": "mode_page"
+          }
+        },
+        "etrain": {
+          "count": 0,
+          "min_price": null,
+          "min_duration_min": null
+        }
+      },
+      "unavailable": [],
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "has_more": true
+    }
+  }
+}

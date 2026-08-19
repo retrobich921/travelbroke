@@ -1,0 +1,618 @@
+{
+  "args": {
+    "city_name": "Москва",
+    "checkin_date": "2026-08-17",
+    "checkout_date": "2026-08-18",
+    "adults": 1
+  },
+  "data": {
+    "hotels": [
+      {
+        "hotel_id": "7644181",
+        "hotel_geo_id": "7644181",
+        "tutu_offer_id": "fa40e84b-1a41-4a1f-8051-bdad4aa27950",
+        "name": "Гамма Измайлово",
+        "stars": 3,
+        "rating": 8.36,
+        "review_count": 3865,
+        "address": "9.1 км от центра, 361 м от метро Партизанская",
+        "location": {
+          "lat": 55.791576,
+          "lng": 37.74824,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/85631429-d850-402a-b0eb-c477f4f79384/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/b9fd34cfb0e4b14267ddf999339213d0.jpg"
+        ],
+        "alias": "otel_izmaylovo_gamma",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7644181&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "cb4b9462-a602-49c7-9411-6f932c497393",
+          "room_name": null,
+          "price": {
+            "amount": 3534.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7644181&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 8.36,
+          "review_count": 3865,
+          "label": "⭐ 8.36/10 · 3 865 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "7644181",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "7644181",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "otel_izmaylovo_gamma",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7644181&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 19
+      },
+      {
+        "hotel_id": "11322466",
+        "hotel_geo_id": "11322466",
+        "tutu_offer_id": "e8d95d09-3bb3-4802-a5db-035a0ca2ee9a",
+        "name": "Cosmos Москва ВДНХ ",
+        "stars": 3,
+        "rating": 7.22,
+        "review_count": 1592,
+        "address": "7.6 км от центра, 397 м от метро ВДНХ",
+        "location": {
+          "lat": 55.82206,
+          "lng": 37.6471,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/7ed32ea04861fa0685606b3b8f66544c2e343fa5.6aeeb512b8b3b9d07a12e116a0453212ec91ec70.jpeg"
+        ],
+        "alias": "kosmos_vdnkh_otel_moskva",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=11322466&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "e595c270-cd84-4994-a9c9-7f08e5ba28f1",
+          "room_name": "Стандартный с двумя кроватями",
+          "price": {
+            "amount": 4500.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=11322466&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 7.22,
+          "review_count": 1592,
+          "label": "⭐ 7.22/10 · 1 592 отзыва",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "11322466",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "11322466",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "kosmos_vdnkh_otel_moskva",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=11322466&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 20
+      },
+      {
+        "hotel_id": "7653563",
+        "hotel_geo_id": "7653563",
+        "tutu_offer_id": "4b1bac17-ddba-434d-af66-8c6dcb6aef7c",
+        "name": "Измайловский парк",
+        "stars": 3,
+        "rating": 9.0,
+        "review_count": 573,
+        "address": "8.3 км от центра, 674 м от станции МЦК Измайлово",
+        "location": {
+          "lat": 55.783653,
+          "lng": 37.740555,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/373f0646-64a3-4702-8195-6bc6be34d7d1/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/d5197a91b3a786973e2953f9393de2d6.jpg"
+        ],
+        "alias": "apartotel_izmaylovsky_park",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7653563&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "027ed7a3-78b2-4417-a9e8-aa63fa469d39",
+          "room_name": "Стандарт",
+          "price": {
+            "amount": 4911.3,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7653563&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 9.0,
+          "review_count": 573,
+          "label": "⭐ 9/10 · 573 отзыва",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "7653563",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "7653563",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "apartotel_izmaylovsky_park",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7653563&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 70
+      },
+      {
+        "hotel_id": "12474616",
+        "hotel_geo_id": "12474616",
+        "tutu_offer_id": "3d58dd8c-fc3b-417d-9982-eef1f68d1aec",
+        "name": "Сокольники",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "6.2 км от центра, 870 м от метро Сокольники",
+        "location": {
+          "lat": 55.791862,
+          "lng": 37.692867,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/c4ada67e2466a45fbe1e4c3bb4ab53d636751c46.0f39c1d12fb7f09413a309bdb6a3b5cf5c891bd7.jpeg"
+        ],
+        "alias": "sokolniki_rossiyskaya_federatsiya_moskva_g_moskva_ul_1ya_boyevskaya_d_6",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12474616&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "c3354e6e-6f90-4225-8b52-5809472d4280",
+          "room_name": "Стандарт двухместный",
+          "price": {
+            "amount": 4100.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12474616&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "12474616",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "sokolniki_rossiyskaya_federatsiya_moskva_g_moskva_ul_1ya_boyevskaya_d_6",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12474616&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 6
+      },
+      {
+        "hotel_id": "8500332",
+        "hotel_geo_id": "8500332",
+        "tutu_offer_id": "84699097-7d5b-44a8-a191-47c89efa2f5e",
+        "name": "Металлург",
+        "stars": 2,
+        "rating": 7.69,
+        "review_count": 251,
+        "address": "3.6 км от центра, 701 м от метро Достоевская",
+        "location": {
+          "lat": 55.78758,
+          "lng": 37.611893,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/274737d1-03ee-442b-b450-e74334fc0613/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/08a6b7bf37dd5db21e850265d1476435.jpg"
+        ],
+        "alias": "gostinitsa_metallurg",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=8500332&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "85e76433-7d04-4bdf-96d2-37b31c42e33a",
+          "room_name": "Одноместный эконом",
+          "price": {
+            "amount": 3120.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=8500332&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 7.69,
+          "review_count": 251,
+          "label": "⭐ 7.69/10 · 251 отзыв",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "8500332",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "8500332",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "gostinitsa_metallurg",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=8500332&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 53
+      },
+      {
+        "hotel_id": "12429608",
+        "hotel_geo_id": "12429608",
+        "tutu_offer_id": "cb07fb83-66a7-47d0-8dba-8efc968f12ad",
+        "name": "Turris Hotel Petrovsky",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "1.4 км от центра, 459 м от метро Трубная",
+        "location": {
+          "lat": 55.768314,
+          "lng": 37.61464,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://avatars.mds.yandex.net/get-altay/1429587/2a0000016740840a1c710507c9ef54cb6ecd/M"
+        ],
+        "alias": "turris_hotel_petrovsky_petrovsky_bulvar_9_str_1",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12429608&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "9fe49ff4-e1f3-42fd-aff5-55f74c5846e1",
+          "room_name": "Мансардный номер с двуспальной кроватью",
+          "price": {
+            "amount": 6219.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12429608&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "12429608",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "turris_hotel_petrovsky_petrovsky_bulvar_9_str_1",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12429608&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 100
+      },
+      {
+        "hotel_id": "9633789",
+        "hotel_geo_id": "9633789",
+        "tutu_offer_id": "4a11089c-b1b9-4be2-8c56-a0a46660c432",
+        "name": "Shelter Три вокзала",
+        "stars": 0,
+        "rating": 8.36,
+        "review_count": 398,
+        "address": "2.8 км от центра, 367 м от метро Красные Ворота",
+        "location": {
+          "lat": 55.77143,
+          "lng": 37.652733,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/51a65297-6f51-4334-9bb7-b9a1ba26cfa2/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/d0d0e4d928746f1439cae1c27d6f22d8.jpg"
+        ],
+        "alias": "otel_shelterz_tri_vokzala",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=9633789&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "aecac89c-f974-46ef-8e2a-c70578a60573",
+          "room_name": "Номер эконом с 1 односпальной кроватью ",
+          "price": {
+            "amount": 1870.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=9633789&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 8.36,
+          "review_count": 398,
+          "label": "⭐ 8.36/10 · 398 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "9633789",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "9633789",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "otel_shelterz_tri_vokzala",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=9633789&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 62
+      },
+      {
+        "hotel_id": "7653183",
+        "hotel_geo_id": "7653183",
+        "tutu_offer_id": "6ea11f43-7a3f-4cb7-88b5-21abed8b6636",
+        "name": "Hampton by Hilton Москва Рогожский Вал",
+        "stars": 4,
+        "rating": 9.27,
+        "review_count": 557,
+        "address": "3.9 км от центра, 699 м от метро Римская",
+        "location": {
+          "lat": 55.7412,
+          "lng": 37.674145,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn.worldota.net/t/x500/extranet/dd/60/dd6088ef4de3329a2c6be0472142e9a344a46692.jpeg"
+        ],
+        "alias": "hampton_by_hilton_moscow_rogozhsky_val",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7653183&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "d00edf6e-1964-42f4-badf-3ea844857903",
+          "room_name": "Стандартный номер с 1 двуспальной кроватью",
+          "price": {
+            "amount": 10455.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7653183&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": true,
+          "meal_name": "Завтрак включён",
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "meal",
+              "text": "Завтрак включён"
+            }
+          ]
+        },
+        "review_summary": {
+          "rating": 9.27,
+          "review_count": 557,
+          "label": "⭐ 9.27/10 · 557 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "7653183",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "7653183",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "hampton_by_hilton_moscow_rogozhsky_val",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=7653183&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 52
+      },
+      {
+        "hotel_id": "12390652",
+        "hotel_geo_id": "12390652",
+        "tutu_offer_id": "2d877cc4-dc03-4a6f-b7ea-da2a0394f441",
+        "name": "Однокомнатная квартира на улице: Ореховый бульвар, 24к2",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "17.9 км от центра, 234 м от метро Зябликово",
+        "location": {
+          "lat": 55.612427,
+          "lng": 37.748726,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/524c60dfb17103c4697a709fc89b405d472eea3f.45ee1ca1fbe4ed5d967f5012682a9ab60af2997b.jpeg"
+        ],
+        "alias": "odnokomnatnaya_kvartira_na_ulitse_orekhovy_bulvar_24k2",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12390652&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "77449831-f3d5-4a32-b420-f63c013d8e8c",
+          "room_name": "Однокомнатная квартира на улице: Ореховый бульвар, 24к2",
+          "price": {
+            "amount": 6250.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12390652&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "12390652",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "odnokomnatnaya_kvartira_na_ulitse_orekhovy_bulvar_24k2",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=12390652&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 39
+      },
+      {
+        "hotel_id": "9360474",
+        "hotel_geo_id": "9360474",
+        "tutu_offer_id": "94709583-cf82-4b7e-9fbd-7614abaf47db",
+        "name": "Хостел Ливадия",
+        "stars": 0,
+        "rating": 2.5,
+        "review_count": 2,
+        "address": "12.5 км от центра, 1.2 км от метро Новаторская",
+        "location": {
+          "lat": 55.661682,
+          "lng": 37.509396,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn.worldota.net/t/x500/content/d5/fb/d5fb509d57245c20718fb0601a22261d6ed85a83.JPEG"
+        ],
+        "alias": "livadiya_moskva",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=9360474&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+        "best_offer": {
+          "offerpack_hash": "de1d9bc9-976a-4f26-a0b5-b13c86774095",
+          "room_name": "Комната-1. Капсула в 14-ти местной комнате",
+          "price": {
+            "amount": 800.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=9360474&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 2.5,
+          "review_count": 2,
+          "label": "⭐ 2.5/10 · 2 отзыва",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "9360474",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "9360474",
+          "check_in": "2026-08-17",
+          "check_out": "2026-08-18",
+          "adults": 1,
+          "hotel_alias": "livadiya_moskva",
+          "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-08-17&check_out=2026-08-18&geo_id=9360474&geo_name=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&room%5B0%5D=1&search_id=c5bcf14d4888aab58c86d4639036bab7"
+        },
+        "photos_total": 47
+      }
+    ],
+    "stay": {
+      "check_in": "2026-08-17",
+      "check_out": "2026-08-18",
+      "nights": 1
+    },
+    "meta": {
+      "search_id": "c5bcf14d4888aab58c86d4639036bab7",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "has_more": true,
+      "geo_id": "2657260",
+      "resolved_geo": {
+        "geo_id": "2657260",
+        "name": "Москва",
+        "country": "Россия",
+        "region": "Москва",
+        "geo_type": "locality",
+        "hotels_count": 41034,
+        "also_geo": [
+          {
+            "geo_id": "6619918",
+            "name": "Новая Москва",
+            "geo_type": "region",
+            "hotels_count": 2919
+          },
+          {
+            "geo_id": "4130484",
+            "name": "Новая Москва",
+            "geo_type": "locality",
+            "hotels_count": 1
+          }
+        ]
+      },
+      "filters_applied": {
+        "option_filters": [],
+        "range_filters": [],
+        "button_filters": [],
+        "quick_filters_order": [],
+        "changes": []
+      },
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_no_free_cancellation": 0,
+      "post_filter_dropped_no_breakfast": 0
+    }
+  }
+}

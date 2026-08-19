@@ -1,0 +1,3 @@
+{
+  "_tool_error": "Error executing tool get_rail_seatmap: 1 validation error for get_rail_seatmapArguments\ntask\n  Input should be 'far_from_wc', 'female', 'summary' or 'together' [type=literal_error, input_value='лучшие нижни...е от туалета', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error"
+}

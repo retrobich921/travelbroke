@@ -1,0 +1,756 @@
+{
+  "transport": "railway",
+  "source": {
+    "read_only": true
+  },
+  "summary": {
+    "title": "Поезд 742У Аврора (двухэтажный)",
+    "from": {
+      "station": "Москва Октябрьская",
+      "station_code": "2006004",
+      "city": "Москва",
+      "timezone": "Europe/Moscow"
+    },
+    "to": {
+      "station": "Санкт-Петербург-Главн.",
+      "station_code": "2004001",
+      "city": "Санкт-Петербург",
+      "timezone": "Europe/Moscow"
+    },
+    "departure_at": "2026-09-01T06:00:00+03:00",
+    "arrival_at": "2026-09-01T11:45:00+03:00",
+    "duration_sec": 20700,
+    "duration_label": "5 ч 45 мин",
+    "train_number": "742У",
+    "train_name": "Аврора (двухэтажный)",
+    "price_from": {
+      "amount": 1140.98,
+      "currency": "RUB"
+    },
+    "detail_price_from": {
+      "amount": 518.15,
+      "currency": "RUB"
+    },
+    "review_summary": {
+      "rating": 9.64,
+      "scale": 10,
+      "review_count": 122,
+      "source": "seats-gateway.reviews",
+      "scope": "rail_service_class",
+      "subject": "2Ю",
+      "aspects": [
+        {
+          "rating": 9.8,
+          "scale": 10,
+          "text": "Персонал",
+          "source": "seats-gateway.reviews",
+          "scope": "rail_service_class_aspect",
+          "subject": "2Ю",
+          "label": "⭐ 9.8/10 · Персонал"
+        },
+        {
+          "rating": 9.84,
+          "scale": 10,
+          "text": "Состояние вагона",
+          "source": "seats-gateway.reviews",
+          "scope": "rail_service_class_aspect",
+          "subject": "2Ю",
+          "label": "⭐ 9.84/10 · Состояние вагона"
+        },
+        {
+          "rating": 9.41,
+          "scale": 10,
+          "text": "Туалет",
+          "source": "seats-gateway.reviews",
+          "scope": "rail_service_class_aspect",
+          "subject": "2Ю",
+          "label": "⭐ 9.41/10 · Туалет"
+        },
+        {
+          "text": "Розетки",
+          "source": "seats-gateway.reviews",
+          "scope": "rail_service_class_aspect",
+          "subject": "2Ю",
+          "label": "Розетки"
+        },
+        {
+          "text": "Температура",
+          "source": "seats-gateway.reviews",
+          "scope": "rail_service_class_aspect",
+          "subject": "2Ю",
+          "label": "Температура"
+        }
+      ],
+      "label": "⭐ 9.64/10 · 122 отзыва"
+    }
+  },
+  "train_vehicle": {
+    "name": "Аврора (двухэтажный)",
+    "number": "742У",
+    "train_class": "common",
+    "is_premium": true,
+    "is_firm": true,
+    "is_double_decker": true,
+    "has_photo": false,
+    "has_tour_3d": false,
+    "service_packages": [
+      {
+        "name": "Сидячий",
+        "service_classes": [
+          "2Р",
+          "2Ю",
+          "2Я",
+          "1Р"
+        ]
+      },
+      {
+        "name": "Купе",
+        "service_classes": [
+          "2Ф",
+          "2Э"
+        ]
+      },
+      {
+        "name": "СВ",
+        "service_classes": [
+          "1Э"
+        ]
+      }
+    ]
+  },
+  "ticket": {
+    "format": "eticket",
+    "boarding": "by_passport",
+    "online_check_in": false
+  },
+  "presentation": {
+    "title": "Поезд 742У Аврора (двухэтажный)",
+    "subtitle": "Москва -> Санкт-Петербург",
+    "highlights": [
+      "5 ч 45 мин",
+      "от 1140.98 RUB",
+      "612 свободных мест",
+      "⭐ 9.64/10 · 122 отзыва"
+    ],
+    "sections": [
+      {
+        "title": "Маршрут",
+        "items": [
+          "Москва Октябрьская",
+          "Санкт-Петербург-Главн.",
+          "5 ч 45 мин"
+        ]
+      },
+      {
+        "title": "Вагоны и места",
+        "items": [
+          "13 вагонов",
+          "20 тарифов/классов в ответе"
+        ]
+      }
+    ]
+  },
+  "service_classes": [
+    {
+      "service_class": "2Ю",
+      "description": "Вагон повышенной комфортности. Кондиционер, биотуалет в вагоне. Вагон с услугой перевозки животных.",
+      "services": [
+        "Вагон-ресторан или буфет",
+        "Мультимедийный экран",
+        "Кондиционер",
+        "Биотуалет",
+        "Душ",
+        "Дорожный набор",
+        "Газеты или журналы",
+        "Можно с животными"
+      ],
+      "amenities": [
+        {
+          "code": "BUFFET",
+          "label": "Вагон-ресторан или буфет",
+          "description": "нет описания"
+        },
+        {
+          "code": "MEDIA_ENTERTAINMENT",
+          "label": "Мультимедийный экран",
+          "description": "нет описания"
+        },
+        {
+          "code": "AIR_CONDITIONING",
+          "label": "Кондиционер",
+          "description": "нет описания"
+        },
+        {
+          "code": "BIO_TOILET",
+          "label": "Биотуалет",
+          "description": "нет описания"
+        },
+        {
+          "code": "HYGENIC_SHOWER",
+          "label": "Душ",
+          "description": "нет описания"
+        },
+        {
+          "code": "HYGENIC_KIT",
+          "label": "Дорожный набор",
+          "description": "нет описания"
+        },
+        {
+          "code": "PRESS",
+          "label": "Газеты или журналы",
+          "description": "нет описания"
+        },
+        {
+          "code": "WITH_PETS",
+          "label": "Можно с животными",
+          "description": "нет описания"
+        }
+      ],
+      "review_summary": {
+        "rating": 9.64,
+        "scale": 10,
+        "review_count": 122,
+        "source": "seats-gateway.reviews",
+        "scope": "rail_service_class",
+        "subject": "2Ю",
+        "aspects": [
+          {
+            "rating": 9.8,
+            "scale": 10,
+            "text": "Персонал",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Ю",
+            "label": "⭐ 9.8/10 · Персонал"
+          },
+          {
+            "rating": 9.84,
+            "scale": 10,
+            "text": "Состояние вагона",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Ю",
+            "label": "⭐ 9.84/10 · Состояние вагона"
+          },
+          {
+            "rating": 9.41,
+            "scale": 10,
+            "text": "Туалет",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Ю",
+            "label": "⭐ 9.41/10 · Туалет"
+          },
+          {
+            "text": "Розетки",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Ю",
+            "label": "Розетки"
+          },
+          {
+            "text": "Температура",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Ю",
+            "label": "Температура"
+          }
+        ],
+        "label": "⭐ 9.64/10 · 122 отзыва"
+      },
+      "photos": []
+    },
+    {
+      "service_class": "2Р",
+      "description": "Крупных собак и мелких животных провозить запрещено.",
+      "services": [
+        "Вагон-ресторан или буфет",
+        "Мультимедийный экран",
+        "Кондиционер",
+        "Биотуалет",
+        "Дорожный набор",
+        "Газеты или журналы",
+        "Душ"
+      ],
+      "amenities": [
+        {
+          "code": "BUFFET",
+          "label": "Вагон-ресторан или буфет",
+          "description": "нет описания"
+        },
+        {
+          "code": "MEDIA_ENTERTAINMENT",
+          "label": "Мультимедийный экран",
+          "description": "нет описания"
+        },
+        {
+          "code": "AIR_CONDITIONING",
+          "label": "Кондиционер",
+          "description": "нет описания"
+        },
+        {
+          "code": "BIO_TOILET",
+          "label": "Биотуалет",
+          "description": "нет описания"
+        },
+        {
+          "code": "HYGENIC_KIT",
+          "label": "Дорожный набор",
+          "description": "нет описания"
+        },
+        {
+          "code": "PRESS",
+          "label": "Газеты или журналы",
+          "description": "нет описания"
+        },
+        {
+          "code": "HYGENIC_SHOWER",
+          "label": "Душ",
+          "description": "нет описания"
+        }
+      ],
+      "review_summary": {
+        "rating": 9.44,
+        "scale": 10,
+        "review_count": 117,
+        "source": "seats-gateway.reviews",
+        "scope": "rail_service_class",
+        "subject": "2Р",
+        "aspects": [
+          {
+            "rating": 9.79,
+            "scale": 10,
+            "text": "Персонал",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Р",
+            "label": "⭐ 9.79/10 · Персонал"
+          },
+          {
+            "rating": 9.73,
+            "scale": 10,
+            "text": "Состояние вагона",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Р",
+            "label": "⭐ 9.73/10 · Состояние вагона"
+          },
+          {
+            "rating": 8.99,
+            "scale": 10,
+            "text": "Туалет",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Р",
+            "label": "⭐ 8.99/10 · Туалет"
+          },
+          {
+            "text": "Розетки",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Р",
+            "label": "Розетки"
+          },
+          {
+            "text": "Температура",
+            "source": "seats-gateway.reviews",
+            "scope": "rail_service_class_aspect",
+            "subject": "2Р",
+            "label": "Температура"
+          }
+        ],
+        "label": "⭐ 9.44/10 · 117 отзывов"
+      },
+      "photos": []
+    }
+  ],
+  "variants": [
+    {
+      "offer_hash": "1400bbeaf7655460fdd16fc58cea6be6",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "10",
+      "seat_type": "SEDENTARY",
+      "seats_count": 9,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "4664ece1cf189a6dce9fbd757fa610f1",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "12",
+      "seat_type": "SEDENTARY",
+      "seats_count": 10,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "216ac37e1a41dc3f3c412f4d669e8b5a",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "14",
+      "seat_type": "SEDENTARY",
+      "seats_count": 4,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "6858464c0c0f1bd705c9108225124f7b",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "9",
+      "seat_type": "SEDENTARY",
+      "seats_count": 4,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "9c7b6161c916e0ee54a7d728d36ed513",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "11",
+      "seat_type": "SEDENTARY",
+      "seats_count": 9,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "1c22df1657ce63f8ec4c430eba2a1054",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "13",
+      "seat_type": "SEDENTARY",
+      "seats_count": 13,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "85764aac8a741d3c78e2fd4e3fdc7315",
+      "price": {
+        "amount": 518.15,
+        "currency": "RUB"
+      },
+      "fare_type": "NON_REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "15",
+      "seat_type": "SEDENTARY",
+      "seats_count": 14,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "97dd69dffbe0602489bc32ef6dcfef29",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "10",
+      "seat_type": "SEDENTARY",
+      "seats_count": 9,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "80cc158b50e1b76cee28b95ce2fbce4c",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "10",
+      "seat_type": "SEDENTARY",
+      "seats_count": 29,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "f2bae18ceddab3858f25829d8db39a4f",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "12",
+      "seat_type": "SEDENTARY",
+      "seats_count": 10,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "15fa441578e464f196de946f724f07dc",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "12",
+      "seat_type": "SEDENTARY",
+      "seats_count": 39,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "a4047c5ffdcc34683082277e31a6a28f",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "14",
+      "seat_type": "SEDENTARY",
+      "seats_count": 4,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "f6565122c88c7d7cc29a8e8de2f4ba4a",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "14",
+      "seat_type": "SEDENTARY",
+      "seats_count": 63,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "c7d78edb5cec8b13199fa5a8c6a31bd6",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Ю",
+      "car_type": "SEDENTARY",
+      "car_number": "8",
+      "seat_type": "SEDENTARY",
+      "seats_count": 28,
+      "class_index": 0
+    },
+    {
+      "offer_hash": "ede25c574318006d5db96b2a34f30582",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "9",
+      "seat_type": "SEDENTARY",
+      "seats_count": 4,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "0f9dbe92d309427848ea690ca89c9ec0",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "9",
+      "seat_type": "SEDENTARY",
+      "seats_count": 25,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "602eb467f8882f0805159354ad3b3969",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "11",
+      "seat_type": "SEDENTARY",
+      "seats_count": 9,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "c8e0b269451a1725070c1a0635bb82d0",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "11",
+      "seat_type": "SEDENTARY",
+      "seats_count": 30,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "0648be6db9137cbdec2e79c95c66196c",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "13",
+      "seat_type": "SEDENTARY",
+      "seats_count": 13,
+      "class_index": 1
+    },
+    {
+      "offer_hash": "2a48570d2db0043a8f3634cfb9096479",
+      "price": {
+        "amount": 574.22,
+        "currency": "RUB"
+      },
+      "fare_type": "REFUNDABLE",
+      "service_class": "2Р",
+      "car_type": "SEDENTARY",
+      "car_number": "13",
+      "seat_type": "SEDENTARY",
+      "seats_count": 48,
+      "class_index": 1
+    }
+  ],
+  "cars": [
+    {
+      "car_number": "1",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Я"
+      ],
+      "seats_count": 98
+    },
+    {
+      "car_number": "6",
+      "car_type": "COMPARTMENT",
+      "service_classes": [
+        "2Ф"
+      ],
+      "seats_count": 11
+    },
+    {
+      "car_number": "12",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Ю"
+      ],
+      "seats_count": 49
+    },
+    {
+      "car_number": "10",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Ю"
+      ],
+      "seats_count": 38
+    },
+    {
+      "car_number": "4",
+      "car_type": "LUX",
+      "service_classes": [
+        "1Э"
+      ],
+      "seats_count": 29
+    },
+    {
+      "car_number": "7",
+      "car_type": "COMPARTMENT",
+      "service_classes": [
+        "2Э"
+      ],
+      "seats_count": 49
+    },
+    {
+      "car_number": "9",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Р"
+      ],
+      "seats_count": 29
+    },
+    {
+      "car_number": "15",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Р"
+      ],
+      "seats_count": 67
+    },
+    {
+      "car_number": "2",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "1Р"
+      ],
+      "seats_count": 47
+    },
+    {
+      "car_number": "11",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Р"
+      ],
+      "seats_count": 39
+    },
+    {
+      "car_number": "13",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Р"
+      ],
+      "seats_count": 61
+    },
+    {
+      "car_number": "14",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Ю"
+      ],
+      "seats_count": 67
+    },
+    {
+      "car_number": "8",
+      "car_type": "SEDENTARY",
+      "service_classes": [
+        "2Ю"
+      ],
+      "seats_count": 28
+    }
+  ],
+  "warnings": []
+}

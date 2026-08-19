@@ -1,0 +1,93 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Сочи",
+    "departure_date": "2026-09-01",
+    "direct_only": true,
+    "price_max": 8000
+  },
+  "data": {
+    "offers": [],
+    "meta": {
+      "transport": "avia",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва город федерального значения",
+        "iata": "MOW"
+      },
+      "to": {
+        "name": "Сочи",
+        "geo_id": "2656918",
+        "region": "городской округ Сочи, Краснодарский край",
+        "iata": "AER"
+      },
+      "round_trip": false,
+      "return_date": null,
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 0,
+      "total_matched": 0,
+      "total_matched_exact": true,
+      "has_more": false,
+      "post_filter_dropped_over_cap": 30,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "post_filter_dropped_wrong_flight_number": 0,
+      "carriers_available": [
+        {
+          "name": "Победа",
+          "offers_count": 4,
+          "price_from": 10290.0
+        },
+        {
+          "name": "Nordwind Airlines",
+          "offers_count": 1,
+          "price_from": 10936.0
+        },
+        {
+          "name": "Аэрофлот",
+          "offers_count": 13,
+          "price_from": 14165.0
+        },
+        {
+          "name": "Utair",
+          "offers_count": 4,
+          "price_from": 16538.0
+        },
+        {
+          "name": "S7 Airlines",
+          "offers_count": 1,
+          "price_from": 17019.0
+        },
+        {
+          "name": "Уральские авиалинии",
+          "offers_count": 1,
+          "price_from": 17145.0
+        },
+        {
+          "name": "АЛРОСА",
+          "offers_count": 1,
+          "price_from": 18572.0
+        },
+        {
+          "name": "Азимут",
+          "offers_count": 1,
+          "price_from": 21044.0
+        },
+        {
+          "name": "Ред Вингс",
+          "offers_count": 3,
+          "price_from": 25035.0
+        },
+        {
+          "name": "Руслайн",
+          "offers_count": 1,
+          "price_from": 26444.0
+        }
+      ],
+      "upstream_note": null
+    }
+  }
+}

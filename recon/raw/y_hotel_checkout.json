@@ -1,0 +1,6 @@
+{
+  "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/hotel?hotel_alias=butikotel_elpida_volokolamskaya_ulitsa_d77_krasnaya_polyana&check_in=2026-09-01&check_out=2026-09-03&search_id=56a55d0815f937fd75cda674513bcbf8&adults=2&source=mcp",
+  "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11428448&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+  "kind": "deeplink",
+  "note": "checkout_url is a Tutu deeplink that opens this hotel's page (dates + guests pre-filled) for the user to pick a room. To mint the cart with a chosen room instead, call again with that room's `offerpack_hash` from `get_offer_details` as `offer_pack_hash`."
+}

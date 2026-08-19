@@ -1,0 +1,1402 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Стамбул",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "offers": [
+      {
+        "offer_id": "167e1ae10672fe2059bcc9d04eb56865",
+        "transport": "avia",
+        "price": {
+          "amount": 13582.0,
+          "currency": "RUB"
+        },
+        "duration_min": 315,
+        "carriers": [
+          "Победа"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 1,
+        "departure_at": "2026-09-01T06:50:00+03:00",
+        "arrival_at": "2026-09-01T12:05:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Стамбул-Новый (IST)",
+            "departure_at": "2026-09-01T06:50:00+03:00",
+            "arrival_at": "2026-09-01T12:05:00+03:00",
+            "duration_min": 315,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Стамбул — Стамбул-Новый (IST)",
+                "departure_at": "2026-09-01T06:50:00+03:00",
+                "arrival_at": "2026-09-01T12:05:00+03:00",
+                "duration_min": 315,
+                "carrier": "Победа",
+                "voyage_no": "DP-993",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2727684,
+                "review_summary": {
+                  "rating": 7.03,
+                  "review_count": 14260,
+                  "label": "⭐ 7.03/10 · 14 260 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "Победа",
+                  "scale": 10,
+                  "feedback_key": "2227"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "0e07e0cb538e2a4726bd0d7a91db7ed7:671018c27b97d70aa92a2c65120e84ac",
+            "offer_hash": "{\"Price\":13582,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"70727e46638187d9ddac4b6876cfb9ef\\\",\\\"variantConditionsHash\\\":\\\"167e1ae10672fe2059bcc9d04eb56865:f4b7bd50b88d2aef62aa0ef78689dd61\\\",\\\"pricingVariantHash\\\":\\\"1dea1b5f97657c76827d3bfc3ef48568\\\"}]\"}",
+            "price": {
+              "amount": 13582.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Базовый",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": null,
+                "pieces": 1,
+                "dimensions": "36 × 30 × 27"
+              },
+              "refundable": false,
+              "changeable": false
+            },
+            "service_class": "ECONOMIC"
+          },
+          {
+            "variant_id": "0e07e0cb538e2a4726bd0d7a91db7ed7:6216f4b2c5b065a73a13b6ce8448635a",
+            "offer_hash": "{\"Price\":17645,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"3d9f4d6326eda5d4a6b1b715e4ad9e30\\\",\\\"variantConditionsHash\\\":\\\"167e1ae10672fe2059bcc9d04eb56865:7bdef7201719c823a5aaf6841db6231e\\\",\\\"pricingVariantHash\\\":\\\"d13998308751a3adafac780d7da3e85b\\\"}]\"}",
+            "price": {
+              "amount": 17645.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Выгодный",
+              "baggage": {
+                "kg": 10,
+                "pieces": 1
+              },
+              "cabin_baggage": {
+                "kg": null,
+                "pieces": 1,
+                "dimensions": "36 × 30 × 27"
+              },
+              "refundable": false,
+              "changeable": true,
+              "exchange": {
+                "available": true,
+                "deadline_hours": 48
+              }
+            },
+            "service_class": "ECONOMIC"
+          },
+          {
+            "variant_id": "0e07e0cb538e2a4726bd0d7a91db7ed7:66fcf35c9562f0614bb9617bbea50c84",
+            "offer_hash": "{\"Price\":21442,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"371678cdd3ef9e4d1af65bf824691b03\\\",\\\"variantConditionsHash\\\":\\\"167e1ae10672fe2059bcc9d04eb56865:81e223a99b8ce32d2cd1059cbdcab4ab\\\",\\\"pricingVariantHash\\\":\\\"9fa95e32265ca64c57d3b4c6e010c612\\\"}]\"}",
+            "price": {
+              "amount": 21442.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Максимум",
+              "baggage": {
+                "kg": 20,
+                "pieces": 1
+              },
+              "cabin_baggage": {
+                "kg": null,
+                "pieces": 1,
+                "dimensions": "36 × 30 × 27"
+              },
+              "refundable": true,
+              "changeable": true,
+              "exchange": {
+                "available": true,
+                "deadline_hours": 48
+              }
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":13582,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"70727e46638187d9ddac4b6876cfb9ef\\\",\\\"variantConditionsHash\\\":\\\"167e1ae10672fe2059bcc9d04eb56865:f4b7bd50b88d2aef62aa0ef78689dd61\\\",\\\"pricingVariantHash\\\":\\\"1dea1b5f97657c76827d3bfc3ef48568\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T06:50:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.03,
+          "review_count": 14260,
+          "label": "⭐ 7.03/10 · 14 260 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Победа",
+          "scale": 10,
+          "feedback_key": "2227"
+        }
+      },
+      {
+        "offer_id": "4afd6960810b84db4316da48f80e23b8",
+        "transport": "avia",
+        "price": {
+          "amount": 15724.34,
+          "currency": "RUB"
+        },
+        "duration_min": 225,
+        "carriers": [
+          "Southwind Airlines"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 1,
+        "departure_at": "2026-09-01T14:35:00+03:00",
+        "arrival_at": "2026-09-01T18:20:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Жуковский (ZIA)",
+            "to": "Стамбул — Стамбул-Новый (IST)",
+            "departure_at": "2026-09-01T14:35:00+03:00",
+            "arrival_at": "2026-09-01T18:20:00+03:00",
+            "duration_min": 225,
+            "segments": [
+              {
+                "from": "Москва — Жуковский (ZIA)",
+                "to": "Стамбул — Стамбул-Новый (IST)",
+                "departure_at": "2026-09-01T14:35:00+03:00",
+                "arrival_at": "2026-09-01T18:20:00+03:00",
+                "duration_min": 225,
+                "carrier": "Southwind Airlines",
+                "voyage_no": "2S–124",
+                "from_geo_point_id": 2718753,
+                "to_geo_point_id": 2727684,
+                "review_summary": {
+                  "rating": 8.81,
+                  "review_count": 8,
+                  "label": "⭐ 8.81/10 · 8 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "Southwind Airlines",
+                  "scale": 10,
+                  "feedback_key": "2922"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "bdfb614ba69d412fd6a3289f66dde8e9:a26af10914bbd5f6d3796f11d2f791b0",
+            "offer_hash": "{\"Price\":15725,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"997b18d6f330941638b5581beab52e63\\\",\\\"variantConditionsHash\\\":\\\"4afd6960810b84db4316da48f80e23b8:568ceed6ec105b82eab1573c839ccfbf\\\",\\\"pricingVariantHash\\\":\\\"c8b52c191602c645b430b483e3fbfea4\\\"}]\"}",
+            "price": {
+              "amount": 15724.34,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Чартер",
+              "baggage": {
+                "kg": 10,
+                "pieces": 1
+              },
+              "cabin_baggage": {
+                "kg": 8,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 20"
+              },
+              "refundable": false,
+              "changeable": false
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15725,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"997b18d6f330941638b5581beab52e63\\\",\\\"variantConditionsHash\\\":\\\"4afd6960810b84db4316da48f80e23b8:568ceed6ec105b82eab1573c839ccfbf\\\",\\\"pricingVariantHash\\\":\\\"c8b52c191602c645b430b483e3fbfea4\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T14:35:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 8.81,
+          "review_count": 8,
+          "label": "⭐ 8.81/10 · 8 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Southwind Airlines",
+          "scale": 10,
+          "feedback_key": "2922"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+3ec8befa17d98d1917f79b6ec76f0e3b",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-01T21:55:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-01T21:55:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-01T20:45:00+03:00",
+                "arrival_at": "2026-09-01T21:55:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-5292",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+fb101093ec846bb1cfef0a2e4996d905:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+3737c8a25c9b725dcdcafe57f98eef76\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+3ec8befa17d98d1917f79b6ec76f0e3b:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"c70f9df636ed00bb787604920994a7fd\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+3737c8a25c9b725dcdcafe57f98eef76\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+3ec8befa17d98d1917f79b6ec76f0e3b:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"c70f9df636ed00bb787604920994a7fd\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+e23bc7e9818b81508e15849d48b52430",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-01T13:05:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-01T13:05:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-01T11:55:00+03:00",
+                "arrival_at": "2026-09-01T13:05:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-3003",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+3254dc2cdb421c506f1ba79de42683c1:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+46d9e09c9726b87cf7dfb8ea4835599b\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+e23bc7e9818b81508e15849d48b52430:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"7ddd893cdf2e9d9fae551ab835cc2d3b\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+46d9e09c9726b87cf7dfb8ea4835599b\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+e23bc7e9818b81508e15849d48b52430:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"7ddd893cdf2e9d9fae551ab835cc2d3b\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+06157f43e7824f5d3de171780b2df091",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-01T21:10:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-01T21:10:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-01T20:00:00+03:00",
+                "arrival_at": "2026-09-01T21:10:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-3009",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+e43be271c632d60dfdb63d2f27906f1f:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+158146bb6a56466a5164c128fc87d81b\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+06157f43e7824f5d3de171780b2df091:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"8ae22361873c900f59b55bb855af45fb\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+158146bb6a56466a5164c128fc87d81b\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+06157f43e7824f5d3de171780b2df091:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"8ae22361873c900f59b55bb855af45fb\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+fac6dd8bb99141e50bbd8a82132fe692",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-02T06:45:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-02T06:45:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-02T05:35:00+03:00",
+                "arrival_at": "2026-09-02T06:45:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-3007",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+ba12267889a70ecfc0e822bcecae3a6d:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+8e8c9bcfed00f69ec37fb9dc984cd214\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+fac6dd8bb99141e50bbd8a82132fe692:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"b22d9bb9409b54dd398970c836706069\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+8e8c9bcfed00f69ec37fb9dc984cd214\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+fac6dd8bb99141e50bbd8a82132fe692:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"b22d9bb9409b54dd398970c836706069\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+142c0a9c241487815201abfde686cc09",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-01T18:40:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-01T18:40:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-01T17:30:00+03:00",
+                "arrival_at": "2026-09-01T18:40:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-3023",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+0b5ffa1d982ff87df25df1b242ca48eb:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+9506f397a75bee93931ff72e68c6a24e\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+142c0a9c241487815201abfde686cc09:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"4dc5b4867b965ad1a6b885f473315b5b\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+9506f397a75bee93931ff72e68c6a24e\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+142c0a9c241487815201abfde686cc09:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"4dc5b4867b965ad1a6b885f473315b5b\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+a914367009ef76a2ad8a81fcb671b91f",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-01T16:00:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-01T16:00:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-01T14:50:00+03:00",
+                "arrival_at": "2026-09-01T16:00:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-5324",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+c6e9d1e44fd0c809c0bd497472ee7ab6:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+3b50e44f622d2c8f9103955fe89ff561\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+a914367009ef76a2ad8a81fcb671b91f:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"0673cb6520e5837b7f23c819df03892b\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 15,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+3b50e44f622d2c8f9103955fe89ff561\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+a914367009ef76a2ad8a81fcb671b91f:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"0673cb6520e5837b7f23c819df03892b\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "42451c21bd80b37855f85c7f6ad94374+7215689b37d3ce85f046537cc739a1e3",
+        "transport": "avia",
+        "price": {
+          "amount": 15960.0,
+          "currency": "RUB"
+        },
+        "duration_min": 325,
+        "carriers": [
+          "AJet"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 2,
+        "departure_at": "2026-09-01T05:05:00+03:00",
+        "arrival_at": "2026-09-02T01:40:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Внуково (VKO), терм. A",
+            "to": "Стамбул — Сабиха Гёкчен (SAW)",
+            "departure_at": "2026-09-01T05:05:00+03:00",
+            "arrival_at": "2026-09-02T01:40:00+03:00",
+            "duration_min": 325,
+            "segments": [
+              {
+                "from": "Москва — Внуково (VKO), терм. A",
+                "to": "Анкара — Эсенбога (ESB)",
+                "departure_at": "2026-09-01T05:05:00+03:00",
+                "arrival_at": "2026-09-01T09:20:00+03:00",
+                "duration_min": 255,
+                "carrier": "AJet",
+                "voyage_no": "VF-588",
+                "from_geo_point_id": 2718687,
+                "to_geo_point_id": 2722392,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              },
+              {
+                "from": "Анкара — Эсенбога (ESB)",
+                "to": "Стамбул — Сабиха Гёкчен (SAW)",
+                "departure_at": "2026-09-02T00:30:00+03:00",
+                "arrival_at": "2026-09-02T01:40:00+03:00",
+                "duration_min": 70,
+                "carrier": "AJet",
+                "voyage_no": "VF-3011",
+                "from_geo_point_id": 2722392,
+                "to_geo_point_id": 2719281,
+                "review_summary": {
+                  "rating": 7.02,
+                  "review_count": 48,
+                  "label": "⭐ 7.02/10 · 48 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "AJet",
+                  "scale": 10,
+                  "feedback_key": "3090"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "fa52f5fe7220c34d85e6ef56f8bf0ed0+866655fa50385f0678579c1ce13b7373:06dd44ad3a22ddcce66412f835719a8b",
+            "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+1c48eefba0cc52c4d88bb4df48e3cedb\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+7215689b37d3ce85f046537cc739a1e3:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"49850642838ed2fc909e687a11dbb069\\\"}]\"}",
+            "price": {
+              "amount": 15960.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Basic",
+              "baggage": {
+                "kg": 0,
+                "pieces": 0
+              },
+              "cabin_baggage": {
+                "kg": 4,
+                "pieces": 1,
+                "dimensions": "40 × 30 × 15"
+              },
+              "refundable": false,
+              "changeable": true
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":15960,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"2c28e1cf22378cf46fc3a94c4a4c0139+1c48eefba0cc52c4d88bb4df48e3cedb\\\",\\\"variantConditionsHash\\\":\\\"42451c21bd80b37855f85c7f6ad94374:972e73b7a882d0802a4e3a16946a2f94+7215689b37d3ce85f046537cc739a1e3:972e73b7a882d0802a4e3a16946a2f94\\\",\\\"pricingVariantHash\\\":\\\"49850642838ed2fc909e687a11dbb069\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T05:05:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.02,
+          "review_count": 48,
+          "label": "⭐ 7.02/10 · 48 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "AJet",
+          "scale": 10,
+          "feedback_key": "3090"
+        }
+      },
+      {
+        "offer_id": "68b57d3301b7061b9f0f11294fe935a5",
+        "transport": "avia",
+        "price": {
+          "amount": 16517.0,
+          "currency": "RUB"
+        },
+        "duration_min": 315,
+        "carriers": [
+          "Уральские авиалинии"
+        ],
+        "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+        "segments_count": 1,
+        "departure_at": "2026-09-01T13:00:00+03:00",
+        "arrival_at": "2026-09-01T18:15:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Домодедово (DME)",
+            "to": "Стамбул — Стамбул-Новый (IST)",
+            "departure_at": "2026-09-01T13:00:00+03:00",
+            "arrival_at": "2026-09-01T18:15:00+03:00",
+            "duration_min": 315,
+            "segments": [
+              {
+                "from": "Москва — Домодедово (DME)",
+                "to": "Стамбул — Стамбул-Новый (IST)",
+                "departure_at": "2026-09-01T13:00:00+03:00",
+                "arrival_at": "2026-09-01T18:15:00+03:00",
+                "duration_min": 315,
+                "carrier": "Уральские авиалинии",
+                "voyage_no": "U6-783",
+                "from_geo_point_id": 2718688,
+                "to_geo_point_id": 2727684,
+                "review_summary": {
+                  "rating": 7.47,
+                  "review_count": 14730,
+                  "label": "⭐ 7.47/10 · 14 730 отзывов",
+                  "source": "offers-api.feedback",
+                  "scope": "carrier",
+                  "subject": "Уральские авиалинии",
+                  "scale": 10,
+                  "feedback_key": "1111"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "85a095b0479b29e20ca02544d927eb8a:922b1e9948a9544f3ec69200de7e2176",
+            "offer_hash": "{\"Price\":16517,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"ea92aa530f7d56456d40e434adb098c4\\\",\\\"variantConditionsHash\\\":\\\"68b57d3301b7061b9f0f11294fe935a5:03d1ea601a2e40701ecafefc616d02e6\\\",\\\"pricingVariantHash\\\":\\\"af957c9d2f8c297a5be1aef03d80dc33\\\"}]\"}",
+            "price": {
+              "amount": 16517.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Промо",
+              "baggage": {
+                "kg": 0,
+                "pieces": null
+              },
+              "cabin_baggage": {
+                "kg": 10,
+                "pieces": 1,
+                "dimensions": "55 × 40 × 25"
+              },
+              "refundable": false,
+              "changeable": false
+            },
+            "service_class": "ECONOMIC"
+          },
+          {
+            "variant_id": "85a095b0479b29e20ca02544d927eb8a:e17195945116eee5cc4360dcb82da5f9",
+            "offer_hash": "{\"Price\":20019,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"c3c0f408ad2117652280e677af0c6676\\\",\\\"variantConditionsHash\\\":\\\"68b57d3301b7061b9f0f11294fe935a5:3f16fe56f25b907e45fe29c6f0fc995a\\\",\\\"pricingVariantHash\\\":\\\"fea058995b4c3ebd1307bd506f904f5b\\\"}]\"}",
+            "price": {
+              "amount": 20019.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Эконом",
+              "baggage": {
+                "kg": 23,
+                "pieces": 1
+              },
+              "cabin_baggage": {
+                "kg": 10,
+                "pieces": 1,
+                "dimensions": "55 × 40 × 25"
+              },
+              "refundable": true,
+              "changeable": true,
+              "exchange": {
+                "available": true,
+                "deadline_hours": 1
+              }
+            },
+            "service_class": "ECONOMIC"
+          },
+          {
+            "variant_id": "85a095b0479b29e20ca02544d927eb8a:4d092885eeefcfea271ba047c06138ee",
+            "offer_hash": "{\"Price\":24895,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"94eb95ef14a2e4a855dd5bf764916556\\\",\\\"variantConditionsHash\\\":\\\"68b57d3301b7061b9f0f11294fe935a5:02df24e25a638e082aefa3824ebbb3b2\\\",\\\"pricingVariantHash\\\":\\\"f8a08357564682ab9ea8861c96dbc871\\\"}]\"}",
+            "price": {
+              "amount": 24895.0,
+              "currency": "RUB"
+            },
+            "conditions": {
+              "fare_family": "Премиум Эконом",
+              "baggage": {
+                "kg": 23,
+                "pieces": 2
+              },
+              "cabin_baggage": {
+                "kg": 10,
+                "pieces": 1,
+                "dimensions": "55 × 40 × 25"
+              },
+              "refundable": true,
+              "changeable": true,
+              "exchange": {
+                "available": true,
+                "deadline_hours": 24
+              }
+            },
+            "service_class": "ECONOMIC"
+          }
+        ],
+        "checkout_ref": {
+          "transport": "avia",
+          "is_round_trip": false,
+          "search_results_url": "https://avia.tutu.ru/f/Moskva/Stambul/?class=Y&travelers=1&route[0]=491-01092026-419",
+          "offer_hash": "{\"Price\":16517,\"OriginalHash\":\"[{\\\"offerVariantHash\\\":\\\"ea92aa530f7d56456d40e434adb098c4\\\",\\\"variantConditionsHash\\\":\\\"68b57d3301b7061b9f0f11294fe935a5:03d1ea601a2e40701ecafefc616d02e6\\\",\\\"pricingVariantHash\\\":\\\"af957c9d2f8c297a5be1aef03d80dc33\\\"}]\"}",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2657208,
+          "departure_at": "2026-09-01T13:00:00+03:00",
+          "service_class": "ECONOMIC",
+          "departure_avia_id": "491",
+          "arrival_avia_id": "419",
+          "passengers_full": 1,
+          "passengers_child": 0,
+          "passengers_infant": 0
+        },
+        "review_summary": {
+          "rating": 7.47,
+          "review_count": 14730,
+          "label": "⭐ 7.47/10 · 14 730 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Уральские авиалинии",
+          "scale": 10,
+          "feedback_key": "1111"
+        }
+      }
+    ],
+    "meta": {
+      "transport": "avia",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва город федерального значения",
+        "iata": "MOW"
+      },
+      "to": {
+        "name": "Стамбул",
+        "geo_id": "2657208",
+        "region": "Стамбул провинция",
+        "iata": "IST"
+      },
+      "round_trip": false,
+      "return_date": null,
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "total_matched": 123,
+      "total_matched_exact": true,
+      "has_more": true,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "post_filter_dropped_wrong_flight_number": 0,
+      "carriers_available": [
+        {
+          "name": "Победа",
+          "offers_count": 1,
+          "price_from": 13582.0
+        },
+        {
+          "name": "Southwind Airlines",
+          "offers_count": 1,
+          "price_from": 15724.34
+        },
+        {
+          "name": "AJet",
+          "offers_count": 10,
+          "price_from": 15960.0
+        },
+        {
+          "name": "Уральские авиалинии",
+          "offers_count": 1,
+          "price_from": 16517.0
+        },
+        {
+          "name": "Аэрофлот",
+          "offers_count": 10,
+          "price_from": 18002.0
+        },
+        {
+          "name": "S7 Airlines",
+          "offers_count": 4,
+          "price_from": 18446.0
+        },
+        {
+          "name": "Pegasus Airlines",
+          "offers_count": 16,
+          "price_from": 23132.0
+        },
+        {
+          "name": "Azerbaijan Airlines (AZAL)",
+          "offers_count": 13,
+          "price_from": 23771.0
+        },
+        {
+          "name": "SCAT Air",
+          "offers_count": 1,
+          "price_from": 26320.0
+        },
+        {
+          "name": "Turkish Airlines",
+          "offers_count": 24,
+          "price_from": 30607.0
+        },
+        {
+          "name": "Utair",
+          "offers_count": 1,
+          "price_from": 37617.0
+        },
+        {
+          "name": "Flynas",
+          "offers_count": 1,
+          "price_from": 38555.0
+        },
+        {
+          "name": "Gulf Air",
+          "offers_count": 3,
+          "price_from": 40410.0
+        },
+        {
+          "name": "Азимут",
+          "offers_count": 1,
+          "price_from": 43901.0
+        },
+        {
+          "name": "Centrum Air",
+          "offers_count": 2,
+          "price_from": 49583.94
+        },
+        {
+          "name": "Uzbekistan Airways",
+          "offers_count": 1,
+          "price_from": 52587.0
+        },
+        {
+          "name": "Qatar Airways",
+          "offers_count": 3,
+          "price_from": 58779.0
+        },
+        {
+          "name": "Egyptair",
+          "offers_count": 6,
+          "price_from": 63321.0
+        },
+        {
+          "name": "Etihad Airways",
+          "offers_count": 3,
+          "price_from": 72654.0
+        },
+        {
+          "name": "Air Serbia",
+          "offers_count": 3,
+          "price_from": 83098.0
+        },
+        {
+          "name": "Emirates",
+          "offers_count": 19,
+          "price_from": 96417.0
+        },
+        {
+          "name": "Royal Jordanian",
+          "offers_count": 3,
+          "price_from": 96499.0
+        },
+        {
+          "name": "Royal Air Maroc",
+          "offers_count": 1,
+          "price_from": 149664.0
+        }
+      ],
+      "upstream_note": null
+    }
+  }
+}

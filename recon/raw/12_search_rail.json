@@ -1,0 +1,10 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Кукуево-Задрищенск",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "_tool_error": "Error executing tool search_rail: could not resolve destination='Кукуево-Задрищенск'"
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "_tool_error": "Error executing tool get_offer_details: 1 validation error for get_offer_detailsArguments\nproduct_type\n  Input should be 'hotels', 'avia', 'rail', 'railway', 'bus' or 'etrain' [type=literal_error, input_value='hotel', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error"
+}

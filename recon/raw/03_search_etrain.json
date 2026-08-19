@@ -1,0 +1,733 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Одинцово",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "offers": [
+      {
+        "offer_id": "01b1153689fc711fbf82f6fe39f57b98",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 37,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T19:48:00+03:00",
+        "arrival_at": "2026-09-01T20:25:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T19:48:00+03:00",
+            "arrival_at": "2026-09-01T20:25:00+03:00",
+            "duration_min": 37,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T19:48:00+03:00",
+                "arrival_at": "2026-09-01T20:25:00+03:00",
+                "duration_min": 37,
+                "carrier": null,
+                "voyage_no": "6253",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Стандарт плюс",
+                  "code": "standardPlus",
+                  "description": "Поезд с повышенным уровнем комфорта. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "02a04b6fb4a7d1ba8f3b4fbcd69ed3cd",
+            "offer_hash": "01b1153689fc711fbf82f6fe39f57b98",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6253",
+          "departure_at": "2026-09-01T19:48:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "0237dee92d01c360d071c740d89fab7d",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 38,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-02T01:23:00+03:00",
+        "arrival_at": "2026-09-02T02:01:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-02T01:23:00+03:00",
+            "arrival_at": "2026-09-02T02:01:00+03:00",
+            "duration_min": 38,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-02T01:23:00+03:00",
+                "arrival_at": "2026-09-02T02:01:00+03:00",
+                "duration_min": 38,
+                "carrier": null,
+                "voyage_no": "7279",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Иволга",
+                  "code": "ivolga",
+                  "description": "Городские электрички с просторным салоном. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "64c193b7c0622a2afd5164a77db6c619",
+            "offer_hash": "0237dee92d01c360d071c740d89fab7d",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "7279",
+          "departure_at": "2026-09-02T01:23:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "029e4fb492151bc6a6301f99d5a8db2a",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 37,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T17:13:00+03:00",
+        "arrival_at": "2026-09-01T17:50:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T17:13:00+03:00",
+            "arrival_at": "2026-09-01T17:50:00+03:00",
+            "duration_min": 37,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T17:13:00+03:00",
+                "arrival_at": "2026-09-01T17:50:00+03:00",
+                "duration_min": 37,
+                "carrier": null,
+                "voyage_no": "6221",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Стандарт плюс",
+                  "code": "standardPlus",
+                  "description": "Поезд с повышенным уровнем комфорта. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "29239ac597647369577704722747ecf7",
+            "offer_hash": "029e4fb492151bc6a6301f99d5a8db2a",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6221",
+          "departure_at": "2026-09-01T17:13:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "03f1724694dc11a39c184283e0d32e88",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 37,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T10:43:00+03:00",
+        "arrival_at": "2026-09-01T11:20:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T10:43:00+03:00",
+            "arrival_at": "2026-09-01T11:20:00+03:00",
+            "duration_min": 37,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T10:43:00+03:00",
+                "arrival_at": "2026-09-01T11:20:00+03:00",
+                "duration_min": 37,
+                "carrier": null,
+                "voyage_no": "6157",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Стандарт плюс",
+                  "code": "standardPlus",
+                  "description": "Поезд с повышенным уровнем комфорта. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "775c30d7a4e4cf8e81ed859f7ef03415",
+            "offer_hash": "03f1724694dc11a39c184283e0d32e88",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6157",
+          "departure_at": "2026-09-01T10:43:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "0445ed3b74cdb6c247b425b22d2ea8ea",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 38,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-02T00:08:00+03:00",
+        "arrival_at": "2026-09-02T00:46:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-02T00:08:00+03:00",
+            "arrival_at": "2026-09-02T00:46:00+03:00",
+            "duration_min": 38,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-02T00:08:00+03:00",
+                "arrival_at": "2026-09-02T00:46:00+03:00",
+                "duration_min": 38,
+                "carrier": null,
+                "voyage_no": "6075/7375",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Аэроэкспресс",
+                  "code": "aeroExpress",
+                  "description": "Поезд, соединяющий вокзалы с аэропортами Москвы с минимум остановок. Для проезда нужен специальный билет"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "0021f6ded3adb70de14b82f1177057b6",
+            "offer_hash": "0445ed3b74cdb6c247b425b22d2ea8ea",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6075/7375",
+          "departure_at": "2026-09-02T00:08:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "04c5f1d72de0aabb9c0a34c771e98069",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 36,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T15:14:00+03:00",
+        "arrival_at": "2026-09-01T15:50:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T15:14:00+03:00",
+            "arrival_at": "2026-09-01T15:50:00+03:00",
+            "duration_min": 36,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T15:14:00+03:00",
+                "arrival_at": "2026-09-01T15:50:00+03:00",
+                "duration_min": 36,
+                "carrier": null,
+                "voyage_no": "6909",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Стандарт плюс",
+                  "code": "standardPlus",
+                  "description": "Поезд с повышенным уровнем комфорта. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "81689de77799572ed1f794a3034ca82c",
+            "offer_hash": "04c5f1d72de0aabb9c0a34c771e98069",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6909",
+          "departure_at": "2026-09-01T15:14:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "05b69e28cab054e005e80ead77b26b01",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 38,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-02T00:23:00+03:00",
+        "arrival_at": "2026-09-02T01:01:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-02T00:23:00+03:00",
+            "arrival_at": "2026-09-02T01:01:00+03:00",
+            "duration_min": 38,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-02T00:23:00+03:00",
+                "arrival_at": "2026-09-02T01:01:00+03:00",
+                "duration_min": 38,
+                "carrier": null,
+                "voyage_no": "7275",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Иволга",
+                  "code": "ivolga",
+                  "description": "Городские электрички с просторным салоном. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "4df377df6074943ed801af22dcf1bdb2",
+            "offer_hash": "05b69e28cab054e005e80ead77b26b01",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "7275",
+          "departure_at": "2026-09-02T00:23:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "05e2c251e6c4dfbf40cd37d90cb81b8b",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 37,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T20:43:00+03:00",
+        "arrival_at": "2026-09-01T21:20:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T20:43:00+03:00",
+            "arrival_at": "2026-09-01T21:20:00+03:00",
+            "duration_min": 37,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T20:43:00+03:00",
+                "arrival_at": "2026-09-01T21:20:00+03:00",
+                "duration_min": 37,
+                "carrier": null,
+                "voyage_no": "6261",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Стандарт плюс",
+                  "code": "standardPlus",
+                  "description": "Поезд с повышенным уровнем комфорта. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "8747b2f65760260260a9c514a6afa489",
+            "offer_hash": "05e2c251e6c4dfbf40cd37d90cb81b8b",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6261",
+          "departure_at": "2026-09-01T20:43:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "06ddc86291f2fc637f671ad329ad9df5",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 38,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T23:53:00+03:00",
+        "arrival_at": "2026-09-02T00:31:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T23:53:00+03:00",
+            "arrival_at": "2026-09-02T00:31:00+03:00",
+            "duration_min": 38,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T23:53:00+03:00",
+                "arrival_at": "2026-09-02T00:31:00+03:00",
+                "duration_min": 38,
+                "carrier": null,
+                "voyage_no": "7273",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Иволга",
+                  "code": "ivolga",
+                  "description": "Городские электрички с просторным салоном. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "1d0a5bc7550a41f965c724965c480edf",
+            "offer_hash": "06ddc86291f2fc637f671ad329ad9df5",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "7273",
+          "departure_at": "2026-09-01T23:53:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      },
+      {
+        "offer_id": "06e52c5ba9f9f61d65fd53f8e5636bb2",
+        "transport": "etrain",
+        "price": {
+          "amount": 139.0,
+          "currency": "RUB"
+        },
+        "duration_min": 37,
+        "carriers": [],
+        "search_results_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "segments_count": 1,
+        "checkout_url": "https://www.tutu.ru/rasp.php?st1=101&st2=1701&date=01.09.2026",
+        "departure_at": "2026-09-01T19:18:00+03:00",
+        "arrival_at": "2026-09-01T19:55:30+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Москва — Москва Белорусская (2000006)",
+            "to": "Одинцово, 2000055",
+            "departure_at": "2026-09-01T19:18:00+03:00",
+            "arrival_at": "2026-09-01T19:55:30+03:00",
+            "duration_min": 37,
+            "segments": [
+              {
+                "from": "Москва — Москва Белорусская (2000006)",
+                "to": "Одинцово, 2000055",
+                "departure_at": "2026-09-01T19:18:00+03:00",
+                "arrival_at": "2026-09-01T19:55:30+03:00",
+                "duration_min": 37,
+                "carrier": null,
+                "voyage_no": "6361/6249",
+                "from_geo_point_id": 2957767,
+                "to_geo_point_id": 2957797,
+                "subtype": "etrain",
+                "vehicle_meta": {
+                  "name": "Стандарт плюс",
+                  "code": "standardPlus",
+                  "description": "Поезд с повышенным уровнем комфорта. Действуют те же билеты, что и на обычную электричку"
+                }
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "78868b02af5f8a66e3555dde229e3415",
+            "offer_hash": "06e52c5ba9f9f61d65fd53f8e5636bb2",
+            "price": {
+              "amount": 139.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "etrain",
+          "departure_city_id": 2657260,
+          "arrival_city_id": 2694250,
+          "departure_station_code": "2000006",
+          "arrival_station_code": "2000055",
+          "train_number": "6361/6249",
+          "departure_at": "2026-09-01T19:18:00+03:00",
+          "departure_etrain_id": 101,
+          "arrival_etrain_id": 1701
+        }
+      }
+    ],
+    "meta": {
+      "transport": "etrain",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва"
+      },
+      "to": {
+        "name": "Одинцово",
+        "geo_id": "2694250",
+        "region": "Московская область, Одинцовский городской округ",
+        "also_named": [
+          {
+            "geo_id": "9501116",
+            "name": "Одинцово",
+            "region": "Смоленская область, городской округ Смоленск"
+          },
+          {
+            "geo_id": "3556111",
+            "name": "Одинцово",
+            "region": "Нижегородская область, городской округ Шахунья"
+          },
+          {
+            "geo_id": "3595460",
+            "name": "Одинцово",
+            "region": "Тульская область, Ясногорский район"
+          },
+          {
+            "geo_id": "3550339",
+            "name": "Одинцово",
+            "region": "Тверская область, Кимрский муниципальный округ"
+          },
+          {
+            "geo_id": "4252059",
+            "name": "Одинцово",
+            "region": "Костромская область, Чухломский район"
+          },
+          {
+            "geo_id": "4000253",
+            "name": "Одинцово",
+            "region": "Новгородская область, Пестовский район"
+          },
+          {
+            "geo_id": "3393664",
+            "name": "Одинцово",
+            "region": "Московская область, городской округ Домодедово"
+          },
+          {
+            "geo_id": "3829917",
+            "name": "Одинцово",
+            "region": "Тверская область, Сонковский муниципальный округ"
+          },
+          {
+            "geo_id": "3668891",
+            "name": "Одинцово",
+            "region": "Тульская область, Тёпло-Огарёвский район"
+          }
+        ]
+      },
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "total_matched": 196,
+      "total_matched_exact": true,
+      "has_more": true,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "carriers_available": [],
+      "upstream_non_etrain_dropped": 0
+    }
+  }
+}

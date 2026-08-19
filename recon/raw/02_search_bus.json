@@ -1,0 +1,1781 @@
+{
+  "args": {
+    "origin": "Москва",
+    "destination": "Тула",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "offers": [
+      {
+        "offer_id": "aea5be4d59e5709a58c70d9aebd46e2c",
+        "transport": "bus",
+        "price": {
+          "amount": 1300.0,
+          "currency": "RUB"
+        },
+        "duration_min": 150,
+        "carriers": [
+          "Турцентр-Экспо"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T13:00:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=exo5hc0mIhbKknwY%252B6Ca5lbs4%252Bruy22RWtKru4VNAJwndK%252Fq6MmeUYEKqkUWJH%252FcAu5By%252B90OoCeyMAHL7RX3Dm5%252BDOmm%252FJQbO0dpVY3vKyOJ%252FXmUq5%252BBtcHFVm%252B%252BCyZXE%252FyAIGA9G08VOJcMaImUlF5WpX4PAPwk5WjnGDKuuAqNsIRotg%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T13:00:00+03:00",
+        "arrival_at": "2026-09-01T15:30:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Международный автовокзал Саларьево",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T13:00:00+03:00",
+            "arrival_at": "2026-09-01T15:30:00+03:00",
+            "duration_min": 150,
+            "segments": [
+              {
+                "from": "Международный автовокзал Саларьево",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T13:00:00+03:00",
+                "arrival_at": "2026-09-01T15:30:00+03:00",
+                "duration_min": 150,
+                "carrier": "Турцентр-Экспо",
+                "voyage_no": null,
+                "from_geo_point_id": 4583261,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "ed6c553d6bd0d45173a20eda10436d36",
+            "offer_hash": "exo5hc0mIhbKknwY%2B6Ca5lbs4%2Bruy22RWtKru4VNAJwndK%2Fq6MmeUYEKqkUWJH%2FcAu5By%2B90OoCeyMAHL7RX3Dm5%2BDOmm%2FJQbO0dpVY3vKyOJ%2FXmUq5%2BBtcHFVm%2B%2BCyZXE%2FyAIGA9G08VOJcMaImUlF5WpX4PAPwk5WjnGDKuuAqNsIRotg%3D",
+            "price": {
+              "amount": 1300.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "exo5hc0mIhbKknwY%2B6Ca5lbs4%2Bruy22RWtKru4VNAJwndK%2Fq6MmeUYEKqkUWJH%2FcAu5By%2B90OoCeyMAHL7RX3Dm5%2BDOmm%2FJQbO0dpVY3vKyOJ%2FXmUq5%2BBtcHFVm%2B%2BCyZXE%2FyAIGA9G08VOJcMaImUlF5WpX4PAPwk5WjnGDKuuAqNsIRotg%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 4583261,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Международный автовокзал Саларьево",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T13:00:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "exo5hc0mIhbKknwY%2B6Ca5lbs4%2Bruy22RWtKru4VNAJwndK%2Fq6MmeUYEKqkUWJH%2FcAu5By%2B90OoCeyMAHL7RX3Dm5%2BDOmm%2FJQbO0dpVY3vKyOJ%2FXmUq5%2BBtcHFVm%2B%2BCyZXE%2FyAIGA9G08VOJcMaImUlF5WpX4PAPwk5WjnGDKuuAqNsIRotg%3D",
+          "departure_stop_id": 4583261,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Международный автовокзал Саларьево",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1300.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Турцентр-Экспо"
+          ],
+          "duration_min": 150,
+          "departure_at": "2026-09-01T13:00:00+03:00",
+          "arrival_at": "2026-09-01T15:30:00+03:00",
+          "review_summary": {
+            "rating": 8.2,
+            "review_count": 769,
+            "label": "⭐ 8.2/10 · 769 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Турцентр-Экспо",
+            "aspects": [
+              {
+                "rating": 8.1,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Турцентр-Экспо",
+                "label": "⭐ 8.1/10 · Автобус"
+              },
+              {
+                "rating": 8.7,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Турцентр-Экспо",
+                "label": "⭐ 8.7/10 · Водитель"
+              },
+              {
+                "rating": 7.6,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Турцентр-Экспо",
+                "label": "⭐ 7.6/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1116"
+          }
+        },
+        "review_summary": {
+          "rating": 8.2,
+          "review_count": 769,
+          "label": "⭐ 8.2/10 · 769 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Турцентр-Экспо",
+          "aspects": [
+            {
+              "rating": 8.1,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Турцентр-Экспо",
+              "label": "⭐ 8.1/10 · Автобус"
+            },
+            {
+              "rating": 8.7,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Турцентр-Экспо",
+              "label": "⭐ 8.7/10 · Водитель"
+            },
+            {
+              "rating": 7.6,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Турцентр-Экспо",
+              "label": "⭐ 7.6/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1116"
+        }
+      },
+      {
+        "offer_id": "6ba7583834f5c9471cfb022a8372c7a5",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T22:30:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A1%252B53L1WJhQEFRU6LDvmfdG2fcndVbYf2MAjTBBJc7pTERSALys6PBm0E3%252B3GVYvU7051HLXz1RnNwV6oSO3DCpbgyrRZgp1Kif5q3Fq%252Bb2NtJriNZDHsu9o8hlAx9NyGzREVQVuhfbuzsqLOripTwCBatoJC%252F1pzlKU%252F1uqGMYDzCNujFNOpu0HnneUh7%252F7dv8oeRVtC%252FomLBKoWlFwSxsrIqmJwALf0ZzVFnwnamT8JvP79XwtGfXPjTEmrbjfvB8IHcdTgg4oZZAP7VGXBE9Uaap1jjrRLtEyK%252BVK8LyXBta1B4uk0gT8wnfRp2V%252Fllwwk36sZ005m0KZqlmc0ih%252BWh8%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T22:30:00+03:00",
+        "arrival_at": "2026-09-02T02:00:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T22:30:00+03:00",
+            "arrival_at": "2026-09-02T02:00:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T22:30:00+03:00",
+                "arrival_at": "2026-09-02T02:00:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "139dc824e257948b1cccaf5af8881b0e",
+            "offer_hash": "A1%2B53L1WJhQEFRU6LDvmfdG2fcndVbYf2MAjTBBJc7pTERSALys6PBm0E3%2B3GVYvU7051HLXz1RnNwV6oSO3DCpbgyrRZgp1Kif5q3Fq%2Bb2NtJriNZDHsu9o8hlAx9NyGzREVQVuhfbuzsqLOripTwCBatoJC%2F1pzlKU%2F1uqGMYDzCNujFNOpu0HnneUh7%2F7dv8oeRVtC%2FomLBKoWlFwSxsrIqmJwALf0ZzVFnwnamT8JvP79XwtGfXPjTEmrbjfvB8IHcdTgg4oZZAP7VGXBE9Uaap1jjrRLtEyK%2BVK8LyXBta1B4uk0gT8wnfRp2V%2Fllwwk36sZ005m0KZqlmc0ih%2BWh8%3D",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1%2B53L1WJhQEFRU6LDvmfdG2fcndVbYf2MAjTBBJc7pTERSALys6PBm0E3%2B3GVYvU7051HLXz1RnNwV6oSO3DCpbgyrRZgp1Kif5q3Fq%2Bb2NtJriNZDHsu9o8hlAx9NyGzREVQVuhfbuzsqLOripTwCBatoJC%2F1pzlKU%2F1uqGMYDzCNujFNOpu0HnneUh7%2F7dv8oeRVtC%2FomLBKoWlFwSxsrIqmJwALf0ZzVFnwnamT8JvP79XwtGfXPjTEmrbjfvB8IHcdTgg4oZZAP7VGXBE9Uaap1jjrRLtEyK%2BVK8LyXBta1B4uk0gT8wnfRp2V%2Fllwwk36sZ005m0KZqlmc0ih%2BWh8%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T22:30:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1%2B53L1WJhQEFRU6LDvmfdG2fcndVbYf2MAjTBBJc7pTERSALys6PBm0E3%2B3GVYvU7051HLXz1RnNwV6oSO3DCpbgyrRZgp1Kif5q3Fq%2Bb2NtJriNZDHsu9o8hlAx9NyGzREVQVuhfbuzsqLOripTwCBatoJC%2F1pzlKU%2F1uqGMYDzCNujFNOpu0HnneUh7%2F7dv8oeRVtC%2FomLBKoWlFwSxsrIqmJwALf0ZzVFnwnamT8JvP79XwtGfXPjTEmrbjfvB8IHcdTgg4oZZAP7VGXBE9Uaap1jjrRLtEyK%2BVK8LyXBta1B4uk0gT8wnfRp2V%2Fllwwk36sZ005m0KZqlmc0ih%2BWh8%3D",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T22:30:00+03:00",
+          "arrival_at": "2026-09-02T02:00:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "83841b3a06764499e4a36fc65a4afed3",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T18:00:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A18rwI1WJhTE5TmtaLnaBnaQ7lBrc8Cilz6f6AosA3L2fNwfGpdv7ol%252B3%252BSXa7iVEtZMpBWZj4YYuAAEqccQbNsrX06GL7gJ4gVBxYi0NHg9yG6js35wlf%252BgNmfXc4k62hlXEY6IDcwD6NtKe4L4duuOa94IS%252FVIwrda%252FmIFmigX60%252F%252B6IP59ZE%252Fy%252B%252F6%252Bf1NUBeuSqgeasPtkK%252B4IcpeAv8OG1mIwAob1Yw0s1BOCXbE1wKcndC60uDwKhCOzHL1yw%252FYzO%252F%252BmjlBQU0G%252FhAmw8fX07m%252FeKzV60x9K6BWkKy3QEuCwsq%252B%252FqH6dEAId5B0FAvZ%252F5lf1M%252FQ3bfn9a800yiBWg%253D%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T18:00:00+03:00",
+        "arrival_at": "2026-09-01T21:30:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T18:00:00+03:00",
+            "arrival_at": "2026-09-01T21:30:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T18:00:00+03:00",
+                "arrival_at": "2026-09-01T21:30:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "2328d32327bbd3175e74555a134b0d12",
+            "offer_hash": "A18rwI1WJhTE5TmtaLnaBnaQ7lBrc8Cilz6f6AosA3L2fNwfGpdv7ol%2B3%2BSXa7iVEtZMpBWZj4YYuAAEqccQbNsrX06GL7gJ4gVBxYi0NHg9yG6js35wlf%2BgNmfXc4k62hlXEY6IDcwD6NtKe4L4duuOa94IS%2FVIwrda%2FmIFmigX60%2F%2B6IP59ZE%2Fy%2B%2F6%2Bf1NUBeuSqgeasPtkK%2B4IcpeAv8OG1mIwAob1Yw0s1BOCXbE1wKcndC60uDwKhCOzHL1yw%2FYzO%2F%2BmjlBQU0G%2FhAmw8fX07m%2FeKzV60x9K6BWkKy3QEuCwsq%2B%2FqH6dEAId5B0FAvZ%2F5lf1M%2FQ3bfn9a800yiBWg%3D%3D",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A18rwI1WJhTE5TmtaLnaBnaQ7lBrc8Cilz6f6AosA3L2fNwfGpdv7ol%2B3%2BSXa7iVEtZMpBWZj4YYuAAEqccQbNsrX06GL7gJ4gVBxYi0NHg9yG6js35wlf%2BgNmfXc4k62hlXEY6IDcwD6NtKe4L4duuOa94IS%2FVIwrda%2FmIFmigX60%2F%2B6IP59ZE%2Fy%2B%2F6%2Bf1NUBeuSqgeasPtkK%2B4IcpeAv8OG1mIwAob1Yw0s1BOCXbE1wKcndC60uDwKhCOzHL1yw%2FYzO%2F%2BmjlBQU0G%2FhAmw8fX07m%2FeKzV60x9K6BWkKy3QEuCwsq%2B%2FqH6dEAId5B0FAvZ%2F5lf1M%2FQ3bfn9a800yiBWg%3D%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T18:00:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A18rwI1WJhTE5TmtaLnaBnaQ7lBrc8Cilz6f6AosA3L2fNwfGpdv7ol%2B3%2BSXa7iVEtZMpBWZj4YYuAAEqccQbNsrX06GL7gJ4gVBxYi0NHg9yG6js35wlf%2BgNmfXc4k62hlXEY6IDcwD6NtKe4L4duuOa94IS%2FVIwrda%2FmIFmigX60%2F%2B6IP59ZE%2Fy%2B%2F6%2Bf1NUBeuSqgeasPtkK%2B4IcpeAv8OG1mIwAob1Yw0s1BOCXbE1wKcndC60uDwKhCOzHL1yw%2FYzO%2F%2BmjlBQU0G%2FhAmw8fX07m%2FeKzV60x9K6BWkKy3QEuCwsq%2B%2FqH6dEAId5B0FAvZ%2F5lf1M%2FQ3bfn9a800yiBWg%3D%3D",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T18:00:00+03:00",
+          "arrival_at": "2026-09-01T21:30:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "84b804a906273493c82cfb3720024527",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T11:15:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A1853Y1WJhQkDa0Bi2tH%252FWbuzBrvxOx3ImZuuoPFLyZdADoiHmpDPZG1V2wSK%252FZoMT5kBwIAER6%252Bh%252FqZQAWJ3f9kwiL%252Bgnyi5bis9o0hMJv49Wa977sFUQqY67YIGdsZu4%252BAJ5OSxJkK1%252BVkOKLEZARrLKC9WQSJt%252B%252FX3Is9CEHI6RGDE%252FOUXBjwx8QQp4tyfSy90pUs2xnKXrTOD24SJ1uuUCPVLsx4rzf3XDz472WF%252F8oCGSa0LE0PaxIbO1mVES0r1y4Xp0u0HGlQttv8Ca0Np6CK5VkO5N6nMk52uu%252FGGPpvNBRj1QR8Tag8sD4BAru8v2mCFKaCUiU0%252FETf1ih%252BWh8%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T11:15:00+03:00",
+        "arrival_at": "2026-09-01T14:45:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T11:15:00+03:00",
+            "arrival_at": "2026-09-01T14:45:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T11:15:00+03:00",
+                "arrival_at": "2026-09-01T14:45:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "cd724cd499f9e0e0d887e6fd0fc8dc44",
+            "offer_hash": "A1853Y1WJhQkDa0Bi2tH%2FWbuzBrvxOx3ImZuuoPFLyZdADoiHmpDPZG1V2wSK%2FZoMT5kBwIAER6%2Bh%2FqZQAWJ3f9kwiL%2Bgnyi5bis9o0hMJv49Wa977sFUQqY67YIGdsZu4%2BAJ5OSxJkK1%2BVkOKLEZARrLKC9WQSJt%2B%2FX3Is9CEHI6RGDE%2FOUXBjwx8QQp4tyfSy90pUs2xnKXrTOD24SJ1uuUCPVLsx4rzf3XDz472WF%2F8oCGSa0LE0PaxIbO1mVES0r1y4Xp0u0HGlQttv8Ca0Np6CK5VkO5N6nMk52uu%2FGGPpvNBRj1QR8Tag8sD4BAru8v2mCFKaCUiU0%2FETf1ih%2BWh8%3D",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1853Y1WJhQkDa0Bi2tH%2FWbuzBrvxOx3ImZuuoPFLyZdADoiHmpDPZG1V2wSK%2FZoMT5kBwIAER6%2Bh%2FqZQAWJ3f9kwiL%2Bgnyi5bis9o0hMJv49Wa977sFUQqY67YIGdsZu4%2BAJ5OSxJkK1%2BVkOKLEZARrLKC9WQSJt%2B%2FX3Is9CEHI6RGDE%2FOUXBjwx8QQp4tyfSy90pUs2xnKXrTOD24SJ1uuUCPVLsx4rzf3XDz472WF%2F8oCGSa0LE0PaxIbO1mVES0r1y4Xp0u0HGlQttv8Ca0Np6CK5VkO5N6nMk52uu%2FGGPpvNBRj1QR8Tag8sD4BAru8v2mCFKaCUiU0%2FETf1ih%2BWh8%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T11:15:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1853Y1WJhQkDa0Bi2tH%2FWbuzBrvxOx3ImZuuoPFLyZdADoiHmpDPZG1V2wSK%2FZoMT5kBwIAER6%2Bh%2FqZQAWJ3f9kwiL%2Bgnyi5bis9o0hMJv49Wa977sFUQqY67YIGdsZu4%2BAJ5OSxJkK1%2BVkOKLEZARrLKC9WQSJt%2B%2FX3Is9CEHI6RGDE%2FOUXBjwx8QQp4tyfSy90pUs2xnKXrTOD24SJ1uuUCPVLsx4rzf3XDz472WF%2F8oCGSa0LE0PaxIbO1mVES0r1y4Xp0u0HGlQttv8Ca0Np6CK5VkO5N6nMk52uu%2FGGPpvNBRj1QR8Tag8sD4BAru8v2mCFKaCUiU0%2FETf1ih%2BWh8%3D",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T11:15:00+03:00",
+          "arrival_at": "2026-09-01T14:45:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "9e92109775d7dd8e66599d4c8656549b",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T20:15:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A1%252B73L1WJhUEFR26NTvmfdG2fcmdudyllFXmEbG%252FC67%252FERyALyvSScpRg1x2CxVJfSOv%252FUCNeVrDgvw%252FV11hbmqZjQ6MdJmAf4rguHG3fw0dJSRpGaVbWBj1m9CZt0FFfQFdKrsN5p%252Bf3qu85TDq9F6SSHqI8cHl1ZvoVOg%252FS%252BfFCDWyQ2zQE3POgpzZ82afZb78P6Pw67CL66e%252BWLahSrUeqvM%252BjMmoCd1r74TM%252BYOW6VZP%252FwV13B5H7IBT9vY36qvy9Vq07E7ChiDge%252FJ9YWenQLD1hDOMtF6itZcuu32WEF6mlXqbRDEzDqC%252FXCdaDgdzhRIAAfyJ9oK9rqZfULd%252BpeABQg%253D%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T20:15:00+03:00",
+        "arrival_at": "2026-09-01T23:45:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T20:15:00+03:00",
+            "arrival_at": "2026-09-01T23:45:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T20:15:00+03:00",
+                "arrival_at": "2026-09-01T23:45:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "f1739e427b64d995929b46c7da08faee",
+            "offer_hash": "A1%2B73L1WJhUEFR26NTvmfdG2fcmdudyllFXmEbG%2FC67%2FERyALyvSScpRg1x2CxVJfSOv%2FUCNeVrDgvw%2FV11hbmqZjQ6MdJmAf4rguHG3fw0dJSRpGaVbWBj1m9CZt0FFfQFdKrsN5p%2Bf3qu85TDq9F6SSHqI8cHl1ZvoVOg%2FS%2BfFCDWyQ2zQE3POgpzZ82afZb78P6Pw67CL66e%2BWLahSrUeqvM%2BjMmoCd1r74TM%2BYOW6VZP%2FwV13B5H7IBT9vY36qvy9Vq07E7ChiDge%2FJ9YWenQLD1hDOMtF6itZcuu32WEF6mlXqbRDEzDqC%2FXCdaDgdzhRIAAfyJ9oK9rqZfULd%2BpeABQg%3D%3D",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1%2B73L1WJhUEFR26NTvmfdG2fcmdudyllFXmEbG%2FC67%2FERyALyvSScpRg1x2CxVJfSOv%2FUCNeVrDgvw%2FV11hbmqZjQ6MdJmAf4rguHG3fw0dJSRpGaVbWBj1m9CZt0FFfQFdKrsN5p%2Bf3qu85TDq9F6SSHqI8cHl1ZvoVOg%2FS%2BfFCDWyQ2zQE3POgpzZ82afZb78P6Pw67CL66e%2BWLahSrUeqvM%2BjMmoCd1r74TM%2BYOW6VZP%2FwV13B5H7IBT9vY36qvy9Vq07E7ChiDge%2FJ9YWenQLD1hDOMtF6itZcuu32WEF6mlXqbRDEzDqC%2FXCdaDgdzhRIAAfyJ9oK9rqZfULd%2BpeABQg%3D%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T20:15:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1%2B73L1WJhUEFR26NTvmfdG2fcmdudyllFXmEbG%2FC67%2FERyALyvSScpRg1x2CxVJfSOv%2FUCNeVrDgvw%2FV11hbmqZjQ6MdJmAf4rguHG3fw0dJSRpGaVbWBj1m9CZt0FFfQFdKrsN5p%2Bf3qu85TDq9F6SSHqI8cHl1ZvoVOg%2FS%2BfFCDWyQ2zQE3POgpzZ82afZb78P6Pw67CL66e%2BWLahSrUeqvM%2BjMmoCd1r74TM%2BYOW6VZP%2FwV13B5H7IBT9vY36qvy9Vq07E7ChiDge%2FJ9YWenQLD1hDOMtF6itZcuu32WEF6mlXqbRDEzDqC%2FXCdaDgdzhRIAAfyJ9oK9rqZfULd%2BpeABQg%3D%3D",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T20:15:00+03:00",
+          "arrival_at": "2026-09-01T23:45:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "a866e2680b0fa8d4dd9c891e798e3710",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T13:30:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A1%252B54L1WOhQEFRUS2Ev2dOWjcHe7WdJYSA6SbPN7N6jZzCQelEMOmVTLCAyli%252Bj0qk6ZOqnn0wYWxMkxfv2nQD7pOoQHU1RlpbfKLVAxTy148RyOiTYnaAD%252F6Tee2Hb%252B6RtTxuAKm3w8yBc0RVBG4J7qSHuIMgAtNIwl%252FUfML6o8oDnwIvae5GjbYf12z9YU%252BQvH30%252BQlqT1Mu10uN6oloOXcfolEB3o5BprbvM2TfOL06e%252BrnV4PtD1x4JVSyRPvB8IHcdTgo4oZYwP7VGXBE9Uaap1jjoRg02ZW2wmouzFMLo2XhYQAOD96W80JVj4VjmnXQmaWAZdDDZGRTDTyCh%252BWh8%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T13:30:00+03:00",
+        "arrival_at": "2026-09-01T17:00:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T13:30:00+03:00",
+            "arrival_at": "2026-09-01T17:00:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T13:30:00+03:00",
+                "arrival_at": "2026-09-01T17:00:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "c6006acade7296b395f6358a27324f4e",
+            "offer_hash": "A1%2B54L1WOhQEFRUS2Ev2dOWjcHe7WdJYSA6SbPN7N6jZzCQelEMOmVTLCAyli%2Bj0qk6ZOqnn0wYWxMkxfv2nQD7pOoQHU1RlpbfKLVAxTy148RyOiTYnaAD%2F6Tee2Hb%2B6RtTxuAKm3w8yBc0RVBG4J7qSHuIMgAtNIwl%2FUfML6o8oDnwIvae5GjbYf12z9YU%2BQvH30%2BQlqT1Mu10uN6oloOXcfolEB3o5BprbvM2TfOL06e%2BrnV4PtD1x4JVSyRPvB8IHcdTgo4oZYwP7VGXBE9Uaap1jjoRg02ZW2wmouzFMLo2XhYQAOD96W80JVj4VjmnXQmaWAZdDDZGRTDTyCh%2BWh8%3D",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1%2B54L1WOhQEFRUS2Ev2dOWjcHe7WdJYSA6SbPN7N6jZzCQelEMOmVTLCAyli%2Bj0qk6ZOqnn0wYWxMkxfv2nQD7pOoQHU1RlpbfKLVAxTy148RyOiTYnaAD%2F6Tee2Hb%2B6RtTxuAKm3w8yBc0RVBG4J7qSHuIMgAtNIwl%2FUfML6o8oDnwIvae5GjbYf12z9YU%2BQvH30%2BQlqT1Mu10uN6oloOXcfolEB3o5BprbvM2TfOL06e%2BrnV4PtD1x4JVSyRPvB8IHcdTgo4oZYwP7VGXBE9Uaap1jjoRg02ZW2wmouzFMLo2XhYQAOD96W80JVj4VjmnXQmaWAZdDDZGRTDTyCh%2BWh8%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T13:30:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1%2B54L1WOhQEFRUS2Ev2dOWjcHe7WdJYSA6SbPN7N6jZzCQelEMOmVTLCAyli%2Bj0qk6ZOqnn0wYWxMkxfv2nQD7pOoQHU1RlpbfKLVAxTy148RyOiTYnaAD%2F6Tee2Hb%2B6RtTxuAKm3w8yBc0RVBG4J7qSHuIMgAtNIwl%2FUfML6o8oDnwIvae5GjbYf12z9YU%2BQvH30%2BQlqT1Mu10uN6oloOXcfolEB3o5BprbvM2TfOL06e%2BrnV4PtD1x4JVSyRPvB8IHcdTgo4oZYwP7VGXBE9Uaap1jjoRg02ZW2wmouzFMLo2XhYQAOD96W80JVj4VjmnXQmaWAZdDDZGRTDTyCh%2BWh8%3D",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T13:30:00+03:00",
+          "arrival_at": "2026-09-01T17:00:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "d492b0f26e407b5575cbf85da93b11eb",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T15:45:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A1853Y1WJhQkDa0Bi2tH%252FWbGN6M4u7F2ImZuuoPFLyZNADoiHmpDPZG1V2wSK9ZoMd7OocqDAmfvKDyMry77AL4K0Xv4v9sESLt6nVFWEBa6H8jGc6ryusMnZ%252B%252FWka1rIDE5Mvug5AIlrIo%252FvThh7imT%252B%252Fb%252BsmoY%252By1JWOwKoYXTCuHEFBL1x6sSkriQpolyfSxB05UkC5IpWLsJMY7FKodkrSnFkYvqLBFWyErXyuJdJ%252BxI6QK%252FJD1BbG6HYWwMKO8%252FGnH3PZkScoSV2mkEi8GajJDhZzJKrbsfZtFAk9yPA97%252BUnOJHgZRbmFclMEuc%252BURnYYuP%252BEl6lyTL9yc0yh%252BWh8%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T15:45:00+03:00",
+        "arrival_at": "2026-09-01T19:15:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T15:45:00+03:00",
+            "arrival_at": "2026-09-01T19:15:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T15:45:00+03:00",
+                "arrival_at": "2026-09-01T19:15:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "3a9d3dd8f4104849991be080aeba6147",
+            "offer_hash": "A1853Y1WJhQkDa0Bi2tH%2FWbGN6M4u7F2ImZuuoPFLyZNADoiHmpDPZG1V2wSK9ZoMd7OocqDAmfvKDyMry77AL4K0Xv4v9sESLt6nVFWEBa6H8jGc6ryusMnZ%2B%2FWka1rIDE5Mvug5AIlrIo%2FvThh7imT%2B%2Fb%2BsmoY%2By1JWOwKoYXTCuHEFBL1x6sSkriQpolyfSxB05UkC5IpWLsJMY7FKodkrSnFkYvqLBFWyErXyuJdJ%2BxI6QK%2FJD1BbG6HYWwMKO8%2FGnH3PZkScoSV2mkEi8GajJDhZzJKrbsfZtFAk9yPA97%2BUnOJHgZRbmFclMEuc%2BURnYYuP%2BEl6lyTL9yc0yh%2BWh8%3D",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1853Y1WJhQkDa0Bi2tH%2FWbGN6M4u7F2ImZuuoPFLyZNADoiHmpDPZG1V2wSK9ZoMd7OocqDAmfvKDyMry77AL4K0Xv4v9sESLt6nVFWEBa6H8jGc6ryusMnZ%2B%2FWka1rIDE5Mvug5AIlrIo%2FvThh7imT%2B%2Fb%2BsmoY%2By1JWOwKoYXTCuHEFBL1x6sSkriQpolyfSxB05UkC5IpWLsJMY7FKodkrSnFkYvqLBFWyErXyuJdJ%2BxI6QK%2FJD1BbG6HYWwMKO8%2FGnH3PZkScoSV2mkEi8GajJDhZzJKrbsfZtFAk9yPA97%2BUnOJHgZRbmFclMEuc%2BURnYYuP%2BEl6lyTL9yc0yh%2BWh8%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T15:45:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1853Y1WJhQkDa0Bi2tH%2FWbGN6M4u7F2ImZuuoPFLyZNADoiHmpDPZG1V2wSK9ZoMd7OocqDAmfvKDyMry77AL4K0Xv4v9sESLt6nVFWEBa6H8jGc6ryusMnZ%2B%2FWka1rIDE5Mvug5AIlrIo%2FvThh7imT%2B%2Fb%2BsmoY%2By1JWOwKoYXTCuHEFBL1x6sSkriQpolyfSxB05UkC5IpWLsJMY7FKodkrSnFkYvqLBFWyErXyuJdJ%2BxI6QK%2FJD1BbG6HYWwMKO8%2FGnH3PZkScoSV2mkEi8GajJDhZzJKrbsfZtFAk9yPA97%2BUnOJHgZRbmFclMEuc%2BURnYYuP%2BEl6lyTL9yc0yh%2BWh8%3D",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T15:45:00+03:00",
+          "arrival_at": "2026-09-01T19:15:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "e4930a6badf2ed60336e29bb2030a23c",
+        "transport": "bus",
+        "price": {
+          "amount": 1422.0,
+          "currency": "RUB"
+        },
+        "duration_min": 210,
+        "carriers": [
+          "Соломатин Ю.В."
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T09:00:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=A1853Y1WJhQkDa0Jq2tH%252FWbGp8uV8dHR6ITA6vj5JXBdADoiHhGeSahRUiyeY5ZDduiJVO3BmttH%252BwCMryHrAL4IvLPOjZqPa1CyGlB5MPYmjOKl4EiD0dpqW3Ol9278aXRalsdrtCY64tmgihyE9w%252FnBLyxWSSJs6%252FbmuxoNovqQ200wI%252BUf6Ip7LfUpotzTSxB05Us2ynFTrJjzqu0lmNHrTfEkYgqr1ilYgqLWrv8eZ3kS3gm8W98Jqmm%252FQcE3WkExMGRAvM6NmIQbpX3hDTxyxbmLT8mz%252F8FhuhX%252B%252BanSJ7rrPvtHQ6NyKXmm%252F0%252BCTHEoFQVEgp28Mcto1Ij09eB&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T09:00:00+03:00",
+        "arrival_at": "2026-09-01T12:30:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Автостанция Новоясеневская",
+            "to": "Автовокзал",
+            "departure_at": "2026-09-01T09:00:00+03:00",
+            "arrival_at": "2026-09-01T12:30:00+03:00",
+            "duration_min": 210,
+            "segments": [
+              {
+                "from": "Автостанция Новоясеневская",
+                "to": "Автовокзал",
+                "departure_at": "2026-09-01T09:00:00+03:00",
+                "arrival_at": "2026-09-01T12:30:00+03:00",
+                "duration_min": 210,
+                "carrier": "Соломатин Ю.В.",
+                "voyage_no": null,
+                "from_geo_point_id": 2858229,
+                "to_geo_point_id": 2861502
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "269e76cf2d5bd7fe4dfd08c5f6053d59",
+            "offer_hash": "A1853Y1WJhQkDa0Jq2tH%2FWbGp8uV8dHR6ITA6vj5JXBdADoiHhGeSahRUiyeY5ZDduiJVO3BmttH%2BwCMryHrAL4IvLPOjZqPa1CyGlB5MPYmjOKl4EiD0dpqW3Ol9278aXRalsdrtCY64tmgihyE9w%2FnBLyxWSSJs6%2FbmuxoNovqQ200wI%2BUf6Ip7LfUpotzTSxB05Us2ynFTrJjzqu0lmNHrTfEkYgqr1ilYgqLWrv8eZ3kS3gm8W98Jqmm%2FQcE3WkExMGRAvM6NmIQbpX3hDTxyxbmLT8mz%2F8FhuhX%2B%2BanSJ7rrPvtHQ6NyKXmm%2F0%2BCTHEoFQVEgp28Mcto1Ij09eB",
+            "price": {
+              "amount": 1422.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "A1853Y1WJhQkDa0Jq2tH%2FWbGp8uV8dHR6ITA6vj5JXBdADoiHhGeSahRUiyeY5ZDduiJVO3BmttH%2BwCMryHrAL4IvLPOjZqPa1CyGlB5MPYmjOKl4EiD0dpqW3Ol9278aXRalsdrtCY64tmgihyE9w%2FnBLyxWSSJs6%2FbmuxoNovqQ200wI%2BUf6Ip7LfUpotzTSxB05Us2ynFTrJjzqu0lmNHrTfEkYgqr1ilYgqLWrv8eZ3kS3gm8W98Jqmm%2FQcE3WkExMGRAvM6NmIQbpX3hDTxyxbmLT8mz%2F8FhuhX%2B%2BanSJ7rrPvtHQ6NyKXmm%2F0%2BCTHEoFQVEgp28Mcto1Ij09eB",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T09:00:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "A1853Y1WJhQkDa0Jq2tH%2FWbGp8uV8dHR6ITA6vj5JXBdADoiHhGeSahRUiyeY5ZDduiJVO3BmttH%2BwCMryHrAL4IvLPOjZqPa1CyGlB5MPYmjOKl4EiD0dpqW3Ol9278aXRalsdrtCY64tmgihyE9w%2FnBLyxWSSJs6%2FbmuxoNovqQ200wI%2BUf6Ip7LfUpotzTSxB05Us2ynFTrJjzqu0lmNHrTfEkYgqr1ilYgqLWrv8eZ3kS3gm8W98Jqmm%2FQcE3WkExMGRAvM6NmIQbpX3hDTxyxbmLT8mz%2F8FhuhX%2B%2BanSJ7rrPvtHQ6NyKXmm%2F0%2BCTHEoFQVEgp28Mcto1Ij09eB",
+          "departure_stop_id": 2858229,
+          "arrival_stop_id": 2861502,
+          "departure_stop_name": "Автостанция Новоясеневская",
+          "arrival_stop_name": "Автовокзал",
+          "price": {
+            "amount": 1422.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Соломатин Ю.В."
+          ],
+          "duration_min": 210,
+          "departure_at": "2026-09-01T09:00:00+03:00",
+          "arrival_at": "2026-09-01T12:30:00+03:00",
+          "review_summary": {
+            "rating": 8.9,
+            "review_count": 494,
+            "label": "⭐ 8.9/10 · 494 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Соломатин Ю.В.",
+            "aspects": [
+              {
+                "rating": 8.2,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.2/10 · Автобус"
+              },
+              {
+                "rating": 9.6,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 9.6/10 · Водитель"
+              },
+              {
+                "rating": 8.8,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Соломатин Ю.В.",
+                "label": "⭐ 8.8/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1458"
+          }
+        },
+        "review_summary": {
+          "rating": 8.9,
+          "review_count": 494,
+          "label": "⭐ 8.9/10 · 494 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Соломатин Ю.В.",
+          "aspects": [
+            {
+              "rating": 8.2,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.2/10 · Автобус"
+            },
+            {
+              "rating": 9.6,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 9.6/10 · Водитель"
+            },
+            {
+              "rating": 8.8,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Соломатин Ю.В.",
+              "label": "⭐ 8.8/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1458"
+        }
+      },
+      {
+        "offer_id": "2dd1b1b602638fba089994b541c360bf",
+        "transport": "bus",
+        "price": {
+          "amount": 4060.0,
+          "currency": "RUB"
+        },
+        "duration_min": 180,
+        "carriers": [
+          "Ставрополь-Транстур"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T11:15:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=ax0lRc0mJtbbknRy9AQPEPuhFz3wdQjhck%252FjkKDalf8n5PxAvX4hQsbpoanI%252BH%252BrUC9%252FqlwpCmJS37wKhacTZToh7u3%252BmlDsupQhFQWcUfvx0xZBzzh2%252BqxhwyOOJdO2NDBvB4EE2WDUxneTFd7lJlPoFVssX3HZJGpW69%252ByI6tZyhGrrBLFmam43kJD&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T11:15:00+03:00",
+        "arrival_at": "2026-09-01T14:15:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Международный автовокзал Саларьево",
+            "to": "кафе Ильинка (60 км от Тулы)",
+            "departure_at": "2026-09-01T11:15:00+03:00",
+            "arrival_at": "2026-09-01T14:15:00+03:00",
+            "duration_min": 180,
+            "segments": [
+              {
+                "from": "Международный автовокзал Саларьево",
+                "to": "кафе Ильинка (60 км от Тулы)",
+                "departure_at": "2026-09-01T11:15:00+03:00",
+                "arrival_at": "2026-09-01T14:15:00+03:00",
+                "duration_min": 180,
+                "carrier": "Ставрополь-Транстур",
+                "voyage_no": null,
+                "from_geo_point_id": 4583261,
+                "to_geo_point_id": 4283058
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "c7da2ab34892b3465ce2ba04db4993f7",
+            "offer_hash": "ax0lRc0mJtbbknRy9AQPEPuhFz3wdQjhck%2FjkKDalf8n5PxAvX4hQsbpoanI%2BH%2BrUC9%2FqlwpCmJS37wKhacTZToh7u3%2BmlDsupQhFQWcUfvx0xZBzzh2%2BqxhwyOOJdO2NDBvB4EE2WDUxneTFd7lJlPoFVssX3HZJGpW69%2ByI6tZyhGrrBLFmam43kJD",
+            "price": {
+              "amount": 4060.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "ax0lRc0mJtbbknRy9AQPEPuhFz3wdQjhck%2FjkKDalf8n5PxAvX4hQsbpoanI%2BH%2BrUC9%2FqlwpCmJS37wKhacTZToh7u3%2BmlDsupQhFQWcUfvx0xZBzzh2%2BqxhwyOOJdO2NDBvB4EE2WDUxneTFd7lJlPoFVssX3HZJGpW69%2ByI6tZyhGrrBLFmam43kJD",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 4583261,
+          "arrival_stop_id": 4283058,
+          "departure_stop_name": "Международный автовокзал Саларьево",
+          "arrival_stop_name": "кафе Ильинка (60 км от Тулы)",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T11:15:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "ax0lRc0mJtbbknRy9AQPEPuhFz3wdQjhck%2FjkKDalf8n5PxAvX4hQsbpoanI%2BH%2BrUC9%2FqlwpCmJS37wKhacTZToh7u3%2BmlDsupQhFQWcUfvx0xZBzzh2%2BqxhwyOOJdO2NDBvB4EE2WDUxneTFd7lJlPoFVssX3HZJGpW69%2ByI6tZyhGrrBLFmam43kJD",
+          "departure_stop_id": 4583261,
+          "arrival_stop_id": 4283058,
+          "departure_stop_name": "Международный автовокзал Саларьево",
+          "arrival_stop_name": "кафе Ильинка (60 км от Тулы)",
+          "price": {
+            "amount": 4060.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Ставрополь-Транстур"
+          ],
+          "duration_min": 180,
+          "departure_at": "2026-09-01T11:15:00+03:00",
+          "arrival_at": "2026-09-01T14:15:00+03:00",
+          "review_summary": {
+            "rating": 7.5,
+            "review_count": 3317,
+            "label": "⭐ 7.5/10 · 3 317 отзывов",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Ставрополь-Транстур",
+            "aspects": [
+              {
+                "rating": 6.7,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Ставрополь-Транстур",
+                "label": "⭐ 6.7/10 · Автобус"
+              },
+              {
+                "rating": 8.7,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Ставрополь-Транстур",
+                "label": "⭐ 8.7/10 · Водитель"
+              },
+              {
+                "rating": 6.9,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Ставрополь-Транстур",
+                "label": "⭐ 6.9/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1215"
+          }
+        },
+        "review_summary": {
+          "rating": 7.5,
+          "review_count": 3317,
+          "label": "⭐ 7.5/10 · 3 317 отзывов",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Ставрополь-Транстур",
+          "aspects": [
+            {
+              "rating": 6.7,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Ставрополь-Транстур",
+              "label": "⭐ 6.7/10 · Автобус"
+            },
+            {
+              "rating": 8.7,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Ставрополь-Транстур",
+              "label": "⭐ 8.7/10 · Водитель"
+            },
+            {
+              "rating": 6.9,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Ставрополь-Транстур",
+              "label": "⭐ 6.9/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1215"
+        }
+      },
+      {
+        "offer_id": "490d17c2ea079e5089f3503b94056474",
+        "transport": "bus",
+        "price": {
+          "amount": 5000.0,
+          "currency": "RUB"
+        },
+        "duration_min": 150,
+        "carriers": [
+          "Авто-Тревел"
+        ],
+        "search_results_url": "https://bus.tutu.ru/bilety_na_avtobus/Moskva/Tula/",
+        "segments_count": 1,
+        "checkout_url": "https://mtp-deeplink.tutu.ru/api/v1/deeplink/explicit/bus?geo_mode=original&departure_time=2026-09-01T13:00:00%2B03:00&departure_geo_city_id=1447874&arrival_geo_city_id=1422403&hash=ExqlhM1WJhPKasLObuRDTTxjpVOrB1k7lviteVPU0mEczccDmGPv2BgDNG85Av0KHttgz%252Fg1mpRLbEno3b0NhHyBmyNlQmDDCu0sOaT2Sm9eAZJJ%252Bf6NjDJyat4RHA3M7DVZymeBZiuUuYmL9Xx2VARG9IL5A12sGSHX3mQuN57qQSHZoL2VQo64IUI%253D&fallback_to_vid=true&source=mcp",
+        "departure_at": "2026-09-01T13:00:00+03:00",
+        "arrival_at": "2026-09-01T15:30:00+03:00",
+        "legs": [
+          {
+            "label": "outbound",
+            "from": "Международный автовокзал Саларьево",
+            "to": "пост ДПС, 212 км трассы М-4 (Патрульный Москвич)",
+            "departure_at": "2026-09-01T13:00:00+03:00",
+            "arrival_at": "2026-09-01T15:30:00+03:00",
+            "duration_min": 150,
+            "segments": [
+              {
+                "from": "Международный автовокзал Саларьево",
+                "to": "пост ДПС, 212 км трассы М-4 (Патрульный Москвич)",
+                "departure_at": "2026-09-01T13:00:00+03:00",
+                "arrival_at": "2026-09-01T15:30:00+03:00",
+                "duration_min": 150,
+                "carrier": "Авто-Тревел",
+                "voyage_no": null,
+                "from_geo_point_id": 4583261,
+                "to_geo_point_id": 2887817
+              }
+            ]
+          }
+        ],
+        "variants": [
+          {
+            "variant_id": "a03c3674e53276ce5f3335a837835020",
+            "offer_hash": "ExqlhM1WJhPKasLObuRDTTxjpVOrB1k7lviteVPU0mEczccDmGPv2BgDNG85Av0KHttgz%2Fg1mpRLbEno3b0NhHyBmyNlQmDDCu0sOaT2Sm9eAZJJ%2Bf6NjDJyat4RHA3M7DVZymeBZiuUuYmL9Xx2VARG9IL5A12sGSHX3mQuN57qQSHZoL2VQo64IUI%3D",
+            "price": {
+              "amount": 5000.0,
+              "currency": "RUB"
+            }
+          }
+        ],
+        "checkout_ref": {
+          "transport": "bus",
+          "offer_hash": "ExqlhM1WJhPKasLObuRDTTxjpVOrB1k7lviteVPU0mEczccDmGPv2BgDNG85Av0KHttgz%2Fg1mpRLbEno3b0NhHyBmyNlQmDDCu0sOaT2Sm9eAZJJ%2Bf6NjDJyat4RHA3M7DVZymeBZiuUuYmL9Xx2VARG9IL5A12sGSHX3mQuN57qQSHZoL2VQo64IUI%3D",
+          "search_id": "F42B0A72-7E78-4380-B578-A0634368BBFC",
+          "departure_geo_city_id": 2657260,
+          "arrival_geo_city_id": 2662397,
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_stop_id": 4583261,
+          "arrival_stop_id": 2887817,
+          "departure_stop_name": "Международный автовокзал Саларьево",
+          "arrival_stop_name": "пост ДПС, 212 км трассы М-4 (Патрульный Москвич)",
+          "city_from": "Москва",
+          "city_to": "Тула",
+          "departure_at": "2026-09-01T13:00:00+03:00",
+          "passengers": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0
+        },
+        "details_ref": {
+          "transport": "bus",
+          "source": "api-bus.search.detail",
+          "departure_id": "1447874",
+          "arrival_id": "1422403",
+          "departure_date": "2026-09-01",
+          "seat_count": 1,
+          "passengers_adult": 1,
+          "passengers_child": 0,
+          "offer_hash": "ExqlhM1WJhPKasLObuRDTTxjpVOrB1k7lviteVPU0mEczccDmGPv2BgDNG85Av0KHttgz%2Fg1mpRLbEno3b0NhHyBmyNlQmDDCu0sOaT2Sm9eAZJJ%2Bf6NjDJyat4RHA3M7DVZymeBZiuUuYmL9Xx2VARG9IL5A12sGSHX3mQuN57qQSHZoL2VQo64IUI%3D",
+          "departure_stop_id": 4583261,
+          "arrival_stop_id": 2887817,
+          "departure_stop_name": "Международный автовокзал Саларьево",
+          "arrival_stop_name": "пост ДПС, 212 км трассы М-4 (Патрульный Москвич)",
+          "price": {
+            "amount": 5000.0,
+            "currency": "RUB"
+          },
+          "carriers": [
+            "Авто-Тревел"
+          ],
+          "duration_min": 150,
+          "departure_at": "2026-09-01T13:00:00+03:00",
+          "arrival_at": "2026-09-01T15:30:00+03:00",
+          "review_summary": {
+            "rating": 9.1,
+            "review_count": 1272,
+            "label": "⭐ 9.1/10 · 1 272 отзыва",
+            "source": "offers-api.feedback",
+            "scope": "carrier",
+            "subject": "Авто-Тревел",
+            "aspects": [
+              {
+                "rating": 9.1,
+                "scale": 10,
+                "text": "Автобус",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Авто-Тревел",
+                "label": "⭐ 9.1/10 · Автобус"
+              },
+              {
+                "rating": 9.5,
+                "scale": 10,
+                "text": "Водитель",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Авто-Тревел",
+                "label": "⭐ 9.5/10 · Водитель"
+              },
+              {
+                "rating": 8.7,
+                "scale": 10,
+                "text": "Общее впечатление",
+                "source": "offers-api.feedback",
+                "scope": "bus_aspect",
+                "subject": "Авто-Тревел",
+                "label": "⭐ 8.7/10 · Общее впечатление"
+              }
+            ],
+            "scale": 10,
+            "feedback_key": "1295"
+          }
+        },
+        "review_summary": {
+          "rating": 9.1,
+          "review_count": 1272,
+          "label": "⭐ 9.1/10 · 1 272 отзыва",
+          "source": "offers-api.feedback",
+          "scope": "carrier",
+          "subject": "Авто-Тревел",
+          "aspects": [
+            {
+              "rating": 9.1,
+              "scale": 10,
+              "text": "Автобус",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Авто-Тревел",
+              "label": "⭐ 9.1/10 · Автобус"
+            },
+            {
+              "rating": 9.5,
+              "scale": 10,
+              "text": "Водитель",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Авто-Тревел",
+              "label": "⭐ 9.5/10 · Водитель"
+            },
+            {
+              "rating": 8.7,
+              "scale": 10,
+              "text": "Общее впечатление",
+              "source": "offers-api.feedback",
+              "scope": "bus_aspect",
+              "subject": "Авто-Тревел",
+              "label": "⭐ 8.7/10 · Общее впечатление"
+            }
+          ],
+          "scale": 10,
+          "feedback_key": "1295"
+        }
+      }
+    ],
+    "meta": {
+      "transport": "bus",
+      "from": {
+        "name": "Москва",
+        "geo_id": "2657260",
+        "region": "Москва"
+      },
+      "to": {
+        "name": "Тула",
+        "geo_id": "2662397",
+        "region": "Тульская область, городской округ Тула"
+      },
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "total_matched": 10,
+      "total_matched_exact": true,
+      "has_more": false,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "carriers_available": [
+        {
+          "name": "Турцентр-Экспо",
+          "offers_count": 1,
+          "price_from": 1300.0
+        },
+        {
+          "name": "Соломатин Ю.В.",
+          "offers_count": 7,
+          "price_from": 1422.0
+        },
+        {
+          "name": "Ставрополь-Транстур",
+          "offers_count": 1,
+          "price_from": 4060.0
+        },
+        {
+          "name": "Авто-Тревел",
+          "offers_count": 1,
+          "price_from": 5000.0
+        }
+      ],
+      "cashback": {
+        "rate_pct": 3.0,
+        "applies_to": "all_fares",
+        "note": "Tutu loyalty points credited to the buyer's Tutu account after payment. NOT a discount: every `price` here is the full amount payable."
+      }
+    }
+  }
+}

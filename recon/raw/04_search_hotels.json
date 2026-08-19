@@ -1,0 +1,646 @@
+{
+  "args": {
+    "city_name": "Сочи",
+    "checkin_date": "2026-09-01",
+    "checkout_date": "2026-09-03",
+    "adults": 2
+  },
+  "data": {
+    "hotels": [
+      {
+        "hotel_id": "11428448",
+        "hotel_geo_id": "11428448",
+        "tutu_offer_id": "8c802974-0f9f-49f6-bf2a-3e049f41b1fb",
+        "name": "Эльпида",
+        "stars": 3,
+        "rating": 8.96,
+        "review_count": 86,
+        "address": "351 м от центра",
+        "location": {
+          "lat": 43.682293,
+          "lng": 40.209618,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/86f4475a02c5dda03fd8d7617cfc162e728bcb30.e88a57f91aca8fae7108861b21640943da03c94d.jpeg"
+        ],
+        "alias": "butikotel_elpida_volokolamskaya_ulitsa_d77_krasnaya_polyana",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11428448&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "f2ca9f19-5fae-48f7-b0ed-8ba6b40834c0",
+          "room_name": "Стандарт двухместный",
+          "price": {
+            "amount": 11980.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11428448&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": {
+          "rating": 8.96,
+          "review_count": 86,
+          "label": "⭐ 8.96/10 · 86 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "11428448",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "11428448",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "butikotel_elpida_volokolamskaya_ulitsa_d77_krasnaya_polyana",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11428448&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 19
+      },
+      {
+        "hotel_id": "12369873",
+        "hotel_geo_id": "12369873",
+        "tutu_offer_id": "79269db2-8c90-4444-9081-971243d4e318",
+        "name": "Гостевой дом *Золотой песок*",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "247 м от центра",
+        "location": {
+          "lat": 43.500084,
+          "lng": 39.940228,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/02c745d5222329e7e8ff0453fd5b7239825ab6b0.789b03c29e87b1f8c5399fb44aee25e78c7f3a67.jpeg"
+        ],
+        "alias": "zolotoy_pesok_rossiyskaya_federatsiya_sochi_krasnodarsky_kray_lazarevsky_rayon_rayon_g_sochi_ul_molodezhnaya_d_251a",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=12369873&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "0cc1934a-135d-40d6-9196-368c641899a2",
+          "room_name": "Двухместный номер",
+          "price": {
+            "amount": 5000.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=12369873&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "12369873",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "zolotoy_pesok_rossiyskaya_federatsiya_sochi_krasnodarsky_kray_lazarevsky_rayon_rayon_g_sochi_ul_molodezhnaya_d_251a",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=12369873&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 30
+      },
+      {
+        "hotel_id": "9352190",
+        "hotel_geo_id": "9352190",
+        "tutu_offer_id": "de42f820-9fe0-454e-8fd9-6da86c583248",
+        "name": "Гостевой дом Панорама",
+        "stars": 0,
+        "rating": 8.83,
+        "review_count": 31,
+        "address": "5.9 км от центра, 625 м до пляжа",
+        "location": {
+          "lat": 43.476315,
+          "lng": 39.899097,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/afcb6bfe-cf8b-4087-85d6-0a64ad82fc33/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/9feb747913b5bcec78545b09aa220acf.jpg"
+        ],
+        "alias": "gostevoy_dom_panorama_sochi",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=9352190&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "41e6995d-b964-4570-982a-0ab7fff5a05a",
+          "room_name": "Стандарт 2-местный +1 доп.место",
+          "price": {
+            "amount": 7920.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=9352190&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": {
+          "rating": 8.83,
+          "review_count": 31,
+          "label": "⭐ 8.83/10 · 31 отзыв",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "9352190",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "9352190",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "gostevoy_dom_panorama_sochi",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=9352190&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 100
+      },
+      {
+        "hotel_id": "7653053",
+        "hotel_geo_id": "7653053",
+        "tutu_offer_id": "1f2813b4-52e0-40ea-8baf-730761a2dfc4",
+        "name": "Отель Сочи Галерея Парк",
+        "stars": 3,
+        "rating": 8.54,
+        "review_count": 106,
+        "address": "2.7 км от центра, 930 м до пляжа",
+        "location": {
+          "lat": 43.58747,
+          "lng": 39.72457,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/593aadae-7547-4c77-833c-694ecf1bc4dc/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/7872f0d9f3e9ab24b3a66a87edf7dcb4.jpg"
+        ],
+        "alias": "otel_sochi_galereya_park",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=7653053&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "464de364-1f5f-4695-966d-4fe4ffd22857",
+          "room_name": "Двухместный стандарт",
+          "price": {
+            "amount": 9500.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=7653053&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": {
+          "rating": 8.54,
+          "review_count": 106,
+          "label": "⭐ 8.54/10 · 106 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "7653053",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "7653053",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "otel_sochi_galereya_park",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=7653053&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 78
+      },
+      {
+        "hotel_id": "5738762",
+        "hotel_geo_id": "5738762",
+        "tutu_offer_id": "784485ca-001f-4392-bc77-15085bc42829",
+        "name": "Гостевой Дом Элит-Хаус",
+        "stars": 0,
+        "rating": 9.15,
+        "review_count": 58,
+        "address": "1.8 км от центра, 912 м до пляжа",
+        "location": {
+          "lat": 43.62484,
+          "lng": 39.709778,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn.bronevik.com/static/photo/g/500x500/742da3f3a4d34a5a3890e0a77f376c35"
+        ],
+        "alias": "gostevoy_dom_elitkhaus",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=5738762&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "049669a6-d4d6-4663-ba00-ddf4e54901f2",
+          "room_name": "Комната улучшенная №4",
+          "price": {
+            "amount": 5327.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=5738762&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": {
+          "rating": 9.15,
+          "review_count": 58,
+          "label": "⭐ 9.15/10 · 58 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "5738762",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "5738762",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "gostevoy_dom_elitkhaus",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=5738762&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 100
+      },
+      {
+        "hotel_id": "11329026",
+        "hotel_geo_id": "11329026",
+        "tutu_offer_id": "94e156bf-41ab-4b93-9129-48cfaf0f2a8e",
+        "name": "Континент",
+        "stars": 0,
+        "rating": 10.0,
+        "review_count": 1,
+        "address": "847 м от центра, 439 м до пляжа",
+        "location": {
+          "lat": 43.90153,
+          "lng": 39.341564,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/291b0270-41af-4cc1-a892-edb39756deee/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/ab89461b33bd7384f2c29e910b80e08e.jpg"
+        ],
+        "alias": "kontinent_sh_sochinskoye_4b",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11329026&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "7a090329-4517-422c-a772-03a010a66c0d",
+          "room_name": "Номер эконом",
+          "price": {
+            "amount": 2906.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11329026&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": {
+          "rating": 10.0,
+          "review_count": 1,
+          "label": "⭐ 10/10 · 1 отзыв",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "11329026",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "11329026",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "kontinent_sh_sochinskoye_4b",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11329026&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 100
+      },
+      {
+        "hotel_id": "11281380",
+        "hotel_geo_id": "11281380",
+        "tutu_offer_id": "c798d89d-2fec-45d0-92bc-60d8690923ec",
+        "name": "Виктория",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "125 м от центра, 560 м до пляжа",
+        "location": {
+          "lat": 43.90554,
+          "lng": 39.334457,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn2.tu-tu.ru/imghub/view/8c6fae82-8d83-4012-a727-9bf6bba021dc/resize_500_500/4271b6c12b3a41b87b17f2bfcd92ed9a/2182fbd421e045f84ef4fcae0d6823c1.jpg"
+        ],
+        "alias": "viktoriya_ul_odoyevskogo_292",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11281380&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "029b9963-2f1d-4713-b9ed-debf12ac5ae9",
+          "room_name": "Комната комфорт с 1 двуспальной кроватью",
+          "price": {
+            "amount": 6223.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11281380&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "11281380",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "viktoriya_ul_odoyevskogo_292",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11281380&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 92
+      },
+      {
+        "hotel_id": "11022955",
+        "hotel_geo_id": "11022955",
+        "tutu_offer_id": "e3cbd289-f037-4d57-8373-b6d1ab5c7778",
+        "name": "Однокомнатная квартира на улице: Краснодарский край, г Сочи, р-н Хостинский, ул Ясногорская, д 16/2 к 2",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "5.9 км от центра",
+        "location": {
+          "lat": 43.568916,
+          "lng": 39.766907,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/219be3acd153429836fcb46d0448b2571db5bf23.a73b8f49c8a25248e0d93e9f66de199500fc0ca6.jpeg"
+        ],
+        "alias": "odnokomnatnaya_kvartira_na_ulitse_krasnodarsky_kray_g_sochi_rn_khostinsky_ul_yasnogorskaya_d_162_k_2",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11022955&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "f0078233-8b3b-47e6-b893-75857e17f7c1",
+          "room_name": "Однокомнатная квартира на улице: Краснодарский край, г Сочи, р-н Хостинский, ул Ясногорская, д 16/2 к 2",
+          "price": {
+            "amount": 6832.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11022955&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "11022955",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "odnokomnatnaya_kvartira_na_ulitse_krasnodarsky_kray_g_sochi_rn_khostinsky_ul_yasnogorskaya_d_162_k_2",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=11022955&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 44
+      },
+      {
+        "hotel_id": "12378205",
+        "hotel_geo_id": "12378205",
+        "tutu_offer_id": "d7098b73-e52e-45c2-9b38-5ce6693c9411",
+        "name": "Гостевой дом \"Кристалл\"",
+        "stars": 0,
+        "rating": 0.0,
+        "review_count": 0,
+        "address": "949 м от центра",
+        "location": {
+          "lat": 43.4139,
+          "lng": 39.95994,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/29e47feeaafb6a3e55a4bf3616ae7e46b517f9af.0754087c1440734df4b9d2b34be4406937aaab00.jpeg"
+        ],
+        "alias": "gostevoy_dom_kristall_rossiyskaya_federatsiya_sochi_krasnodarsky_kray_sirius_rayon_g_sochi_ul_ruzheynaya_d_27",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=12378205&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "abf62b2e-8826-425f-8ea0-eba8c51e076a",
+          "room_name": "Стандарт 2х местный 2",
+          "price": {
+            "amount": 5000.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=12378205&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": null,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": null,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": []
+        },
+        "review_summary": null,
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "12378205",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "gostevoy_dom_kristall_rossiyskaya_federatsiya_sochi_krasnodarsky_kray_sirius_rayon_g_sochi_ul_ruzheynaya_d_27",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=12378205&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 11
+      },
+      {
+        "hotel_id": "7799787",
+        "hotel_geo_id": "7799787",
+        "tutu_offer_id": "004cc725-f7ff-425b-b070-efbc4623575c",
+        "name": "Cosmos Stay Le Rond Сочи",
+        "stars": 4,
+        "rating": 8.95,
+        "review_count": 145,
+        "address": "455 м от центра, 782 м до пляжа",
+        "location": {
+          "lat": 43.655838,
+          "lng": 39.65814,
+          "city": null,
+          "city_geo_id": null
+        },
+        "photos": [
+          "https://cdn4.tu-tu.ru/static/hotels-photo/hotels-photo/69643fdf624fe45f7462987dce774ba6ec80cdd3.26c3d715105109c20c810a557d4a6f1c74f84361.jpeg"
+        ],
+        "alias": "otel_le_rond_sochi_resort_and_spa",
+        "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=7799787&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+        "best_offer": {
+          "offerpack_hash": "1921cb1c-a4cb-48ae-9bd5-3f08d53193d1",
+          "room_name": "Студия с французским балконом и видом на патио 25 м²",
+          "price": {
+            "amount": 13800.0,
+            "currency": "RUB"
+          },
+          "price_basis": "stay_total",
+          "checkout_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=7799787&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8",
+          "room_size_sqm": 25.0,
+          "breakfast_included": null,
+          "meal_name": null,
+          "free_cancellation": true,
+          "pay_at_hotel": null,
+          "pay_online": null,
+          "highlights": [
+            {
+              "type": "policies",
+              "text": "Бесплатная отмена"
+            }
+          ]
+        },
+        "review_summary": {
+          "rating": 8.95,
+          "review_count": 145,
+          "label": "⭐ 8.95/10 · 145 отзывов",
+          "source": "offers-hotel-api",
+          "scope": "hotel",
+          "subject": "7799787",
+          "scale": 10
+        },
+        "checkout_ref": {
+          "transport": "hotels",
+          "hotel_geo_id": "7799787",
+          "check_in": "2026-09-01",
+          "check_out": "2026-09-03",
+          "adults": 2,
+          "hotel_alias": "otel_le_rond_sochi_resort_and_spa",
+          "search_id": "56a55d0815f937fd75cda674513bcbf8",
+          "fallback_url": "https://hotel.tutu.ru/offers/details?business=0&check_in=2026-09-01&check_out=2026-09-03&geo_id=7799787&geo_name=%D0%A1%D0%BE%D1%87%D0%B8&room%5B0%5D=2&search_id=56a55d0815f937fd75cda674513bcbf8"
+        },
+        "photos_total": 24
+      }
+    ],
+    "stay": {
+      "check_in": "2026-09-01",
+      "check_out": "2026-09-03",
+      "nights": 2
+    },
+    "meta": {
+      "search_id": "56a55d0815f937fd75cda674513bcbf8",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 10,
+      "has_more": true,
+      "geo_id": "2656918",
+      "resolved_geo": {
+        "geo_id": "2656918",
+        "name": "Сочи",
+        "country": "Россия",
+        "region": "Краснодарский край",
+        "geo_type": "locality",
+        "hotels_count": 26212,
+        "also_geo": [
+          {
+            "geo_id": "10657506",
+            "name": "Горный Сочи",
+            "geo_type": "region",
+            "hotels_count": 2370
+          },
+          {
+            "geo_id": "2712872",
+            "name": "Сочи",
+            "geo_type": "locality",
+            "hotels_count": 12
+          },
+          {
+            "geo_id": "2685248",
+            "name": "Мост-на-Сочи",
+            "geo_type": "locality",
+            "hotels_count": 4
+          }
+        ]
+      },
+      "filters_applied": {
+        "option_filters": [],
+        "range_filters": [],
+        "button_filters": [],
+        "quick_filters_order": [],
+        "changes": []
+      },
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_no_free_cancellation": 0,
+      "post_filter_dropped_no_breakfast": 0
+    }
+  }
+}

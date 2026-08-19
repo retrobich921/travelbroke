@@ -1,0 +1,34 @@
+{
+  "args": {
+    "origin": "Норильск",
+    "destination": "Анадырь",
+    "departure_date": "2026-09-01"
+  },
+  "data": {
+    "offers": [],
+    "meta": {
+      "transport": "bus",
+      "from": {
+        "name": "Норильск",
+        "geo_id": "2656900",
+        "region": "Красноярский край"
+      },
+      "to": {
+        "name": "Анадырь",
+        "geo_id": "2656849",
+        "region": "Чукотский автономный округ"
+      },
+      "sort": "price_asc",
+      "page": 1,
+      "page_size": 10,
+      "total_returned": 0,
+      "total_matched": 0,
+      "total_matched_exact": true,
+      "has_more": false,
+      "post_filter_dropped_over_cap": 0,
+      "post_filter_dropped_not_direct": 0,
+      "post_filter_dropped_wrong_carrier": 0,
+      "carriers_available": []
+    }
+  }
+}

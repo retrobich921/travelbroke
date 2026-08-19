@@ -1,0 +1,23 @@
+{
+  "args": {
+    "checkout_ref": {
+      "transport": "railway",
+      "departure_city_id": 2657260,
+      "arrival_city_id": 2656915,
+      "departure_station_code": "2006004",
+      "arrival_station_code": "2004001",
+      "train_number": "742У",
+      "departure_at": "2026-09-01T06:00:00+03:00",
+      "departure_geo_point_id": 2958868,
+      "arrival_geo_point_id": 2958266,
+      "offer_hash": "722f943e45fccf7380e0bc2b2ce74f80",
+      "segment_hash": "b24ae9712887d3cc36f8bd83f924ea9c",
+      "search_id": "02F26B97-54E5-46E2-9928-ADCA5BCA1E0B",
+      "result_id": "41e63240-83cd-5e7d-8d9e-9fb79acc3a06",
+      "card_id": "9e2a528f221213126afe972a0f6f16ea"
+    }
+  },
+  "data": {
+    "_tool_error": "Error executing tool get_offer_details: 2 validation errors for get_offer_detailsArguments\nproduct_type\n  Field required [type=missing, input_value={'checkout_ref': {'transp...213126afe972a0f6f16ea'}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\ncheckout_ref\n  Extra inputs are not permitted [type=extra_forbidden, input_value={'transport': 'railway', ...1213126afe972a0f6f16ea'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden"
+  }
+}

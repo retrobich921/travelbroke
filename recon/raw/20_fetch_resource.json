@@ -1,0 +1,10 @@
+{
+  "args": {
+    "uri": "tutu://special-offers"
+  },
+  "data": {
+    "uri": "tutu://special-offers",
+    "mime_type": "application/json",
+    "content": "{\"_note\":\"Random demo offers. Dates are randomized at request time. Not a live price feed.\",\"offers\":[{\"destination\":{\"name\":\"Москва\",\"geo_id\":\"2657260\"},\"check_in\":\"2026-08-29\",\"check_out\":\"2026-09-01\",\"nights\":3,\"tag\":\"city break\",\"hint\":\"Try `search_hotels` with city_name='Москва', check_in='2026-08-29', check_out='2026-09-01'.\"},{\"destination\":{\"name\":\"Москва\",\"geo_id\":\"2657260\"},\"check_in\":\"2026-09-21\",\"check_out\":\"2026-09-24\",\"nights\":3,\"tag\":\"early bird\",\"hint\":\"Try `search_hotels` with city_name='Москва', check_in='2026-09-21', check_out='2026-09-24'.\"}]}"
+  }
+}
