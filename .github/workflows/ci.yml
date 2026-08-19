@@ -30,9 +30,8 @@ jobs:
           uv run ruff check .
           uv run ruff format --check .
 
-      - name: Type check (mypy)
+      - name: Type check (mypy --strict)
         run: uv run mypy src
-        continue-on-error: true
 
       - name: Tests (pytest)
         run: uv run pytest -q

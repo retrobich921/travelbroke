@@ -20,7 +20,13 @@ build-backend = "uv_build"
 module-name = ["tutukit", "travelbroke"]
 
 [dependency-groups]
-dev = ["pytest>=9.1.1", "pytest-asyncio>=1.4.0", "ruff>=0.16.3", "mypy>=1.14"]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.16.3",
+    "mypy>=1.14",
+    "types-networkx>=3.6.1.20260728",
+]
 
 [tool.ruff]
 line-length = 100

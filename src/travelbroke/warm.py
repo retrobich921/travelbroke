@@ -16,6 +16,7 @@ import argparse
 import asyncio
 import datetime as dt
 import time
+from pathlib import Path
 
 from travelbroke import cities, reach
 from tutukit.cache import DiskCache
@@ -36,7 +37,7 @@ async def warm(
     dates: list[dt.date],
     *,
     deep: bool = False,
-    cache_dir: str = ".mcp_cache",
+    cache_dir: Path = Path(".mcp_cache"),
 ) -> None:
     """Проходит все пары «город отправления × дата» и складывает ответы в кэш."""
     cache = DiskCache(root=cache_dir)
@@ -71,7 +72,7 @@ def main() -> None:
     parser.add_argument("--origins", nargs="+", default=list(DEFAULT_ORIGINS))
     parser.add_argument("--weeks", type=int, default=3, help="сколько ближайших суббот прогреть")
     parser.add_argument("--deep", action="store_true", help="прогреть и составные маршруты")
-    parser.add_argument("--cache-dir", default=".mcp_cache")
+    parser.add_argument("--cache-dir", type=Path, default=Path(".mcp_cache"))
     args = parser.parse_args()
 
     asyncio.run(

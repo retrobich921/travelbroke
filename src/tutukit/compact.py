@@ -105,7 +105,7 @@ def _hotel(hotel: dict[str, Any]) -> dict[str, Any]:
 
 
 def _refs_of(item: dict[str, Any]) -> dict[str, Any]:
-    keep = {k: item[k] for k in ("details_ref", "checkout_ref") if k in item}
+    keep: dict[str, Any] = {k: item[k] for k in ("details_ref", "checkout_ref") if k in item}
     for k in ("transport", "hotel_id", "hotel_geo_id"):
         if k in item:
             keep[k] = item[k]

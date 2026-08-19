@@ -101,7 +101,7 @@ class ReachableRequest(BaseModel):
     origin: str = Field(default="Москва", description="Город отправления")
     date: Date = Field(description="Дата поездки")
     modes: list[TransportMode] = Field(
-        default_factory=lambda: list(reach.ALL_MODES),
+        default=["avia", "railway", "bus", "etrain"],
         description="Разрешённые виды транспорта",
     )
     price_max: int | None = Field(default=None, gt=0, description="Жёсткий потолок цены, ₽")

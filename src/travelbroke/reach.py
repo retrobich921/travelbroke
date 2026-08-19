@@ -20,7 +20,7 @@ import logging
 import math
 from dataclasses import dataclass, field
 from datetime import date as Date
-from typing import Any
+from typing import Any, cast
 
 import networkx as nx
 
@@ -257,13 +257,13 @@ def hub_candidates(origin: City, target: City, hubs: tuple[City, ...]) -> list[C
     )
 
 
-def build_graph(origin: City, reaches: list[Reach]) -> nx.DiGraph:
+def build_graph(origin: City, reaches: list[Reach]) -> nx.DiGraph[str]:
     """Граф маршрутов: узлы — города, рёбра — найденные варианты поездки.
 
     Вес ребра — цена. Время храним отдельным атрибутом, чтобы можно было искать
     и по деньгам, и по часам, не пересобирая граф.
     """
-    graph = nx.DiGraph()
+    graph: nx.DiGraph[str] = nx.DiGraph()
     graph.add_node(origin.name, lat=origin.lat, lon=origin.lon)
     for reach in reaches:
         graph.add_node(reach.city.name, lat=reach.city.lat, lon=reach.city.lon)
@@ -294,10 +294,13 @@ def build_graph(origin: City, reaches: list[Reach]) -> nx.DiGraph:
     return graph
 
 
-def cheapest_paths(graph: nx.DiGraph, origin: str) -> dict[str, tuple[int, list[str]]]:
+def cheapest_paths(graph: nx.DiGraph[str], origin: str) -> dict[str, tuple[int, list[str]]]:
     """Дейкстра по цене: минимальная стоимость и маршрут до каждого достижимого города."""
+    # Без параметра target networkx возвращает пару словарей, но в стабах это union.
     lengths, paths = nx.single_source_dijkstra(graph, origin, weight="price")
-    return {city: (round(cost), paths[city]) for city, cost in lengths.items() if city != origin}
+    costs = cast(dict[str, float], lengths)
+    routes = cast(dict[str, list[str]], paths)
+    return {city: (round(cost), routes[city]) for city, cost in costs.items() if city != origin}
 
 
 async def deepen(

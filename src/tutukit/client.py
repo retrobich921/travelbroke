@@ -7,7 +7,7 @@ import json
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import Any, Self
+from typing import Any, Self, cast
 
 import httpx
 
@@ -100,7 +100,7 @@ class TutuMCP:
 
     async def list_tools(self) -> list[dict[str, Any]]:
         payload = await self._rpc("tools/list", {})
-        return payload.get("result", {}).get("tools", [])
+        return cast(list[dict[str, Any]], payload.get("result", {}).get("tools", []))
 
     async def fetch_resource(self, uri: str) -> dict[str, Any]:
         return await self.call("fetch_resource", uri=uri)
@@ -153,7 +153,7 @@ def _parse(text: str) -> dict[str, Any]:
         chunks = [ln[5:].strip() for ln in text.splitlines() if ln.startswith("data:")]
         text = chunks[-1] if chunks else text
     try:
-        return json.loads(text)
+        return cast(dict[str, Any], json.loads(text))
     except json.JSONDecodeError as e:
         raise TutuError(f"не разобрал ответ: {text[:200]}") from e
 
@@ -167,15 +167,15 @@ def _unwrap(tool: str, payload: dict[str, Any]) -> dict[str, Any]:
         text = (result.get("content") or [{}])[0].get("text", "неизвестная ошибка")
         raise ToolCallError(tool, text)
     if "structuredContent" in result:
-        return result["structuredContent"]
+        return cast(dict[str, Any], result["structuredContent"])
     blocks = result.get("content") or []
     if blocks and blocks[0].get("type") == "text":
         raw = blocks[0]["text"]
         try:
-            return json.loads(raw)
+            return cast(dict[str, Any], json.loads(raw))
         except json.JSONDecodeError:
             return {"text": raw}
-    return result
+    return cast(dict[str, Any], result)
 
 
 __all__ = [

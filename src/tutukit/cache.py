@@ -12,7 +12,7 @@ import logging
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 log = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class DiskCache:
             log.debug("cache stale: %s (%.0f мин)", tool, age / 60)
             return None
         log.debug("cache hit: %s (%.0f мин)", tool, age / 60)
-        return entry["data"]
+        return cast(dict[str, Any], entry["data"])
 
     def put(self, tool: str, args: dict[str, Any], data: dict[str, Any]) -> None:
         if self.mode != "record":
