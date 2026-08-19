@@ -3,6 +3,7 @@ import { useState } from "react";
 import { MODE_LABELS, MODES, formatPrice, type CityOut, type Mode } from "../api";
 import { CitySelect } from "./CitySelect";
 import { DatePicker } from "./DatePicker";
+import { HourSelect } from "./HourSelect";
 
 interface Props {
   cities: CityOut[];
@@ -33,8 +34,6 @@ interface Props {
   onArriveBefore: (value: number) => void;
   onSearch: () => void;
 }
-
-const HOURS = Array.from({ length: 25 }, (_, hour) => hour);
 
 const LABEL = "text-[10px] font-semibold tracking-[0.08em] text-tb-muted uppercase";
 
@@ -169,34 +168,13 @@ export function ControlPanel(props: Props) {
       <div className="mt-4">
         <span className={LABEL}>Окно поездки</span>
         <div className="mt-1.5 grid grid-cols-2 gap-2">
-          <label className="rounded-lg bg-tb-fill px-2.5 py-1.5">
-            <span className="block text-[10px] text-tb-muted">выезжаю не раньше</span>
-            <select
-              value={departAfter}
-              onChange={(event) => onDepartAfter(Number(event.target.value))}
-              className="w-full bg-transparent text-[13px] font-semibold text-tb-ink outline-none"
-            >
-              {HOURS.slice(0, 24).map((hour) => (
-                <option key={hour} value={hour}>
-                  {String(hour).padStart(2, "0")}:00
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="rounded-lg bg-tb-fill px-2.5 py-1.5">
-            <span className="block text-[10px] text-tb-muted">на месте не позже</span>
-            <select
-              value={arriveBefore}
-              onChange={(event) => onArriveBefore(Number(event.target.value))}
-              className="w-full bg-transparent text-[13px] font-semibold text-tb-ink outline-none"
-            >
-              {HOURS.map((hour) => (
-                <option key={hour} value={hour}>
-                  {hour === 24 ? "неважно" : `${String(hour).padStart(2, "0")}:00`}
-                </option>
-              ))}
-            </select>
-          </label>
+          <HourSelect caption="выезжаю не раньше" value={departAfter} onChange={onDepartAfter} />
+          <HourSelect
+            caption="на месте не позже"
+            value={arriveBefore}
+            onChange={onArriveBefore}
+            allowAny
+          />
         </div>
       </div>
 
