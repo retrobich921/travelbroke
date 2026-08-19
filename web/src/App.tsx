@@ -1,9 +1,7 @@
 import type { FeatureCollection, LineString, Point } from "geojson";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-// MapLibre ищет свой воркер относительно import.meta.url, а сборщик его не
-// эмитит — без явного указания карта не рендерится вовсе (404 на воркер).
-import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -23,7 +21,36 @@ import { readState, writeState } from "./urlState";
 
 /** Тёмная подложка на данных OpenStreetMap: без ключей, без регистрации. */
 const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
-maplibregl.setWorkerUrl(workerUrl);
+
+/**
+ * Запасная подложка на растровых тайлах.
+ *
+ * Векторный стиль тянет отдельно tiles.json, шрифты и спрайты — точек отказа
+ * больше. Растр требует одного запроса на тайл, поэтому переживает плохую сеть
+ * там, где вектор не поднимается. Демонстрация не должна зависеть от этого.
+ */
+const RASTER_FALLBACK: maplibregl.StyleSpecification = {
+  version: 8,
+  sources: {
+    carto: {
+      type: "raster",
+      tiles: [
+        "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+        "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+        "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+      ],
+      tileSize: 256,
+      attribution: "© CARTO, © OpenStreetMap contributors",
+    },
+  },
+  layers: [{ id: "carto", type: "raster", source: "carto" }],
+};
+
+/** Сколько ждём векторный стиль, прежде чем откатиться на растровый. */
+const STYLE_TIMEOUT_MS = 6000;
+// Воркер и его общий чанк лежат статикой в public/ (см. scripts/copy-maplibre-worker.mjs):
+// сборщик эмитить эту пару не умеет, а без воркера карта не рендерится.
+maplibregl.setWorkerUrl("/maplibre-gl-worker.mjs");
 
 const SOURCE = "reachable";
 const ORIGIN_SOURCE = "origin";
@@ -126,7 +153,9 @@ function routeGeoJSON(
 export default function App() {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
+  const usedFallback = useRef(false);
   const [ready, setReady] = useState(false);
+  const [mapNote, setMapNote] = useState<string | null>(null);
 
   const [cities, setCities] = useState<CityOut[]>([]);
   const [data, setData] = useState<ReachableResponse | null>(null);
@@ -165,7 +194,7 @@ export default function App() {
     });
     instance.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
 
-    instance.on("load", () => {
+    const install = () => {
       instance.addSource(SOURCE, {
         type: "geojson",
         data: { type: "FeatureCollection", features: [] },
@@ -284,10 +313,27 @@ export default function App() {
         instance.getCanvas().style.cursor = "";
       });
       setReady(true);
+    };
+
+    instance.on("load", install);
+
+    // Если векторный стиль не поднялся, молча переходим на растровый.
+    const fallback = () => {
+      if (usedFallback.current || instance.isStyleLoaded()) return;
+      usedFallback.current = true;
+      setMapNote("Подложка загружается запасным способом.");
+      instance.setStyle(RASTER_FALLBACK);
+      instance.once("styledata", install);
+    };
+    const timer = window.setTimeout(fallback, STYLE_TIMEOUT_MS);
+    instance.on("error", (event) => {
+      console.warn("[map]", event.error?.message ?? event);
+      fallback();
     });
 
     map.current = instance;
     return () => {
+      window.clearTimeout(timer);
       instance.remove();
       map.current = null;
       setReady(false);
@@ -362,10 +408,10 @@ export default function App() {
   // Первый расчёт запускаем сами: пустая карта на старте — потерянное первое впечатление.
   const started = useRef(false);
   useEffect(() => {
-    if (started.current || !ready) return;
+    if (started.current) return;
     started.current = true;
     void search(origin, date, deep);
-  }, [ready, search, origin, date, deep]);
+  }, [search, origin, date, deep]);
 
   const toggleMode = useCallback((mode: Mode) => {
     setModes((current) =>
@@ -456,6 +502,12 @@ export default function App() {
                 )?.reach.name ?? "не найден"}
               . Подвинь бюджет или добавь часов в пути.
             </div>
+          </div>
+        )}
+
+        {mapNote && (
+          <div className="pointer-events-auto mt-3 rounded-2xl bg-white/8 px-4 py-2 text-xs text-tb-muted ring-1 ring-white/10 backdrop-blur">
+            {mapNote}
           </div>
         )}
 

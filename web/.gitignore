@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+public/maplibre-gl-worker.mjs
+public/maplibre-gl-shared.mjs
