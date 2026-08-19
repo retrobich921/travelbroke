@@ -40,7 +40,6 @@ jobs:
   frontend:
     name: Frontend (build)
     runs-on: ubuntu-latest
-    if: hashFiles('web/package.json') != ''
     steps:
       - uses: actions/checkout@v4
 
