@@ -80,15 +80,26 @@ function Transfer({ reach }: { reach: ReachOut }) {
 interface Props {
   reach: ReachOut;
   origin: string;
+  /** Город не проходит по текущим фильтрам — показан только потому, что выбран. */
+  filtered?: boolean;
   onClose: () => void;
 }
 
 /** Карточка выбранного города: из чего складывается поездка и где её купить. */
-export function TripCard({ reach, origin, onClose }: Props) {
+export function TripCard({ reach, origin, filtered = false, onClose }: Props) {
   const legs = reach.via_legs;
   const composite = legs !== null && reach.beats_direct_by !== null;
   const total = composite ? legs.reduce((sum, leg) => sum + leg.price, 0) : reach.price;
-  const buyUrl = composite ? legs[0].checkout_url : reach.direct?.checkout_url;
+
+  // У составного маршрута два независимых билета, поэтому и ссылок на покупку две.
+  const purchases: { label: string; url: string }[] = composite
+    ? [
+        { label: `${origin} → ${reach.via}`, url: legs[0].checkout_url ?? "" },
+        { label: `${reach.via} → ${reach.name}`, url: legs[1].checkout_url ?? "" },
+      ].filter((item) => item.url !== "")
+    : reach.direct?.checkout_url
+      ? [{ label: `${origin} → ${reach.name}`, url: reach.direct.checkout_url }]
+      : [];
 
   return (
     <section className="tb-rise tb-sheet pointer-events-auto w-full overflow-hidden rounded-3xl bg-tb-panel/97 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl lg:w-88">
@@ -108,6 +119,12 @@ export function TripCard({ reach, origin, onClose }: Props) {
           ✕
         </button>
       </header>
+
+      {filtered && (
+        <div className="mx-5 mb-3 rounded-xl bg-tb-fill px-3 py-2 text-xs text-tb-muted">
+          Этот город не проходит по текущим фильтрам — он показан, потому что выбран.
+        </div>
+      )}
 
       {total === null ? (
         <div className="px-5 pb-5 text-sm text-tb-muted">
@@ -155,15 +172,29 @@ export function TripCard({ reach, origin, onClose }: Props) {
             </p>
           )}
 
-          {buyUrl && (
-            <a
-              href={buyUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="m-5 block rounded-2xl bg-tb-accent px-4 py-3 text-center text-base font-black text-white transition hover:brightness-110"
-            >
-              {composite ? "Купить первое плечо на Туту" : "Купить на Туту"}
-            </a>
+          {purchases.length > 0 && (
+            <div className="m-5 flex flex-col gap-2">
+              {composite && (
+                <div className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
+                  Билеты — покупаются отдельно
+                </div>
+              )}
+              {purchases.map((item, index) => (
+                <a
+                  key={item.url}
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`block rounded-2xl px-4 py-3 text-center text-sm font-black transition hover:brightness-110 ${
+                    index === 0
+                      ? "bg-tb-accent text-white"
+                      : "bg-tb-fill text-tb-ink ring-1 ring-tb-accent/40"
+                  }`}
+                >
+                  {composite ? `${index + 1}. ${item.label}` : "Купить на Туту"}
+                </a>
+              ))}
+            </div>
           )}
         </>
       )}

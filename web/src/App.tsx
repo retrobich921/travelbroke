@@ -78,6 +78,8 @@ interface MapPoint {
   reach: ReachOut;
   price: number | null;
   hours: number | null;
+  /** Проходит ли город по текущим фильтрам бюджета, времени и транспорта. */
+  passes: boolean;
 }
 
 /**
@@ -89,7 +91,7 @@ interface MapPoint {
  */
 function effective(reach: ReachOut, modes: Mode[]): MapPoint {
   if (modes.length === MODES.length) {
-    return { reach, price: reach.price, hours: reach.hours };
+    return { reach, price: reach.price, hours: reach.hours, passes: true };
   }
   let price: number | null = null;
   let hours: number | null = null;
@@ -102,27 +104,36 @@ function effective(reach: ReachOut, modes: Mode[]): MapPoint {
       hours = minutes === undefined ? null : Math.round((minutes / 60) * 10) / 10;
     }
   }
-  return { reach, price, hours };
+  return { reach, price, hours, passes: true };
 }
 
+/**
+ * Все города всегда остаются на карте.
+ *
+ * Не прошедшие фильтр не исчезают, а гаснут: пропадающие точки рвут связь с
+ * выбранным маршрутом (линия уходила в никуда) и скрывают важное — что дальше
+ * денег уже не хватает.
+ */
 function toGeoJSON(points: MapPoint[], min: number, max: number): FeatureCollection<Point> {
   return {
     type: "FeatureCollection",
-    features: points.map(({ reach, price, hours }) => {
+    features: points.map(({ reach, price, hours, passes }) => {
       const ratio = price === null ? 1 : priceRatio(price, min, max);
+      const dimmed = !passes || price === null;
       return {
         type: "Feature" as const,
         geometry: { type: "Point" as const, coordinates: [reach.lon, reach.lat] },
         properties: {
           slug: reach.slug,
           name: reach.name,
-          label: price === null ? reach.name : `${reach.name} · ${formatPrice(price)}`,
-          color: price === null ? UNREACHABLE : priceColor(ratio),
-          radius: price === null ? 4 : 7 + 7 * (1 - ratio),
-          opacity: price === null ? 0.25 : 0.95,
-          cheap: price !== null && ratio < 0.35,
-          saved: reach.beats_direct_by ?? 0,
-          savedLabel: reach.beats_direct_by ? `−${formatPrice(reach.beats_direct_by)}` : "",
+          label: dimmed || price === null ? "" : `${reach.name} · ${formatPrice(price)}`,
+          color: dimmed ? UNREACHABLE : priceColor(ratio),
+          radius: dimmed ? 4 : 7 + 7 * (1 - ratio),
+          opacity: dimmed ? 0.28 : 0.95,
+          cheap: !dimmed && ratio < 0.35,
+          saved: dimmed ? 0 : (reach.beats_direct_by ?? 0),
+          savedLabel:
+            !dimmed && reach.beats_direct_by ? `−${formatPrice(reach.beats_direct_by)}` : "",
           hours: hours ?? 0,
         },
       };
@@ -372,21 +383,19 @@ export default function App() {
     });
   }, [theme, styleEpoch]);
 
-  const points = useMemo(
-    () => (data ? data.cities.map((reach) => effective(reach, modes)) : []),
-    [data, modes],
-  );
+  const points = useMemo(() => {
+    if (!data) return [];
+    return data.cities.map((reach) => {
+      const point = effective(reach, modes);
+      const passes =
+        point.price !== null &&
+        point.price <= budget &&
+        (point.hours === null || point.hours <= maxHours);
+      return { ...point, passes };
+    });
+  }, [data, modes, budget, maxHours]);
 
-  const visible = useMemo(
-    () =>
-      points.filter(
-        (point) =>
-          point.price !== null &&
-          point.price <= budget &&
-          (point.hours === null || point.hours <= maxHours),
-      ),
-    [points, budget, maxHours],
-  );
+  const visible = useMemo(() => points.filter((point) => point.passes), [points]);
 
   const bounds = useMemo(() => {
     const prices = visible
@@ -582,6 +591,7 @@ export default function App() {
           <TripCard
             reach={chosen}
             origin={data?.origin.name ?? origin}
+            filtered={points.some((point) => point.reach.slug === chosen.slug && !point.passes)}
             onClose={() => setSelected(null)}
           />
         )}
