@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    image: travelbroke:latest
+    restart: unless-stopped
+    environment:
+      TUTU_MCP_URL: https://mcp.tutu.ru/mcp
+      TB_CACHE_DIR: /app/data/cache
+    volumes:
+      - tb-data:/app/data
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+
+volumes:
+  tb-data:
+  caddy-data:
+  caddy-config:
