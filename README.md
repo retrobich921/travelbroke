@@ -195,14 +195,31 @@ CSS-переменные не доходят.
 ## Структура репозитория
 
 ```
-src/travelbroke/     доменный слой: API, веер запросов, граф маршрутов
+src/travelbroke/     доменный слой: API, веер запросов, граф маршрутов, справочник
 src/tutukit/         обвязка над MCP Туту: compat, client, cache, compact, diagnose
-tests/               pytest
-web/                 фронтенд: Vite + React + TypeScript + MapLibre
-docs/                архитектура, ADR, пользовательская документация
+tests/               pytest: разбор ответов, домен, контракт API, границы слоёв
+web/                 фронтенд: Vite + React + TypeScript + MapLibre, vitest
+docs/                архитектура, ADR, руководство пользователя, факты для питча
+recon/               одноразовые скрипты разведки MCP и сырые ответы
+deploy/              Caddy и инструкции по выкладке
 ```
 
-Для сдачи и финального прогона есть [чек-лист требований хакатона](docs/HACKATHON_CHECKLIST.md).
+## Куда идти дальше
+
+| Зачем | Куда |
+|---|---|
+| Понять устройство изнутри | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| Начать править код | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Просто пользоваться | [docs/USER_GUIDE.md](docs/USER_GUIDE.md) |
+| Найти нужный документ | [docs/README.md](docs/README.md) |
+| Проверить проект по критериям хакатона | [docs/HACKATHON_CHECKLIST.md](docs/HACKATHON_CHECKLIST.md) |
+| Выложить на сервер | [deploy/README.md](deploy/README.md) |
+
+Принятые архитектурные решения записаны как ADR: [граф вместо попарного
+поиска](docs/adr/0001-graph-over-pairwise-search.md), [фильтрация на
+клиенте](docs/adr/0002-client-side-filtering.md), [кэш как
+устойчивость](docs/adr/0003-disk-cache-as-stability.md) и [запас времени на
+пересадку](docs/adr/0004-transfer-buffer.md).
 
 ### Про `tutukit`
 
