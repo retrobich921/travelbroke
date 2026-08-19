@@ -415,3 +415,28 @@ def test_major_hubs_are_checked_first() -> None:
     candidates = hub_candidates(BY_NAME["Набережные Челны"], BY_NAME["Стамбул"], HUBS)
 
     assert candidates[0].name == "Москва"
+
+
+def test_documented_catalog_size_matches_code() -> None:
+    """Числа в README обязаны сходиться с тем, что реально отдаёт каталог.
+
+    Продукт весь построен на «мы не выдумываем цифры»: цену без подтверждения
+    Туту мы не показываем. Тогда и в собственной документации завышенного числа
+    быть не должно. Тест читает README и сверяет заявленное с посчитанным, так
+    что разъехаться они уже не могут молча.
+    """
+    import re
+    from pathlib import Path
+
+    from travelbroke.cities import country_id, global_catalog
+
+    readme = (Path(__file__).resolve().parents[1] / "README.md").read_text(encoding="utf-8")
+    claim = re.search(r"\*\*([\d\s ]+) города в (\d+) странах\*\*", readme)
+    assert claim is not None, "в README пропало утверждение о размере каталога"
+
+    claimed_cities = int(re.sub(r"[\s ]", "", claim.group(1)))
+    claimed_countries = int(claim.group(2))
+
+    catalog = global_catalog()
+    assert len(catalog) == claimed_cities
+    assert len({country_id(city) for city, _ in catalog}) == claimed_countries
