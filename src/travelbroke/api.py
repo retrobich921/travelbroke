@@ -141,9 +141,6 @@ class ReachableRequest(BaseModel):
     limit: int | None = Field(
         default=None, gt=0, description="Ограничить число городов (для быстрых прогонов)"
     )
-    deep: bool = Field(
-        default=False, description="Искать составные маршруты через хабы (медленнее)"
-    )
     passengers: int = Field(
         default=1, ge=1, le=6, description="Сколько человек едет — уходит в поиск как adults"
     )

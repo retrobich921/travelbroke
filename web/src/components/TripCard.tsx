@@ -10,7 +10,8 @@ import {
   type VariantOut,
 } from "../api";
 import type { DisplayedTrip } from "../trip";
-import { Icon, TRANSPORT_PATHS, type IconName } from "./Icon";
+import { TRANSPORT_PATHS } from "../transport";
+import { Icon, type IconName } from "./Icon";
 
 const TRANSPORT_LABEL: Record<string, string> = {
   ...MODE_LABELS,

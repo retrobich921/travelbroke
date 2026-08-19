@@ -20,7 +20,6 @@ export interface MapState {
   budget: number;
   maxHours: number;
   modes: Mode[];
-  deep: boolean;
   passengers: number;
   abroadOnly: boolean;
   roundTrip: boolean;
@@ -38,7 +37,6 @@ export const DEFAULT_STATE: MapState = {
   budget: 6000,
   maxHours: 24,
   modes: [...MODES],
-  deep: true,
   passengers: 1,
   abroadOnly: false,
   roundTrip: false,
@@ -73,8 +71,6 @@ export function readState(search: string = window.location.search): MapState {
     budget: clamp(parseNumber(params.get("budget"), DEFAULT_STATE.budget), BUDGET_MIN, BUDGET_UNLIMITED),
     maxHours: clamp(parseNumber(params.get("hours"), DEFAULT_STATE.maxHours), HOURS_MIN, HOURS_MAX),
     modes: parseModes(params.get("modes")),
-    // До трёх пересадок — постоянное правило поиска, отключать его ссылкой нельзя.
-    deep: true,
     passengers: Math.min(6, Math.max(1, parseNumber(params.get("pax"), 1))),
     abroadOnly: params.get("abroad") === "1",
     roundTrip: params.get("rt") === "1",

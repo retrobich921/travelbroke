@@ -260,7 +260,7 @@ export function StartScreen(props: Props) {
               <div className="mt-3 border-t border-tb-line pt-3">
                 <SearchProgress
                   calls={calls}
-                  note={filters.deep ? "и составные маршруты" : undefined}
+                  note="и составные маршруты"
                 />
               </div>
             )}

@@ -112,7 +112,6 @@ export interface FilterValues {
   passengers: number;
   departAfter: number;
   arriveBefore: number;
-  deep: boolean;
   abroadOnly: boolean;
   roundTrip: boolean;
   stayMin: number;
@@ -125,7 +124,6 @@ export interface FilterHandlers {
   onPassengers: (value: number) => void;
   onDepartAfter: (value: number) => void;
   onArriveBefore: (value: number) => void;
-  onDeep: (value: boolean) => void;
   onAbroadOnly: (value: boolean) => void;
   onRoundTrip: (value: boolean) => void;
   onStay: (min: number, max: number) => void;

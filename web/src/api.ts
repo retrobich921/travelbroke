@@ -91,7 +91,6 @@ export async function fetchReachable(params: {
   origin: string;
   date: string;
   modes: Mode[];
-  deep: boolean;
   passengers: number;
   round_trip: boolean;
   stay_min: number;

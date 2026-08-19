@@ -16,7 +16,7 @@ import {
   type VariantOut,
 } from "./api";
 import { ControlPanel } from "./components/ControlPanel";
-import { TRANSPORT_PATHS } from "./components/Icon";
+import { TRANSPORT_PATHS } from "./transport";
 import { SearchProgress } from "./components/SearchProgress";
 import { StartScreen } from "./components/StartScreen";
 import { TripCard } from "./components/TripCard";
@@ -669,17 +669,17 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
 
   // Начальное состояние берём из адресной строки: ссылкой можно поделиться.
-  const initial = useRef(readState()).current;
-  const shouldSearchFromLink = useRef(
-    new URLSearchParams(window.location.search).has("from") ||
+  const [initial] = useState(readState);
+  const [shouldSearchFromLink] = useState(
+    () =>
+      new URLSearchParams(window.location.search).has("from") ||
       new URLSearchParams(window.location.search).has("date"),
-  ).current;
+  );
   const [origin, setOrigin] = useState(initial.origin);
   const [date, setDate] = useState(initial.date);
   const [budget, setBudget] = useState(initial.budget);
   const [maxHours, setMaxHours] = useState(initial.maxHours);
   const [modes, setModes] = useState<Mode[]>(initial.modes);
-  const [deep, setDeep] = useState(initial.deep);
   const [passengers, setPassengers] = useState(initial.passengers);
   const [abroadOnly, setAbroadOnly] = useState(initial.abroadOnly);
   const [roundTrip, setRoundTrip] = useState(initial.roundTrip);
@@ -695,7 +695,6 @@ export default function App() {
   const [lastSearch, setLastSearch] = useState<{
     origin: string;
     date: string;
-    deep: boolean;
     passengers: number;
     modes: string;
     abroadOnly: boolean;
@@ -705,7 +704,6 @@ export default function App() {
   } | null>(() => ({
     origin: initial.origin,
     date: initial.date,
-    deep: initial.deep,
     passengers: initial.passengers,
     modes: initial.modes.join(","),
     abroadOnly: initial.abroadOnly,
@@ -713,20 +711,9 @@ export default function App() {
     stayMin: initial.stayMin,
     stayMax: initial.stayMax,
   }));
-  const previousQuery = useRef({
-    origin: initial.origin,
-    date: initial.date,
-    deep: initial.deep,
-    passengers: initial.passengers,
-    modes: initial.modes.join(","),
-    abroadOnly: initial.abroadOnly,
-    roundTrip: initial.roundTrip,
-  });
   // Только самый свежий расчёт имеет право менять карту и счётчик. Иначе два
   // одновременных запроса по очереди перерисовывают числа и старую выдачу.
   const searchRun = useRef(0);
-  const modesRef = useRef(modes);
-  modesRef.current = modes;
 
   useEffect(() => {
     writeState({
@@ -735,7 +722,6 @@ export default function App() {
       budget,
       maxHours,
       modes,
-      deep,
       passengers,
       abroadOnly,
       roundTrip,
@@ -751,7 +737,6 @@ export default function App() {
     budget,
     maxHours,
     modes,
-    deep,
     passengers,
     abroadOnly,
     roundTrip,
@@ -768,15 +753,11 @@ export default function App() {
       .catch(() => setError("не удалось загрузить справочник городов"));
   }, []);
 
-  // Карта создаётся один раз, поэтому текущую тему держим в ref.
-  const themeRef = useRef(theme);
-  themeRef.current = theme;
-
   useEffect(() => {
     if (!container.current || map.current) return;
     const instance = new maplibregl.Map({
       container: container.current,
-      style: VECTOR_STYLE[themeRef.current],
+      style: VECTOR_STYLE[theme],
       center: [55, 57],
       zoom: 3.1,
       attributionControl: { compact: true },
@@ -784,7 +765,7 @@ export default function App() {
     instance.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
 
     const install = () => {
-      installLayers(instance, paletteFor(themeRef.current));
+      installLayers(instance, paletteFor(theme));
       instance.on("click", "cities", (event) => {
         const slug = event.features?.[0]?.properties?.slug;
         if (typeof slug !== "string") return;
@@ -809,7 +790,7 @@ export default function App() {
       if (usedFallback.current || instance.isStyleLoaded()) return;
       usedFallback.current = true;
       setMapNote("Подложка загружается запасным способом.");
-      instance.setStyle(rasterStyle(themeRef.current));
+      instance.setStyle(rasterStyle(theme));
       instance.once("styledata", install);
     };
     const timer = window.setTimeout(fallback, STYLE_TIMEOUT_MS);
@@ -825,19 +806,6 @@ export default function App() {
       map.current = null;
     };
   }, []);
-
-  // Смена темы меняет подложку целиком, поэтому слои ставим заново.
-  const appliedTheme = useRef(theme);
-  useEffect(() => {
-    const instance = map.current;
-    if (!instance || styleEpoch === 0 || appliedTheme.current === theme) return;
-    appliedTheme.current = theme;
-    instance.setStyle(usedFallback.current ? rasterStyle(theme) : VECTOR_STYLE[theme]);
-    instance.once("styledata", () => {
-      installLayers(instance, paletteFor(theme));
-      setStyleEpoch((epoch) => epoch + 1);
-    });
-  }, [theme, styleEpoch]);
 
   const points = useMemo(() => {
     if (!data) return [];
@@ -880,42 +848,20 @@ export default function App() {
     () => (chosen ? tripForModes(chosen, modes) : null),
     [chosen, modes],
   );
-  const chosenRoute = chosenTrip?.kind === "unavailable" ? null : chosen;
   const needsSearch =
     data !== null &&
     (lastSearch === null ||
       lastSearch.origin !== origin ||
       lastSearch.date !== date ||
-      lastSearch.deep !== deep ||
       lastSearch.passengers !== passengers ||
       lastSearch.modes !== modes.join(",") ||
       lastSearch.abroadOnly !== abroadOnly ||
       lastSearch.roundTrip !== roundTrip ||
       lastSearch.stayMin !== stayMin ||
       lastSearch.stayMax !== stayMax);
-
-  // Откуда, дата, пересадки и число пассажиров меняют сами данные. Старую
-  // карточку при таких изменениях не держим — она относится к прошлому запросу.
-  useEffect(() => {
-    const changed =
-      previousQuery.current.origin !== origin ||
-      previousQuery.current.date !== date ||
-      previousQuery.current.deep !== deep ||
-      previousQuery.current.passengers !== passengers ||
-      previousQuery.current.modes !== modes.join(",") ||
-      previousQuery.current.abroadOnly !== abroadOnly ||
-      previousQuery.current.roundTrip !== roundTrip;
-    if (changed) setSelected(null);
-    previousQuery.current = {
-      origin,
-      date,
-      deep,
-      passengers,
-      modes: modes.join(","),
-      abroadOnly,
-      roundTrip,
-    };
-  }, [origin, date, deep, passengers, modes, abroadOnly, roundTrip]);
+  // После изменения параметров старая матрица остаётся видимой для сравнения,
+  // но карточку прошлого запроса не выдаём за результат новых условий.
+  const chosenRoute = needsSearch || chosenTrip?.kind === "unavailable" ? null : chosen;
 
   useEffect(() => {
     if (!styleEpoch || !map.current) return;
@@ -938,24 +884,18 @@ export default function App() {
     source?.setData(transferGeoJSON(chosenRoute, byName, chosenTrip));
   }, [styleEpoch, chosenRoute, chosenTrip, byName]);
 
-  const abroadRef = useRef(abroadOnly);
-  abroadRef.current = abroadOnly;
-  const roundTripRef = useRef(roundTrip);
-  roundTripRef.current = roundTrip;
-  const stayRef = useRef<[number, number]>([stayMin, stayMax]);
-  stayRef.current = [stayMin, stayMax];
-
   const search = useCallback(
-    async (city: string, when: string, _withTransfers: boolean, people: number) => {
+    async (city: string, when: string, people: number, keepSelected = false) => {
       const run = ++searchRun.current;
-      const searchModes = [...modesRef.current];
-      const searchAbroadOnly = abroadRef.current;
-      const searchRoundTrip = roundTripRef.current;
-      const [searchStayMin, searchStayMax] = stayRef.current;
+      const searchModes = [...modes];
+      const searchAbroadOnly = abroadOnly;
+      const searchRoundTrip = roundTrip;
+      const searchStayMin = stayMin;
+      const searchStayMax = stayMax;
       setLoading(true);
       setError(null);
       setCalls(0);
-      setSelected(null);
+      if (!keepSelected) setSelected(null);
       let ticker: number | null = null;
 
       try {
@@ -976,7 +916,6 @@ export default function App() {
         origin: city,
         date: when,
         modes: searchModes,
-        deep: true,
         passengers: people,
         abroad_only: searchAbroadOnly,
         round_trip: searchRoundTrip,
@@ -988,7 +927,6 @@ export default function App() {
       setLastSearch({
         origin: city,
         date: when,
-        deep: true,
         passengers: people,
         modes: searchModes.join(","),
         abroadOnly: searchAbroadOnly,
@@ -1033,15 +971,15 @@ export default function App() {
         if (run === searchRun.current) setLoading(false);
       }
     },
-    [],
+    [abroadOnly, modes, roundTrip, stayMax, stayMin],
   );
 
   const chooseDate = useCallback(
     (value: string) => {
       setDate(value);
-      void search(origin, value, deep, passengers);
+      void search(origin, value, passengers);
     },
-    [deep, origin, passengers, search],
+    [origin, passengers, search],
   );
 
   const useRecentSearch = useCallback((entry: SearchHistoryEntry) => {
@@ -1075,13 +1013,12 @@ export default function App() {
       stayMax,
     };
     setRecentSearches(saveSearchHistory(entry));
-    void search(origin, date, deep, passengers);
+    void search(origin, date, passengers);
   }, [
     abroadOnly,
     arriveBefore,
     budget,
     date,
-    deep,
     departAfter,
     maxHours,
     modes,
@@ -1094,9 +1031,14 @@ export default function App() {
   ]);
 
   // Ссылки из «Поделиться этим видом» не должны попадать на лендинг: параметры
-  // уже содержат полноценный поисковый сценарий, запускаем его после первого рендера.
+  // уже содержат полноценный поисковый сценарий. Откладываем запуск на кадр,
+  // чтобы сначала успели подключиться карта и обработчики её источников.
   useEffect(() => {
-    if (shouldSearchFromLink) void search(initial.origin, initial.date, true, initial.passengers);
+    if (!shouldSearchFromLink) return;
+    const timer = window.setTimeout(() => {
+      void search(initial.origin, initial.date, initial.passengers, true);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [initial, search, shouldSearchFromLink]);
 
   const toggleMode = useCallback((mode: Mode) => {
@@ -1131,7 +1073,6 @@ export default function App() {
           passengers={passengers}
           departAfter={departAfter}
           arriveBefore={arriveBefore}
-          deep={deep}
           abroadOnly={abroadOnly}
           roundTrip={roundTrip}
           stayMin={stayMin}
@@ -1146,7 +1087,6 @@ export default function App() {
           onPassengers={setPassengers}
           onDepartAfter={setDepartAfter}
           onArriveBefore={setArriveBefore}
-          onDeep={setDeep}
           onAbroadOnly={setAbroadOnly}
           onRoundTrip={setRoundTrip}
           onStay={(min, max) => {
@@ -1165,7 +1105,7 @@ export default function App() {
 
       {loading && data && (
         <div className="tb-plate pointer-events-none absolute top-4 left-1/2 z-30 w-[min(22rem,calc(100vw-2rem))] -translate-x-1/2 px-4 py-3">
-          <SearchProgress calls={calls} note={deep ? "и составные маршруты" : undefined} />
+          <SearchProgress calls={calls} note="и составные маршруты" />
         </div>
       )}
 
@@ -1192,7 +1132,7 @@ export default function App() {
 
         {/* Результат — слева, под сводкой; настройки — справа. На ноутбуке пульт
             занимает всю правую колонку, и карточке там не оставалось высоты. */}
-        {chosen && (
+        {chosen && !needsSearch && (
           <div className="hidden min-h-0 lg:flex lg:flex-1 lg:flex-col">
             <TripCard
               reach={chosen}
@@ -1233,7 +1173,6 @@ export default function App() {
           passengers={passengers}
           departAfter={departAfter}
           arriveBefore={arriveBefore}
-          deep={deep}
           abroadOnly={abroadOnly}
           roundTrip={roundTrip}
           stayMin={stayMin}
@@ -1246,17 +1185,16 @@ export default function App() {
           onPassengers={setPassengers}
           onDepartAfter={setDepartAfter}
           onArriveBefore={setArriveBefore}
-          onDeep={setDeep}
           onAbroadOnly={setAbroadOnly}
           onRoundTrip={setRoundTrip}
           onStay={(min, max) => {
             setStayMin(min);
             setStayMax(max);
           }}
-          onSearch={() => void search(origin, date, deep, passengers)}
+          onSearch={() => void search(origin, date, passengers)}
         />
         </div>
-        {chosen && (
+        {chosen && !needsSearch && (
           <div className="flex min-h-0 flex-1 flex-col lg:hidden">
             <TripCard
               reach={chosen}
