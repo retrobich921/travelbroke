@@ -26,6 +26,10 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 # Комментарии и строки в проекте на русском — правила про «неоднозначную кириллицу» тут только шумят.
 ignore = ["RUF001", "RUF002", "RUF003"]
 
+[tool.ruff.lint.per-file-ignores]
+# recon/ — одноразовые скрипты разведки MCP, их печать нарочно широкая.
+"recon/*" = ["E501"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true
