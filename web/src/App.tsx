@@ -1,6 +1,9 @@
 import type { FeatureCollection, LineString, Point } from "geojson";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+// MapLibre ищет свой воркер относительно import.meta.url, а сборщик его не
+// эмитит — без явного указания карта не рендерится вовсе (404 на воркер).
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -20,6 +23,8 @@ import { readState, writeState } from "./urlState";
 
 /** Тёмная подложка на данных OpenStreetMap: без ключей, без регистрации. */
 const BASEMAP = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+maplibregl.setWorkerUrl(workerUrl);
+
 const SOURCE = "reachable";
 const ORIGIN_SOURCE = "origin";
 const ROUTE_SOURCE = "route";
