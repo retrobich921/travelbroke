@@ -1,7 +1,15 @@
+# Прод-раскладка TravelBroke.
+#
+# Порты 80/443 на сервере уже заняты другими сервисами, поэтому HTTPS через
+# Caddy здесь не поднимается: ACME без свободного 80-го не выдаст сертификат.
+# Приложение отдаётся напрямую по HTTP на 7777, руководство пользователя — на
+# 7778. Конфиг Caddy оставлен в deploy/Caddyfile: когда 80-й освободится,
+# сервис возвращается одним блоком.
 services:
   app:
     build: .
     image: travelbroke:latest
+    container_name: travelbroke-app
     restart: unless-stopped
     environment:
       TUTU_MCP_URL: https://mcp.tutu.ru/mcp
@@ -10,20 +18,22 @@ services:
     volumes:
       - tb-data:/app/data
     ports:
-      - "127.0.0.1:8000:8000"
+      - "7777:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
-  caddy:
-    image: caddy:2-alpine
+  docs:
+    image: nginx:alpine
+    container_name: travelbroke-docs
     restart: unless-stopped
-    network_mode: host
     volumes:
-      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
-    depends_on:
-      - app
+      - ./deploy/docs:/usr/share/nginx/html:ro
+    ports:
+      - "7778:80"
 
 volumes:
   tb-data:
-  caddy-data:
-  caddy-config:
