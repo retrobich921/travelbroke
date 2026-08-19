@@ -40,18 +40,17 @@ def rpc(method: str, params: dict[str, Any] | None = None) -> tuple[Any, float]:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
             text = resp.read().decode("utf-8", "replace")
     except urllib.error.HTTPError as e:
-        return {"_http_error": e.code, "_body": e.read().decode("utf-8", "replace")[:2000]}, time.perf_counter() - t0
+        return {
+            "_http_error": e.code,
+            "_body": e.read().decode("utf-8", "replace")[:2000],
+        }, time.perf_counter() - t0
     except Exception as e:  # таймаут, обрыв
         return {"_transport_error": repr(e)}, time.perf_counter() - t0
     dt = time.perf_counter() - t0
 
     # streamable http может ответить SSE-кадрами
     if text.lstrip().startswith("event:") or text.lstrip().startswith("data:"):
-        chunks = [
-            ln[len("data:") :].strip()
-            for ln in text.splitlines()
-            if ln.startswith("data:")
-        ]
+        chunks = [ln[len("data:") :].strip() for ln in text.splitlines() if ln.startswith("data:")]
         text = chunks[-1] if chunks else text
     try:
         return json.loads(text), dt
@@ -109,50 +108,141 @@ def shape(data: Any) -> str:
 
 PROBES: list[tuple[str, str, dict[str, Any]]] = [
     # --- базовые поиски по каждому виду транспорта ---
-    ("avia: Мск→Сочи", "search_avia",
-     {"origin": "Москва", "destination": "Сочи", "departure_date": "2026-09-01", "passengers_full": 1}),
-    ("rail: Мск→Питер", "search_rail",
-     {"origin": "Москва", "destination": "Санкт-Петербург", "departure_date": "2026-09-01"}),
-    ("bus: Мск→Тула", "search_bus",
-     {"origin": "Москва", "destination": "Тула", "departure_date": "2026-09-01"}),
-    ("etrain: Мск→Одинцово", "search_etrain",
-     {"origin": "Москва", "destination": "Одинцово", "departure_date": "2026-09-01"}),
-    ("hotels: Сочи 2 ночи", "search_hotels",
-     {"city_name": "Сочи", "checkin_date": "2026-09-01", "checkout_date": "2026-09-03", "adults": 2}),
-    ("multi: Мск→Казань", "search_multitransport",
-     {"origin": "Москва", "destination": "Казань", "departure_date": "2026-09-01", "optimize_for": "price"}),
-
+    (
+        "avia: Мск→Сочи",
+        "search_avia",
+        {
+            "origin": "Москва",
+            "destination": "Сочи",
+            "departure_date": "2026-09-01",
+            "passengers_full": 1,
+        },
+    ),
+    (
+        "rail: Мск→Питер",
+        "search_rail",
+        {"origin": "Москва", "destination": "Санкт-Петербург", "departure_date": "2026-09-01"},
+    ),
+    (
+        "bus: Мск→Тула",
+        "search_bus",
+        {"origin": "Москва", "destination": "Тула", "departure_date": "2026-09-01"},
+    ),
+    (
+        "etrain: Мск→Одинцово",
+        "search_etrain",
+        {"origin": "Москва", "destination": "Одинцово", "departure_date": "2026-09-01"},
+    ),
+    (
+        "hotels: Сочи 2 ночи",
+        "search_hotels",
+        {
+            "city_name": "Сочи",
+            "checkin_date": "2026-09-01",
+            "checkout_date": "2026-09-03",
+            "adults": 2,
+        },
+    ),
+    (
+        "multi: Мск→Казань",
+        "search_multitransport",
+        {
+            "origin": "Москва",
+            "destination": "Казань",
+            "departure_date": "2026-09-01",
+            "optimize_for": "price",
+        },
+    ),
     # --- нагрузка/объём ---
-    ("multi: время вместо цены", "search_multitransport",
-     {"origin": "Москва", "destination": "Казань", "departure_date": "2026-09-01", "optimize_for": "time"}),
-    ("avia: page_size=30", "search_avia",
-     {"origin": "Москва", "destination": "Сочи", "departure_date": "2026-09-01", "page_size": 30}),
-    ("avia: view=full", "search_avia",
-     {"origin": "Москва", "destination": "Сочи", "departure_date": "2026-09-01", "view": "full", "page_size": 3}),
-
+    (
+        "multi: время вместо цены",
+        "search_multitransport",
+        {
+            "origin": "Москва",
+            "destination": "Казань",
+            "departure_date": "2026-09-01",
+            "optimize_for": "time",
+        },
+    ),
+    (
+        "avia: page_size=30",
+        "search_avia",
+        {
+            "origin": "Москва",
+            "destination": "Сочи",
+            "departure_date": "2026-09-01",
+            "page_size": 30,
+        },
+    ),
+    (
+        "avia: view=full",
+        "search_avia",
+        {
+            "origin": "Москва",
+            "destination": "Сочи",
+            "departure_date": "2026-09-01",
+            "view": "full",
+            "page_size": 3,
+        },
+    ),
     # --- фильтры ---
-    ("avia: direct_only+price_max", "search_avia",
-     {"origin": "Москва", "destination": "Сочи", "departure_date": "2026-09-01",
-      "direct_only": True, "price_max": 8000}),
-
+    (
+        "avia: direct_only+price_max",
+        "search_avia",
+        {
+            "origin": "Москва",
+            "destination": "Сочи",
+            "departure_date": "2026-09-01",
+            "direct_only": True,
+            "price_max": 8000,
+        },
+    ),
     # --- граничные случаи: тут ищем дыры ---
-    ("edge: город-омоним Ростов", "search_rail",
-     {"origin": "Москва", "destination": "Ростов", "departure_date": "2026-09-01"}),
-    ("edge: сленг Питер→Мск", "search_rail",
-     {"origin": "Питер", "destination": "Мск", "departure_date": "2026-09-01"}),
-    ("edge: несуществующий город", "search_rail",
-     {"origin": "Москва", "destination": "Кукуево-Задрищенск", "departure_date": "2026-09-01"}),
-    ("edge: дата в прошлом", "search_avia",
-     {"origin": "Москва", "destination": "Сочи", "departure_date": "2020-01-01"}),
-    ("edge: дата +11 месяцев", "search_avia",
-     {"origin": "Москва", "destination": "Сочи", "departure_date": "2027-07-15"}),
-    ("edge: заграница Мск→Стамбул", "search_avia",
-     {"origin": "Москва", "destination": "Стамбул", "departure_date": "2026-09-01"}),
-    ("edge: глухой маршрут автобус", "search_bus",
-     {"origin": "Норильск", "destination": "Анадырь", "departure_date": "2026-09-01"}),
-    ("edge: отель на сегодня", "search_hotels",
-     {"city_name": "Москва", "checkin_date": "2026-08-17", "checkout_date": "2026-08-18", "adults": 1}),
-
+    (
+        "edge: город-омоним Ростов",
+        "search_rail",
+        {"origin": "Москва", "destination": "Ростов", "departure_date": "2026-09-01"},
+    ),
+    (
+        "edge: сленг Питер→Мск",
+        "search_rail",
+        {"origin": "Питер", "destination": "Мск", "departure_date": "2026-09-01"},
+    ),
+    (
+        "edge: несуществующий город",
+        "search_rail",
+        {"origin": "Москва", "destination": "Кукуево-Задрищенск", "departure_date": "2026-09-01"},
+    ),
+    (
+        "edge: дата в прошлом",
+        "search_avia",
+        {"origin": "Москва", "destination": "Сочи", "departure_date": "2020-01-01"},
+    ),
+    (
+        "edge: дата +11 месяцев",
+        "search_avia",
+        {"origin": "Москва", "destination": "Сочи", "departure_date": "2027-07-15"},
+    ),
+    (
+        "edge: заграница Мск→Стамбул",
+        "search_avia",
+        {"origin": "Москва", "destination": "Стамбул", "departure_date": "2026-09-01"},
+    ),
+    (
+        "edge: глухой маршрут автобус",
+        "search_bus",
+        {"origin": "Норильск", "destination": "Анадырь", "departure_date": "2026-09-01"},
+    ),
+    (
+        "edge: отель на сегодня",
+        "search_hotels",
+        {
+            "city_name": "Москва",
+            "checkin_date": "2026-08-17",
+            "checkout_date": "2026-08-18",
+            "adults": 1,
+        },
+    ),
     # --- ресурсы ---
     ("res: tutu://status", "fetch_resource", {"uri": "tutu://status"}),
     ("res: tutu://help/overview", "fetch_resource", {"uri": "tutu://help/overview"}),

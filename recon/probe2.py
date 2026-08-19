@@ -49,16 +49,17 @@ def main() -> None:
     dump("rail_details", data)
     show("get_offer_details rail", data, dt, size)
 
-    data, dt, size = call_tool(
-        "get_rail_seatmap", {"details_ref": rail_offer["details_ref"]}
-    )
+    data, dt, size = call_tool("get_rail_seatmap", {"details_ref": rail_offer["details_ref"]})
     dump("rail_seatmap", data)
     show("get_rail_seatmap", data, dt, size)
 
     # seatmap с вопросом-задачей
     data, dt, size = call_tool(
         "get_rail_seatmap",
-        {"details_ref": rail_offer["details_ref"], "task": "лучшие нижние места подальше от туалета"},
+        {
+            "details_ref": rail_offer["details_ref"],
+            "task": "лучшие нижние места подальше от туалета",
+        },
     )
     dump("rail_seatmap_task", data)
     show("seatmap с task=", data, dt, size)
@@ -110,9 +111,14 @@ def main() -> None:
 
     print("\n--- параллельная нагрузка: 8 запросов разом ---")
     routes = [
-        ("Москва", "Казань"), ("Москва", "Сочи"), ("Санкт-Петербург", "Мурманск"),
-        ("Екатеринбург", "Тюмень"), ("Новосибирск", "Омск"), ("Казань", "Самара"),
-        ("Ростов-на-Дону", "Краснодар"), ("Уфа", "Пермь"),
+        ("Москва", "Казань"),
+        ("Москва", "Сочи"),
+        ("Санкт-Петербург", "Мурманск"),
+        ("Екатеринбург", "Тюмень"),
+        ("Новосибирск", "Омск"),
+        ("Казань", "Самара"),
+        ("Ростов-на-Дону", "Краснодар"),
+        ("Уфа", "Пермь"),
     ]
 
     def one(pair: tuple[str, str]) -> tuple[str, float, str]:
@@ -122,7 +128,11 @@ def main() -> None:
             {"origin": o, "destination": d, "departure_date": "2026-09-05"},
         )
         bad = next(
-            (k for k in ("_tool_error", "_rpc_error", "_transport_error", "_http_error") if k in data),
+            (
+                k
+                for k in ("_tool_error", "_rpc_error", "_transport_error", "_http_error")
+                if k in data
+            ),
             "",
         )
         return f"{o}→{d}", dt, bad or "ok"
