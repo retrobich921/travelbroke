@@ -102,8 +102,8 @@ export function TripCard({ reach, origin, filtered = false, onClose }: Props) {
       : [];
 
   return (
-    <section className="tb-rise tb-sheet pointer-events-auto w-full overflow-hidden rounded-3xl bg-tb-panel/97 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl lg:w-88">
-      <header className="flex items-start justify-between gap-3 p-5 pb-3">
+    <section className="tb-rise pointer-events-auto flex w-full min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain rounded-3xl bg-tb-panel/97 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl">
+      <header className="sticky top-0 z-10 flex items-start justify-between gap-3 bg-tb-panel/95 p-5 pb-3 backdrop-blur">
         <div>
           <div className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
             {origin} →

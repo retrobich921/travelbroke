@@ -54,7 +54,7 @@ export function ControlPanel(props: Props) {
   };
 
   return (
-    <aside className="tb-sheet pointer-events-auto w-full rounded-3xl bg-tb-panel/95 p-5 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl sm:p-6 lg:w-84">
+    <aside className="pointer-events-auto w-full shrink-0 rounded-3xl bg-tb-panel/95 p-5 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl sm:p-6">
       <div className="grid grid-cols-2 gap-3">
         <label>
           <span className={LABEL}>Откуда</span>

@@ -279,6 +279,25 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
       "circle-stroke-color": palette.halo,
     },
   });
+
+  // Точку отправления тоже подписываем — иначе непонятно, откуда идёт линия.
+  instance.addLayer({
+    id: "origin-label",
+    type: "symbol",
+    source: ORIGIN_SOURCE,
+    layout: {
+      "text-field": ["get", "name"],
+      "text-size": 12,
+      "text-offset": [0, 1.2],
+      "text-anchor": "top",
+      "text-allow-overlap": true,
+    },
+    paint: {
+      "text-color": palette.label,
+      "text-halo-color": palette.halo,
+      "text-halo-width": 1.6,
+    },
+  });
 }
 
 export default function App() {
@@ -488,14 +507,18 @@ export default function App() {
         </div>
       )}
 
-      <header className="pointer-events-none absolute top-0 left-0 z-10 max-w-[min(20rem,calc(100vw-7rem))] p-4 sm:p-6">
-        <h1 className="text-2xl font-black tracking-tight text-tb-hero sm:text-4xl">TravelBroke</h1>
-        <p className="mt-1 text-xs text-tb-muted sm:text-sm">
-          Ты на мели. Мы всё равно тебя увезём.
-        </p>
+      <header className="pointer-events-none absolute top-0 left-0 z-10 flex max-h-full max-w-[min(19rem,calc(100vw-9rem))] flex-col gap-3 overflow-y-auto p-4 sm:p-6 lg:max-h-[calc(100vh-9rem)]">
+        <div className="shrink-0">
+          <h1 className="text-2xl font-black tracking-tight text-tb-hero sm:text-4xl">
+            TravelBroke
+          </h1>
+          <p className="mt-1 text-xs text-tb-muted sm:text-sm">
+            Ты на мели. Мы всё равно тебя увезём.
+          </p>
+        </div>
 
         {data && !loading && (
-          <div className={`tb-rise pointer-events-auto mt-4 ${card}`}>
+          <div className={`tb-rise pointer-events-auto shrink-0 ${card}`}>
             <div className="text-tb-ink">
               <span className="text-3xl font-black text-tb-hero">{visible.length}</span>{" "}
               <span className="text-sm">
@@ -521,14 +544,14 @@ export default function App() {
         )}
 
         {loading && (
-          <div className={`pointer-events-auto mt-4 text-sm text-tb-muted ${card}`}>
+          <div className={`pointer-events-auto shrink-0 text-sm text-tb-muted ${card}`}>
             Опрашиваем Туту по всем городам сразу.
             {deep && <> Ищем ещё и составные маршруты — это дольше.</>}
           </div>
         )}
 
         {!loading && data && visible.length === 0 && (
-          <div className={`tb-rise pointer-events-auto mt-4 text-sm ${card}`}>
+          <div className={`tb-rise pointer-events-auto shrink-0 text-sm ${card}`}>
             <div className="font-semibold text-tb-ink">За эти деньги — никуда.</div>
             <div className="mt-1 text-xs text-tb-muted">
               Подвинь бюджет или добавь часов в пути.
@@ -537,39 +560,39 @@ export default function App() {
         )}
 
         {mapNote && (
-          <div className={`pointer-events-auto mt-3 text-xs text-tb-muted ${card}`}>{mapNote}</div>
+          <div className={`pointer-events-auto shrink-0 text-xs text-tb-muted ${card}`}>{mapNote}</div>
         )}
 
         {error && (
-          <div className="pointer-events-auto mt-4 rounded-2xl bg-red-500/20 px-4 py-3 text-sm text-red-100 ring-1 ring-red-400/40">
+          <div className="pointer-events-auto shrink-0 rounded-2xl bg-red-500/20 px-4 py-3 text-sm text-red-100 ring-1 ring-red-400/40">
             {error}
           </div>
         )}
       </header>
 
-      <div className="absolute top-4 right-4 z-30 flex gap-2 sm:top-6 sm:right-6">
-        <button
-          type="button"
-          onClick={toggleTheme}
-          aria-label="Переключить тему оформления"
-          className="rounded-full bg-tb-panel/90 px-3 py-2 text-base leading-none ring-1 ring-tb-line backdrop-blur transition hover:brightness-105"
-        >
-          {theme === "dark" ? "☀" : "☾"}
-        </button>
-        <button
-          type="button"
-          onClick={() => setPanelOpen((open) => !open)}
-          className="rounded-full bg-tb-panel/90 px-4 py-2 text-sm font-semibold text-tb-ink ring-1 ring-tb-line backdrop-blur lg:hidden"
-        >
-          {panelOpen ? "Скрыть" : "Настроить"}
-        </button>
-      </div>
+      {/* Правая колонка: кнопки, настройки и карточка поездки в одном потоке.
+          Высота колонки ограничена экраном, поэтому карточка не уезжает за край,
+          а прокручивается внутри себя. */}
+      <div className="pointer-events-none absolute inset-x-3 bottom-3 z-20 flex max-h-[86vh] flex-col-reverse gap-3 sm:inset-x-4 sm:bottom-4 lg:inset-x-auto lg:top-6 lg:right-6 lg:bottom-6 lg:w-84 lg:max-h-none lg:flex-col">
+        <div className="pointer-events-auto flex shrink-0 justify-end gap-2">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Переключить тему оформления"
+            className="rounded-full bg-tb-panel/90 px-3.5 py-2 text-base leading-none text-tb-ink ring-1 ring-tb-line backdrop-blur transition hover:brightness-105"
+          >
+            {theme === "dark" ? "☀" : "☾"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPanelOpen((open) => !open)}
+            className="rounded-full bg-tb-panel/90 px-4 py-2 text-sm font-semibold text-tb-ink ring-1 ring-tb-line backdrop-blur transition hover:brightness-105 lg:hidden"
+          >
+            {panelOpen ? "Скрыть настройки" : "Настроить"}
+          </button>
+        </div>
 
-      <div
-        className={`pointer-events-none absolute z-20 flex-col gap-3 ${
-          panelOpen ? "flex" : "hidden lg:flex"
-        } inset-x-3 bottom-3 items-stretch sm:inset-x-4 sm:bottom-4 lg:inset-x-auto lg:top-20 lg:right-6 lg:bottom-6 lg:w-84 lg:items-end lg:overflow-y-auto`}
-      >
+        <div className={`contents ${panelOpen ? "" : "hidden lg:contents"}`}>
         <ControlPanel
           cities={cities}
           origin={origin}
@@ -587,6 +610,7 @@ export default function App() {
           onDeep={setDeep}
           onSearch={() => void search(origin, date, deep)}
         />
+        </div>
         {chosen && (
           <TripCard
             reach={chosen}
