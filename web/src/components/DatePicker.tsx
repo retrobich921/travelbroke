@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
+import { Icon } from "./Icon";
 import { POPOVER, useDismiss } from "./Popover";
 
 const MONTHS = [
@@ -41,8 +42,6 @@ function startOfDay(day: Date): Date {
 interface Props {
   value: string;
   onChange: (value: string) => void;
-  /** Светлая форма поверх тёмного лендинга. */
-  surface?: "default" | "light";
   /** Дальше горизонта продаж билетов всё равно нет: авиа ~210 дней. */
   maxDays?: number;
 }
@@ -55,10 +54,9 @@ interface Props {
  * нужно именно здесь: подсказки «сегодня» и «ближайшая суббота» и запрет на
  * даты в прошлом.
  */
-export function DatePicker({ value, onChange, maxDays = 210, surface = "default" }: Props) {
+export function DatePicker({ value, onChange, maxDays = 210 }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const light = surface === "light";
   const selected = useMemo(() => parse(value), [value]);
   const [month, setMonth] = useState(() => new Date(selected.getFullYear(), selected.getMonth(), 1));
 
@@ -103,41 +101,37 @@ export function DatePicker({ value, onChange, maxDays = 210, surface = "default"
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className={`mt-1 flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-[13px] font-medium transition focus:ring-2 focus:ring-tb-accent focus:outline-none ${
-          light
-            ? "bg-[#eff0ff] text-[#17124f] hover:bg-[#e3e2ff]"
-            : "bg-tb-fill text-tb-ink hover:brightness-105"
-        }`}
+        className="mt-1 flex w-full items-center justify-between gap-2 rounded-sm border border-tb-line bg-tb-fill px-3 py-2 text-left text-sm font-medium text-tb-ink transition-colors duration-150 ease-out hover:border-tb-accent"
       >
         <span className="truncate">{label}</span>
-        <span className="shrink-0 text-tb-muted">▾</span>
+        <Icon name="chevronDown" size={14} className="shrink-0 text-tb-muted" />
       </button>
 
       {open && (
-        <div className={`${POPOVER} right-0 w-64 p-3 ${light ? "!bg-white !ring-[#d9d6ff]" : ""}`}>
+        <div className={`${POPOVER} right-0 w-64 p-3`}>
           <div className="flex items-center justify-between">
             <button
               type="button"
               onClick={() => shift(-1)}
               aria-label="Предыдущий месяц"
-              className="rounded-lg px-2 py-1 text-tb-muted transition hover:bg-tb-fill hover:text-tb-ink"
+              className="rounded-xs px-2 py-1.5 text-tb-muted transition-colors duration-150 ease-out hover:bg-tb-fill hover:text-tb-ink"
             >
-              ‹
+              <Icon name="chevronLeft" size={14} />
             </button>
-            <span className="text-[13px] font-semibold text-tb-ink">
+            <span className="text-sm font-semibold text-tb-ink">
               {MONTHS[month.getMonth()]} {month.getFullYear()}
             </span>
             <button
               type="button"
               onClick={() => shift(1)}
               aria-label="Следующий месяц"
-              className="rounded-lg px-2 py-1 text-tb-muted transition hover:bg-tb-fill hover:text-tb-ink"
+              className="rounded-xs px-2 py-1.5 text-tb-muted transition-colors duration-150 ease-out hover:bg-tb-fill hover:text-tb-ink"
             >
-              ›
+              <Icon name="chevronRight" size={14} />
             </button>
           </div>
 
-          <div className="mt-2 grid grid-cols-7 gap-0.5 text-center text-[10px] text-tb-muted uppercase">
+          <div className="mt-3 grid grid-cols-7 gap-0.5 text-center text-2xs tracking-[0.08em] text-tb-muted uppercase">
             {WEEKDAYS.map((name) => (
               <span key={name}>{name}</span>
             ))}
@@ -155,15 +149,15 @@ export function DatePicker({ value, onChange, maxDays = 210, surface = "default"
                   type="button"
                   disabled={disabled}
                   onClick={() => pick(day)}
-                  className={`h-8 rounded-lg text-[12px] transition ${
+                  className={`tb-num h-8 rounded-xs text-xs transition-colors duration-150 ease-out ${
                     isSelected
                       ? "bg-tb-accent font-bold text-white"
                       : disabled
                         ? "text-tb-muted/35"
                         : outside
-                          ? "text-tb-muted hover:bg-tb-fill"
+                          ? "text-tb-muted/60 hover:bg-tb-fill"
                           : "text-tb-ink hover:bg-tb-fill"
-                  } ${isToday && !isSelected ? "ring-1 ring-tb-accent/50" : ""}`}
+                  } ${isToday && !isSelected ? "border border-tb-accent/60" : ""}`}
                 >
                   {day.getDate()}
                 </button>
@@ -175,14 +169,14 @@ export function DatePicker({ value, onChange, maxDays = 210, surface = "default"
             <button
               type="button"
               onClick={() => pick(today)}
-              className="flex-1 rounded-lg bg-tb-fill px-2 py-1.5 text-[12px] font-semibold text-tb-ink transition hover:brightness-105"
+              className="flex-1 rounded-xs border border-tb-line px-2 py-1.5 text-xs font-semibold text-tb-ink transition-colors duration-150 ease-out hover:border-tb-accent hover:text-tb-hero"
             >
               Сегодня
             </button>
             <button
               type="button"
               onClick={() => pick(nextSaturday())}
-              className="flex-1 rounded-lg bg-tb-fill px-2 py-1.5 text-[12px] font-semibold text-tb-ink transition hover:brightness-105"
+              className="flex-1 rounded-xs border border-tb-line px-2 py-1.5 text-xs font-semibold text-tb-ink transition-colors duration-150 ease-out hover:border-tb-accent hover:text-tb-hero"
             >
               В субботу
             </button>

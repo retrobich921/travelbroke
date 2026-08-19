@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { Icon } from "./Icon";
 import { POPOVER, useDismiss } from "./Popover";
 
 interface Props {
@@ -36,12 +37,12 @@ export function HourSelect({ value, onChange, caption, allowAny = false }: Props
         onClick={() => setOpen((current) => !current)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="w-full rounded-lg bg-tb-fill px-2.5 py-1.5 text-left transition hover:brightness-105 focus:ring-2 focus:ring-tb-accent focus:outline-none"
+        className="w-full rounded-sm border border-tb-line bg-tb-fill px-2.5 py-1.5 text-left transition-colors duration-150 ease-out hover:border-tb-accent"
       >
-        <span className="block text-[10px] text-tb-muted">{caption}</span>
+        <span className="block text-2xs text-tb-muted">{caption}</span>
         <span className="flex items-center justify-between gap-1">
-          <span className="text-[13px] font-semibold text-tb-ink">{label(value)}</span>
-          <span className="text-tb-muted">▾</span>
+          <span className="tb-num text-sm font-semibold text-tb-ink">{label(value)}</span>
+          <Icon name="chevronDown" size={13} className="text-tb-muted" />
         </span>
       </button>
 
@@ -57,7 +58,7 @@ export function HourSelect({ value, onChange, caption, allowAny = false }: Props
                   onChange(hour);
                   setOpen(false);
                 }}
-                className={`w-full rounded-md px-2.5 py-1.5 text-left text-[13px] transition ${
+                className={`tb-num w-full rounded-xs px-2.5 py-1.5 text-left text-sm transition-colors duration-150 ease-out ${
                   hour === value
                     ? "bg-tb-accent font-semibold text-white"
                     : "text-tb-ink hover:bg-tb-fill"

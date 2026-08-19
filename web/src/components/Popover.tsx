@@ -33,4 +33,4 @@ export function useDismiss(
 
 /** Общий вид всплывающей панели: раскрывается вниз, с прокруткой и тенью. */
 export const POPOVER =
-  "tb-scroll absolute top-full z-50 mt-2 min-w-full overflow-hidden rounded-2xl bg-tb-panel shadow-2xl ring-1 ring-tb-line";
+  "tb-scroll tb-rise tb-plate absolute top-full z-50 mt-1.5 min-w-full overflow-hidden";

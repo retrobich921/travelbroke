@@ -6,20 +6,29 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   MODES,
   fetchCities,
+  fetchProgress,
   fetchReachable,
   formatPrice,
   type CityOut,
   type Mode,
   type ReachOut,
   type ReachableResponse,
+  type VariantOut,
 } from "./api";
 import { ControlPanel } from "./components/ControlPanel";
+import { TRANSPORT_PATHS } from "./components/Icon";
+import { SearchProgress } from "./components/SearchProgress";
 import { StartScreen } from "./components/StartScreen";
 import { TripCard } from "./components/TripCard";
 import { UNREACHABLE, legendStops, priceColor, priceRatio } from "./palette";
-import { useTheme, type Theme } from "./theme";
+import {
+  clearSearchHistory,
+  readSearchHistory,
+  saveSearchHistory,
+  type SearchHistoryEntry,
+} from "./searchHistory";
 import { tripForModes, type DisplayedTrip } from "./trip";
-import { readState, writeState } from "./urlState";
+import { BUDGET_UNLIMITED, readState, writeState } from "./urlState";
 
 // Воркер и его общий чанк лежат статикой в public/ (см. scripts/copy-maplibre-worker.mjs):
 // сборщик эмитить эту пару не умеет, а без воркера карта не рендерится вовсе.
@@ -29,6 +38,7 @@ const SOURCE = "reachable";
 const ORIGIN_SOURCE = "origin";
 const ROUTE_SOURCE = "route";
 const TRANSFER_SOURCE = "transfer";
+type Theme = "dark" | "light";
 
 /** Векторные подложки на данных OpenStreetMap: без ключей и регистрации. */
 const VECTOR_STYLE: Record<Theme, string> = {
@@ -47,6 +57,9 @@ function rasterStyle(theme: Theme): maplibregl.StyleSpecification {
   const flavour = theme === "dark" ? "dark_all" : "light_all";
   return {
     version: 8,
+    // Без `glyphs` символьные слои не имеют шрифта, и при откате на растр
+    // молча пропадали бы все подписи: города, экономия, точка отправления.
+    glyphs: "https://tiles.basemaps.cartocdn.com/fonts/{fontstack}/{range}.pbf",
     sources: {
       carto: {
         type: "raster",
@@ -64,17 +77,64 @@ function rasterStyle(theme: Theme): maplibregl.StyleSpecification {
 /** Сколько ждём векторный стиль, прежде чем откатиться на растровый. */
 const STYLE_TIMEOUT_MS = 6000;
 
+/**
+ * Палитра слоёв карты.
+ *
+ * Полотно MapLibre рисуется не браузером, а WebGL: CSS-переменные туда не
+ * доходят. Поэтому единственный дубль токенов в проекте живёт здесь — те же
+ * цвета, что в `index.css`, только уже посчитанные в sRGB.
+ */
 interface Palette {
   label: string;
   halo: string;
   saved: string;
   origin: string;
+  ink: string;
 }
 
+const MAP_PALETTE: Record<Theme, Palette> = {
+  dark: {
+    label: "#eff1fa",
+    halo: "#070916",
+    saved: "#d0ff1a",
+    origin: "#857aff",
+    ink: "#eff1fa",
+  },
+  light: {
+    label: "#151047",
+    halo: "#ffffff",
+    saved: "#5337cd",
+    origin: "#5337cd",
+    ink: "#151047",
+  },
+};
+
 function paletteFor(theme: Theme): Palette {
-  return theme === "dark"
-    ? { label: "#ffffff", halo: "rgba(13,10,43,0.92)", saved: "#d0ff1a", origin: "#7b61ff" }
-    : { label: "#151047", halo: "rgba(255,255,255,0.92)", saved: "#3f22b8", origin: "#4b2fc9" };
+  return MAP_PALETTE[theme];
+}
+
+/**
+ * Пиктограммы транспорта на линии маршрута.
+ *
+ * Эмодзи здесь рисовала бы операционная система — на карте они выглядели
+ * цветными наклейками. Берём те же контуры, что и в интерфейсе, и печём из них
+ * жетон: диск подложки, контур в цвет темы и знак внутри.
+ */
+function addTransportIcons(instance: maplibregl.Map, palette: Palette): void {
+  for (const [mode, path] of Object.entries(TRANSPORT_PATHS)) {
+    const id = `tb-${mode}`;
+    const svg =
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64">` +
+      `<circle cx="16" cy="16" r="14.5" fill="${palette.halo}" stroke="${palette.ink}" stroke-width="1.2"/>` +
+      `<g transform="translate(6 6)" fill="${palette.ink}" fill-rule="evenodd">` +
+      `<path transform="scale(0.833)" d="${path}"/></g></svg>`;
+    const image = new Image(64, 64);
+    image.onload = () => {
+      if (instance.hasImage(id)) instance.removeImage(id);
+      instance.addImage(id, image, { pixelRatio: 2 });
+    };
+    image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
 }
 
 /**
@@ -83,12 +143,13 @@ function paletteFor(theme: Theme): Palette {
  * Наша аудитория отталкивается от цены, а не от даты, поэтому время — мягкий
  * фильтр поверх уже загруженной матрицы: он не требует новых запросов к Туту.
  */
-function withinTimeWindow(reach: ReachOut, after: number, before: number): boolean {
+function withinTimeWindow(trip: DisplayedTrip, after: number, before: number): boolean {
   if (after <= 0 && before >= 24) return true;
-  const trip = reach.via_legs ? reach.via_legs[0] : reach.direct;
-  const finish = reach.via_legs ? reach.via_legs[1] : reach.direct;
-  if (!trip?.departure_at || !finish?.arrival_at) return true;
-  const departure = new Date(trip.departure_at);
+  if (trip.kind === "unavailable") return false;
+  const start = trip.kind === "composite" ? trip.legs[0] : trip.variant;
+  const finish = trip.kind === "composite" ? trip.legs[1] : trip.variant;
+  if (!start.departure_at || !finish.arrival_at) return true;
+  const departure = new Date(start.departure_at);
   const arrival = new Date(finish.arrival_at);
   if (Number.isNaN(departure.getTime()) || Number.isNaN(arrival.getTime())) return true;
   if (departure.getHours() < after) return false;
@@ -98,6 +159,7 @@ function withinTimeWindow(reach: ReachOut, after: number, before: number): boole
 
 interface MapPoint {
   reach: ReachOut;
+  trip: DisplayedTrip;
   price: number | null;
   hours: number | null;
   /** Проходит ли город по текущим фильтрам бюджета, времени и транспорта. */
@@ -107,34 +169,39 @@ interface MapPoint {
 /**
  * Цена и время с учётом выбранных видов транспорта.
  *
- * Когда включены все четыре, берём лучший маршрут целиком — он может быть
- * составным. Когда часть выключена, пересчитываем по `by_mode`: это позволяет
- * тумблерам работать мгновенно, не дёргая сервер.
+ * Берём конкретный вариант, который увидит пользователь в карточке. Нельзя
+ * красить город по агрегату `by_mode`, а по клику говорить «нет маршрутов».
  */
 function effective(reach: ReachOut, modes: Mode[]): MapPoint {
-  if (modes.length === MODES.length) {
-    return { reach, price: reach.price, hours: reach.hours, passes: true };
+  const trip = tripForModes(reach, modes);
+  if (trip.kind === "unavailable") {
+    return { reach, trip, price: null, hours: null, passes: false };
   }
-  let price: number | null = null;
-  let hours: number | null = null;
-  for (const mode of modes) {
-    const candidate = reach.by_mode[mode];
-    if (candidate === undefined) continue;
-    if (price === null || candidate < price) {
-      price = candidate;
-      const minutes = reach.by_mode_minutes[mode];
-      hours = minutes === undefined ? null : Math.round((minutes / 60) * 10) / 10;
-    }
+  if (trip.kind === "composite") {
+    const price =
+      trip.legs[0].price > 0 && trip.legs[1].price > 0
+        ? trip.legs[0].price + trip.legs[1].price
+        : null;
+    return {
+      reach,
+      trip,
+      price,
+      hours: reach.hours,
+      passes: true,
+    };
   }
-  return { reach, price, hours, passes: true };
+  return {
+    reach,
+    trip,
+    price: trip.variant.price > 0 ? trip.variant.price : null,
+    hours: trip.variant.hours,
+    passes: true,
+  };
 }
 
 /**
- * Все города всегда остаются на карте.
- *
- * Не прошедшие фильтр не исчезают, а гаснут: пропадающие точки рвут связь с
- * выбранным маршрутом (линия уходила в никуда) и скрывают важное — что дальше
- * денег уже не хватает.
+ * На карте остаются только города, для которых текущие фильтры оставили
+ * конкретный маршрут. Поэтому точку можно открыть без противоречия в карточке.
  */
 function toGeoJSON(
   points: MapPoint[],
@@ -145,19 +212,20 @@ function toGeoJSON(
   return {
     type: "FeatureCollection",
     features: points.map(({ reach, price, hours, passes }) => {
-      const ratio = price === null ? 1 : priceRatio(price, min, max);
-      const dimmed = !passes || price === null;
+      const knownPrice = price !== null && price > 0;
+      const ratio = knownPrice ? priceRatio(price, min, max) : 1;
+      const dimmed = !passes || !knownPrice;
       return {
         type: "Feature" as const,
         geometry: { type: "Point" as const, coordinates: [reach.lon, reach.lat] },
         properties: {
           slug: reach.slug,
           name: reach.name,
-          label: dimmed || price === null ? "" : `${reach.name} · ${formatPrice(price)}`,
+          label: dimmed || !knownPrice ? "" : `${reach.name} · ${formatPrice(price)}`,
           color: dimmed ? UNREACHABLE : priceColor(ratio),
-          radius: dimmed ? 4 : 7 + 7 * (1 - ratio),
-          opacity: dimmed ? 0.28 : 0.95,
-          cheap: !dimmed && ratio < 0.35,
+          radius: dimmed ? 3 : 5 + 4.5 * (1 - ratio),
+          opacity: dimmed ? 0.34 : 0.95,
+          cheap: !dimmed && ratio < 0.18,
           saved: dimmed || !showSavings ? 0 : (reach.beats_direct_by ?? 0),
           savedLabel:
             !dimmed && showSavings && reach.beats_direct_by
@@ -167,6 +235,47 @@ function toGeoJSON(
         },
       };
     }),
+  };
+}
+
+/**
+ * Город пересадки выбранного маршрута.
+ *
+ * В выдаче его может не быть вовсе — например, при поиске только за границу
+ * Москва не направление, но именно через неё едет самый дешёвый вариант.
+ */
+function transferGeoJSON(
+  target: ReachOut | null,
+  byName: Map<string, CityOut>,
+  trip: DisplayedTrip | null,
+): FeatureCollection<Point> {
+  if (!trip || trip.kind === "unavailable") {
+    return { type: "FeatureCollection", features: [] };
+  }
+  // Внутри одного предложения Туту может быть несколько сегментов (например,
+  // Нижнекамск → Москва → Пекин). Это такие же пересадки, как и наш маршрут
+  // из двух отдельных билетов, поэтому показываем их тем же понятным маркером.
+  const names = [
+    ...(trip.kind === "composite" && target?.via ? [target.via] : []),
+    ...(trip.kind === "direct" ? trip.variant.waypoints.slice(1, -1) : []),
+    ...(trip.kind === "composite" ? trip.legs.flatMap((leg) => leg.waypoints.slice(1, -1)) : []),
+  ];
+  const seen = new Set<string>();
+  const cities = names.flatMap((name) => {
+    const city = byName.get(name);
+    if (!city) return [];
+    const key = city.name.toLocaleLowerCase("ru-RU");
+    if (seen.has(key)) return [];
+    seen.add(key);
+    return [city];
+  });
+  return {
+    type: "FeatureCollection",
+    features: cities.map((city) => ({
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [city.lon, city.lat] },
+      properties: { name: city.name },
+    })),
   };
 }
 
@@ -186,13 +295,6 @@ function originGeoJSON(city: CityOut | null): FeatureCollection<Point> {
 }
 
 type Coordinates = [number, number];
-
-const TRANSPORT_SYMBOL: Record<string, string> = {
-  avia: "✈",
-  railway: "🚆",
-  etrain: "🚊",
-  bus: "🚌",
-};
 
 /** Квадратичная дуга для самолёта: длинный перелёт не выглядит как автодорога. */
 function curvedCoordinates(from: Coordinates, to: Coordinates, bend: number): Coordinates[] {
@@ -230,6 +332,34 @@ function segmentCoordinates(from: Coordinates, to: Coordinates, transport: strin
   return [from, to];
 }
 
+/** Координаты реальных сегментов оффера. Если точка не найдена, не подменяем
+ * её случайной геометрией: остаётся одна нейтральная линия между концами. */
+function variantStops(
+  variant: VariantOut,
+  from: Coordinates,
+  to: Coordinates,
+  byName: Map<string, CityOut>,
+): Coordinates[] {
+  const names = variant.waypoints.slice(1, -1);
+  const stops = names.map((name) => byName.get(name));
+  if (stops.some((city) => !city)) return [from, to];
+  return [from, ...stops.map((city) => [city!.lon, city!.lat] as Coordinates), to];
+}
+
+function segmentsForVariant(
+  variant: VariantOut,
+  from: Coordinates,
+  to: Coordinates,
+  byName: Map<string, CityOut>,
+): Array<{ from: Coordinates; to: Coordinates; transport: string }> {
+  const stops = variantStops(variant, from, to, byName);
+  return stops.slice(1).map((stop, index) => ({
+    from: stops[index],
+    to: stop,
+    transport: variant.transport,
+  }));
+}
+
 /** Линии выбранного маршрута: по одному плечу с соответствующим транспортом. */
 function routeGeoJSON(
   origin: CityOut | null,
@@ -242,23 +372,25 @@ function routeGeoJSON(
   }
   const start: Coordinates = [origin.lon, origin.lat];
   const finish: Coordinates = [target.lon, target.lat];
-  const segments:
-    | Array<{ from: Coordinates; to: Coordinates; transport: string }>
-    | [] =
+  const segments: Array<{ from: Coordinates; to: Coordinates; transport: string }> =
     trip.kind === "composite" && target.via && byName.get(target.via)
       ? [
-          {
-            from: start,
-            to: [byName.get(target.via)!.lon, byName.get(target.via)!.lat],
-            transport: trip.legs[0].transport,
-          },
-          {
-            from: [byName.get(target.via)!.lon, byName.get(target.via)!.lat],
-            to: finish,
-            transport: trip.legs[1].transport,
-          },
+          ...segmentsForVariant(
+            trip.legs[0],
+            start,
+            [byName.get(target.via)!.lon, byName.get(target.via)!.lat],
+            byName,
+          ),
+          ...segmentsForVariant(
+            trip.legs[1],
+            [byName.get(target.via)!.lon, byName.get(target.via)!.lat],
+            finish,
+            byName,
+          ),
         ]
-      : [{ from: start, to: finish, transport: trip.kind === "direct" ? trip.variant.transport : "unknown" }];
+      : trip.kind === "direct"
+        ? segmentsForVariant(trip.variant, start, finish, byName)
+        : [];
   return {
     type: "FeatureCollection",
     features: segments.map((segment, index) => ({
@@ -269,15 +401,40 @@ function routeGeoJSON(
       },
       properties: {
         transport: segment.transport,
-        symbol: TRANSPORT_SYMBOL[segment.transport] ?? "●",
+        icon: segment.transport in TRANSPORT_PATHS ? `tb-${segment.transport}` : "",
         segment: index + 1,
       },
     })),
   };
 }
 
+/**
+ * Русские подписи на подложке.
+ *
+ * Плитки CARTO собраны по схеме OpenMapTiles: у объектов есть `name:ru`, но
+ * стиль по умолчанию печатает `name` — латиницей. `coalesce` оставляет исходное
+ * имя там, где перевода нет, поэтому подписи не могут пропасть.
+ */
+function localiseLabels(instance: maplibregl.Map): void {
+  for (const layer of instance.getStyle().layers ?? []) {
+    if (layer.type !== "symbol") continue;
+    try {
+      const field = instance.getLayoutProperty(layer.id, "text-field");
+      if (field === undefined) continue;
+      instance.setLayoutProperty(layer.id, "text-field", [
+        "coalesce",
+        ["get", "name:ru"],
+        ["get", "name"],
+      ]);
+    } catch {
+      /* слой без текста или с недоступным свойством — оставляем как есть */
+    }
+  }
+}
+
 /** Ставит источники и слои поверх текущего стиля. Вызывается заново при смене темы. */
 function installLayers(instance: maplibregl.Map, palette: Palette): void {
+  localiseLabels(instance);
   const empty: FeatureCollection<Point> = { type: "FeatureCollection", features: [] };
   for (const id of [SOURCE, ORIGIN_SOURCE, ROUTE_SOURCE, TRANSFER_SOURCE]) {
     if (!instance.getSource(id)) instance.addSource(id, { type: "geojson", data: empty });
@@ -303,7 +460,12 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
     source: ROUTE_SOURCE,
     filter: ["==", ["get", "transport"], "avia"],
     layout: { "line-cap": "round", "line-join": "round" },
-    paint: { "line-color": "#c1acff", "line-width": 3, "line-opacity": 0.95, "line-dasharray": [2, 1.4] },
+    paint: {
+      "line-color": "#c1acff",
+      "line-width": 3,
+      "line-opacity": 0.95,
+      "line-dasharray": [2, 1.4],
+    },
   });
 
   // Поезд: две рельсы и пунктирные шпалы посередине.
@@ -344,20 +506,19 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
     paint: { "line-color": "#ffb454", "line-width": 3.2, "line-opacity": 0.95, "line-dasharray": [1.4, 0.75] },
   });
 
+  addTransportIcons(instance, palette);
   instance.addLayer({
     id: "route-icons",
     type: "symbol",
     source: ROUTE_SOURCE,
+    filter: ["!=", ["get", "icon"], ""],
     layout: {
-      "symbol-placement": "line",
-      "symbol-spacing": 220,
-      "text-field": ["get", "symbol"],
-      "text-size": 16,
-      "text-keep-upright": true,
-      "text-rotation-alignment": "map",
-      "text-allow-overlap": true,
+      "symbol-placement": "line-center",
+      "icon-image": ["get", "icon"],
+      "icon-size": 0.62,
+      "icon-allow-overlap": true,
+      "icon-rotation-alignment": "viewport",
     },
-    paint: { "text-color": palette.label, "text-halo-color": palette.halo, "text-halo-width": 1.5 },
   });
 
   // Мягкое свечение под самыми дешёвыми городами — глаз находит их первыми.
@@ -367,9 +528,9 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
     source: SOURCE,
     filter: ["==", ["get", "cheap"], true],
     paint: {
-      "circle-radius": ["*", ["get", "radius"], 2.6],
+      "circle-radius": ["*", ["get", "radius"], 2.4],
       "circle-color": ["get", "color"],
-      "circle-opacity": 0.16,
+      "circle-opacity": 0.13,
       "circle-blur": 0.9,
       "circle-radius-transition": { duration: 450 },
     },
@@ -433,10 +594,10 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
     type: "circle",
     source: ORIGIN_SOURCE,
     paint: {
-      "circle-radius": 7,
-      "circle-color": palette.origin,
+      "circle-radius": 6,
+      "circle-color": palette.halo,
       "circle-stroke-width": 3,
-      "circle-stroke-color": palette.halo,
+      "circle-stroke-color": palette.origin,
     },
   });
 
@@ -497,17 +658,22 @@ export default function App() {
   const map = useRef<maplibregl.Map | null>(null);
   const usedFallback = useRef(false);
 
-  const [theme, toggleTheme] = useTheme();
+  const theme: Theme = "dark";
   const [styleEpoch, setStyleEpoch] = useState(0);
   const [mapNote, setMapNote] = useState<string | null>(null);
 
   const [cities, setCities] = useState<CityOut[]>([]);
   const [data, setData] = useState<ReachableResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [calls, setCalls] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   // Начальное состояние берём из адресной строки: ссылкой можно поделиться.
   const initial = useRef(readState()).current;
+  const shouldSearchFromLink = useRef(
+    new URLSearchParams(window.location.search).has("from") ||
+      new URLSearchParams(window.location.search).has("date"),
+  ).current;
   const [origin, setOrigin] = useState(initial.origin);
   const [date, setDate] = useState(initial.date);
   const [budget, setBudget] = useState(initial.budget);
@@ -522,24 +688,45 @@ export default function App() {
   const [departAfter, setDepartAfter] = useState(initial.departAfter);
   const [arriveBefore, setArriveBefore] = useState(initial.arriveBefore);
   const [selected, setSelected] = useState<string | null>(initial.selected);
-  const [panelOpen, setPanelOpen] = useState(true);
+  const [recentSearches, setRecentSearches] = useState<SearchHistoryEntry[]>(readSearchHistory);
+  // На телефоне пульт закрыт: он занимает весь экран, и карта — то, ради чего
+  // пришли — оказывалась под ним целиком. На большом экране места хватает всем.
+  const [panelOpen, setPanelOpen] = useState(() => window.innerWidth >= 1024);
   const [lastSearch, setLastSearch] = useState<{
     origin: string;
     date: string;
     deep: boolean;
     passengers: number;
+    modes: string;
+    abroadOnly: boolean;
+    roundTrip: boolean;
+    stayMin: number;
+    stayMax: number;
   } | null>(() => ({
     origin: initial.origin,
     date: initial.date,
     deep: initial.deep,
     passengers: initial.passengers,
+    modes: initial.modes.join(","),
+    abroadOnly: initial.abroadOnly,
+    roundTrip: initial.roundTrip,
+    stayMin: initial.stayMin,
+    stayMax: initial.stayMax,
   }));
   const previousQuery = useRef({
     origin: initial.origin,
     date: initial.date,
     deep: initial.deep,
     passengers: initial.passengers,
+    modes: initial.modes.join(","),
+    abroadOnly: initial.abroadOnly,
+    roundTrip: initial.roundTrip,
   });
+  // Только самый свежий расчёт имеет право менять карту и счётчик. Иначе два
+  // одновременных запроса по очереди перерисовывают числа и старую выдачу.
+  const searchRun = useRef(0);
+  const modesRef = useRef(modes);
+  modesRef.current = modes;
 
   useEffect(() => {
     writeState({
@@ -600,7 +787,11 @@ export default function App() {
       installLayers(instance, paletteFor(themeRef.current));
       instance.on("click", "cities", (event) => {
         const slug = event.features?.[0]?.properties?.slug;
-        if (typeof slug === "string") setSelected(slug);
+        if (typeof slug !== "string") return;
+        setSelected(slug);
+        // На узком экране карточка и пульт делят одно место — показываем ту,
+        // которую пользователь только что запросил тапом.
+        if (window.innerWidth < 1024) setPanelOpen(false);
       });
       instance.on("mouseenter", "cities", () => {
         instance.getCanvas().style.cursor = "pointer";
@@ -654,9 +845,9 @@ export default function App() {
       const point = effective(reach, modes);
       const passes =
         point.price !== null &&
-        point.price <= budget &&
+        (budget >= BUDGET_UNLIMITED || point.price <= budget) &&
         (point.hours === null || point.hours <= maxHours) &&
-        withinTimeWindow(reach, departAfter, arriveBefore);
+        withinTimeWindow(point.trip, departAfter, arriveBefore);
       return { ...point, passes };
     });
   }, [data, modes, budget, maxHours, departAfter, arriveBefore]);
@@ -696,7 +887,12 @@ export default function App() {
       lastSearch.origin !== origin ||
       lastSearch.date !== date ||
       lastSearch.deep !== deep ||
-      lastSearch.passengers !== passengers);
+      lastSearch.passengers !== passengers ||
+      lastSearch.modes !== modes.join(",") ||
+      lastSearch.abroadOnly !== abroadOnly ||
+      lastSearch.roundTrip !== roundTrip ||
+      lastSearch.stayMin !== stayMin ||
+      lastSearch.stayMax !== stayMax);
 
   // Откуда, дата, пересадки и число пассажиров меняют сами данные. Старую
   // карточку при таких изменениях не держим — она относится к прошлому запросу.
@@ -705,10 +901,21 @@ export default function App() {
       previousQuery.current.origin !== origin ||
       previousQuery.current.date !== date ||
       previousQuery.current.deep !== deep ||
-      previousQuery.current.passengers !== passengers;
+      previousQuery.current.passengers !== passengers ||
+      previousQuery.current.modes !== modes.join(",") ||
+      previousQuery.current.abroadOnly !== abroadOnly ||
+      previousQuery.current.roundTrip !== roundTrip;
     if (changed) setSelected(null);
-    previousQuery.current = { origin, date, deep, passengers };
-  }, [origin, date, deep, passengers]);
+    previousQuery.current = {
+      origin,
+      date,
+      deep,
+      passengers,
+      modes: modes.join(","),
+      abroadOnly,
+      roundTrip,
+    };
+  }, [origin, date, deep, passengers, modes, abroadOnly, roundTrip]);
 
   useEffect(() => {
     if (!styleEpoch || !map.current) return;
@@ -723,6 +930,14 @@ export default function App() {
     );
   }, [styleEpoch, data, chosenRoute, chosenTrip, byName]);
 
+  // Точка пересадки живёт отдельным источником: слои под неё были, а данные в
+  // них никто не клал — город стыковки не появлялся на карте вовсе.
+  useEffect(() => {
+    if (!styleEpoch || !map.current) return;
+    const source = map.current.getSource(TRANSFER_SOURCE) as maplibregl.GeoJSONSource | undefined;
+    source?.setData(transferGeoJSON(chosenRoute, byName, chosenTrip));
+  }, [styleEpoch, chosenRoute, chosenTrip, byName]);
+
   const abroadRef = useRef(abroadOnly);
   abroadRef.current = abroadOnly;
   const roundTripRef = useRef(roundTrip);
@@ -731,35 +946,93 @@ export default function App() {
   stayRef.current = [stayMin, stayMax];
 
   const search = useCallback(
-    async (city: string, when: string, withTransfers: boolean, people: number) => {
-    setLoading(true);
-    setError(null);
-    setSelected(null);
-    try {
+    async (city: string, when: string, _withTransfers: boolean, people: number) => {
+      const run = ++searchRun.current;
+      const searchModes = [...modesRef.current];
+      const searchAbroadOnly = abroadRef.current;
+      const searchRoundTrip = roundTripRef.current;
+      const [searchStayMin, searchStayMax] = stayRef.current;
+      setLoading(true);
+      setError(null);
+      setCalls(0);
+      setSelected(null);
+      let ticker: number | null = null;
+
+      try {
+        // Полоса расчёта заполняется по факту. Если пока ждали baseline уже
+        // запустился новый поиск, этот старый запуск тихо заканчиваем.
+        const baseline = await fetchProgress().catch(() => null);
+        if (run !== searchRun.current) return;
+        if (baseline !== null) {
+          ticker = window.setInterval(() => {
+            void fetchProgress()
+              .then((now) => {
+                if (run === searchRun.current) setCalls(Math.max(0, now - baseline));
+              })
+              .catch(() => undefined);
+          }, 400);
+        }
       const response = await fetchReachable({
         origin: city,
         date: when,
-        modes: [...MODES],
-        deep: withTransfers,
+        modes: searchModes,
+        deep: true,
         passengers: people,
-        abroad_only: abroadRef.current,
-        round_trip: roundTripRef.current,
-        stay_min: stayRef.current[0],
-        stay_max: stayRef.current[1],
+        abroad_only: searchAbroadOnly,
+        round_trip: searchRoundTrip,
+        stay_min: searchStayMin,
+        stay_max: searchStayMax,
       });
+      if (run !== searchRun.current) return;
       setData(response);
-      setLastSearch({ origin: city, date: when, deep: withTransfers, passengers: people });
-      map.current?.easeTo({
-        center: [response.origin.lon, response.origin.lat],
-        zoom: 3.5,
-        duration: 900,
+      setLastSearch({
+        origin: city,
+        date: when,
+        deep: true,
+        passengers: people,
+        modes: searchModes.join(","),
+        abroadOnly: searchAbroadOnly,
+        roundTrip: searchRoundTrip,
+        stayMin: searchStayMin,
+        stayMax: searchStayMax,
       });
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "расчёт не удался");
-    } finally {
-      setLoading(false);
-    }
-  },
+
+      // Показываем всю найденную географию, а не фиксированный масштаб вокруг
+      // точки отправления: поиск идёт по всему миру, и Стамбул с Ереваном при
+      // жёстком zoom 3.5 просто оставались за краем экрана.
+      const found = response.cities.filter((item) => item.price !== null);
+      if (map.current && found.length) {
+        const box = new maplibregl.LngLatBounds(
+          [response.origin.lon, response.origin.lat],
+          [response.origin.lon, response.origin.lat],
+        );
+        for (const item of found) box.extend([item.lon, item.lat]);
+        // Отступы несимметричны: слева сводка и легенда, справа пульт —
+        // без запаса города уезжают под панели и подписи не читаются.
+        const wide = window.innerWidth >= 1024;
+        map.current.fitBounds(box, {
+          padding: wide
+            ? { top: 90, bottom: 90, left: 330, right: 380 }
+            : { top: 70, bottom: 120, left: 40, right: 40 },
+          maxZoom: 5,
+          duration: 900,
+        });
+      } else {
+        map.current?.easeTo({
+          center: [response.origin.lon, response.origin.lat],
+          zoom: 3.5,
+          duration: 900,
+        });
+      }
+      } catch (cause) {
+        if (run === searchRun.current) {
+          setError(cause instanceof Error ? cause.message : "расчёт не удался");
+        }
+      } finally {
+        if (ticker !== null) window.clearInterval(ticker);
+        if (run === searchRun.current) setLoading(false);
+      }
+    },
     [],
   );
 
@@ -771,6 +1044,61 @@ export default function App() {
     [deep, origin, passengers, search],
   );
 
+  const useRecentSearch = useCallback((entry: SearchHistoryEntry) => {
+    setOrigin(entry.origin);
+    setDate(entry.date);
+    setModes(entry.modes);
+    setBudget(entry.budget);
+    setMaxHours(entry.maxHours);
+    setPassengers(entry.passengers);
+    setDepartAfter(entry.departAfter);
+    setArriveBefore(entry.arriveBefore);
+    setAbroadOnly(entry.abroadOnly);
+    setRoundTrip(entry.roundTrip);
+    setStayMin(entry.stayMin);
+    setStayMax(entry.stayMax);
+  }, []);
+
+  const startFromLanding = useCallback(() => {
+    const entry: SearchHistoryEntry = {
+      origin,
+      date,
+      modes,
+      budget,
+      maxHours,
+      passengers,
+      departAfter,
+      arriveBefore,
+      abroadOnly,
+      roundTrip,
+      stayMin,
+      stayMax,
+    };
+    setRecentSearches(saveSearchHistory(entry));
+    void search(origin, date, deep, passengers);
+  }, [
+    abroadOnly,
+    arriveBefore,
+    budget,
+    date,
+    deep,
+    departAfter,
+    maxHours,
+    modes,
+    origin,
+    passengers,
+    roundTrip,
+    search,
+    stayMax,
+    stayMin,
+  ]);
+
+  // Ссылки из «Поделиться этим видом» не должны попадать на лендинг: параметры
+  // уже содержат полноценный поисковый сценарий, запускаем его после первого рендера.
+  useEffect(() => {
+    if (shouldSearchFromLink) void search(initial.origin, initial.date, true, initial.passengers);
+  }, [initial, search, shouldSearchFromLink]);
+
   const toggleMode = useCallback((mode: Mode) => {
     setModes((current) =>
       current.includes(mode)
@@ -781,15 +1109,9 @@ export default function App() {
     );
   }, []);
 
-  const cheapest = visible.reduce<MapPoint | null>(
-    (best, point) =>
-      best === null || (point.price ?? Infinity) < (best.price ?? Infinity) ? point : best,
-    null,
-  );
-  const hidden = modes.length === MODES.length ? points.filter((point) => point.reach.beats_direct_by).length : 0;
   const unreachable = points.length - visible.length;
 
-  const card = "rounded-2xl bg-tb-panel/90 px-4 py-3 ring-1 ring-tb-line backdrop-blur";
+  const card = "tb-plate px-4 py-3";
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-tb-bg">
@@ -800,86 +1122,85 @@ export default function App() {
           cities={cities}
           origin={origin}
           date={date}
+          modes={modes}
           loading={loading}
+          calls={calls}
           error={error}
+          budget={budget}
+          maxHours={maxHours}
+          passengers={passengers}
+          departAfter={departAfter}
+          arriveBefore={arriveBefore}
+          deep={deep}
+          abroadOnly={abroadOnly}
+          roundTrip={roundTrip}
+          stayMin={stayMin}
+          stayMax={stayMax}
           onOrigin={setOrigin}
-          onDate={chooseDate}
-          onStart={() => void search(origin, date, deep, passengers)}
+          // На лендинге изменение даты — это лишь настройка будущего запроса.
+          // Поиск там выполняется только явным нажатием «Показать карту».
+          onDate={setDate}
+          onToggleMode={toggleMode}
+          onBudget={setBudget}
+          onMaxHours={setMaxHours}
+          onPassengers={setPassengers}
+          onDepartAfter={setDepartAfter}
+          onArriveBefore={setArriveBefore}
+          onDeep={setDeep}
+          onAbroadOnly={setAbroadOnly}
+          onRoundTrip={setRoundTrip}
+          onStay={(min, max) => {
+            setStayMin(min);
+            setStayMax(max);
+          }}
+          recentSearches={recentSearches}
+          onUseRecent={useRecentSearch}
+          onClearRecent={() => {
+            clearSearchHistory();
+            setRecentSearches([]);
+          }}
+          onStart={startFromLanding}
         />
       )}
 
-      {loading && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-1 overflow-hidden bg-tb-fill">
-          <div className="h-full w-1/3 animate-[slide_1.4s_ease-in-out_infinite] bg-tb-accent" />
+      {loading && data && (
+        <div className="tb-plate pointer-events-none absolute top-4 left-1/2 z-30 w-[min(22rem,calc(100vw-2rem))] -translate-x-1/2 px-4 py-3">
+          <SearchProgress calls={calls} note={deep ? "и составные маршруты" : undefined} />
         </div>
       )}
 
-      <header className="tb-scroll pointer-events-none absolute top-0 left-0 z-10 flex max-h-full max-w-[min(19rem,calc(100vw-9rem))] flex-col gap-3 overflow-y-auto p-4 sm:p-6 lg:max-h-[calc(100vh-9rem)]">
+      <header
+        className={`tb-scroll pointer-events-none absolute top-0 left-0 z-10 flex max-h-full max-w-[min(19rem,calc(100vw-9rem))] flex-col gap-3 overflow-y-auto p-4 sm:p-6 lg:overflow-hidden ${
+          chosen ? "lg:max-h-[calc(100vh-2rem)]" : "lg:max-h-[calc(100vh-9rem)]"
+        }`}
+      >
         <div className="shrink-0">
-          <h1 className="text-2xl font-black tracking-tight text-tb-hero sm:text-4xl">
-            TravelBroke
+          <h1 className="font-display text-xl font-extrabold tracking-[-0.05em] text-tb-ink sm:text-2xl">
+            Travel<span className="text-tb-hero">Broke</span>
           </h1>
-          <p className="mt-1 text-xs text-tb-muted sm:text-sm">
-            Ты на мели. Мы всё равно тебя увезём.
-          </p>
         </div>
-
-        {data && !loading && (
-          <div className={`tb-rise pointer-events-auto shrink-0 ${card}`}>
-            <div className="text-tb-ink">
-              <span className="text-3xl font-black text-tb-hero">{visible.length}</span>{" "}
-              <span className="text-sm">
-                {visible.length === 1 ? "город" : "городов"} по карману
-              </span>
-            </div>
-            {cheapest?.price != null && (
-              <div className="mt-1 text-xs text-tb-muted">
-                Дешевле всего — {cheapest.reach.name} за {formatPrice(cheapest.price)}
-              </div>
-            )}
-            {hidden > 0 && (
-              <div className="mt-2 rounded-xl bg-tb-cheap/20 px-3 py-2 text-xs ring-1 ring-tb-accent/25">
-                <span className="font-bold text-tb-ink">Скрытых пересадок: {hidden}</span>
-                <span className="text-tb-muted"> — там дешевле ехать не напрямую.</span>
-              </div>
-            )}
-            <div className="mt-2 text-[11px] text-tb-muted/70">
-              {data.calls} запросов к Туту, {data.cached} из кэша
-              {unreachable > 0 && ` · ${unreachable} не проходит по фильтрам`}
-            </div>
-          </div>
-        )}
-
-        {needsSearch && !loading && (
-          <div className={`tb-rise pointer-events-auto shrink-0 text-sm ${card}`}>
-            <span className="font-semibold text-tb-ink">Настройки поездки изменились.</span>
-            <span className="text-tb-muted"> Нажми «Обновить карту», чтобы получить новые варианты.</span>
-          </div>
-        )}
-
-        {loading && (
-          <div className={`pointer-events-auto shrink-0 text-sm text-tb-muted ${card}`}>
-            Опрашиваем Туту по всем городам сразу.
-            {deep && <> Ищем ещё и составные маршруты — это дольше.</>}
-          </div>
-        )}
-
-        {!loading && data && visible.length === 0 && (
-          <div className={`tb-rise pointer-events-auto shrink-0 text-sm ${card}`}>
-            <div className="font-semibold text-tb-ink">За эти деньги — никуда.</div>
-            <div className="mt-1 text-xs text-tb-muted">
-              Подвинь бюджет или добавь часов в пути.
-            </div>
-          </div>
-        )}
 
         {mapNote && (
           <div className={`pointer-events-auto shrink-0 text-xs text-tb-muted ${card}`}>{mapNote}</div>
         )}
 
         {error && (
-          <div className="pointer-events-auto shrink-0 rounded-2xl bg-red-500/20 px-4 py-3 text-sm text-red-100 ring-1 ring-red-400/40">
+          <div className="tb-plate pointer-events-auto shrink-0 border-l-2 border-l-red-400 px-4 py-3 text-sm text-tb-ink">
             {error}
+          </div>
+        )}
+
+        {/* Результат — слева, под сводкой; настройки — справа. На ноутбуке пульт
+            занимает всю правую колонку, и карточке там не оставалось высоты. */}
+        {chosen && (
+          <div className="hidden min-h-0 lg:flex lg:flex-1 lg:flex-col">
+            <TripCard
+              reach={chosen}
+              trip={chosenTrip ?? { kind: "unavailable" }}
+              origin={data?.origin.name ?? origin}
+              passengers={passengers}
+              onClose={() => setSelected(null)}
+            />
           </div>
         )}
       </header>
@@ -891,16 +1212,9 @@ export default function App() {
         <div className="pointer-events-auto flex shrink-0 justify-end gap-2">
           <button
             type="button"
-            onClick={toggleTheme}
-            aria-label="Переключить тему оформления"
-            className="rounded-full bg-tb-panel/90 px-3.5 py-2 text-base leading-none text-tb-ink ring-1 ring-tb-line backdrop-blur transition hover:brightness-105"
-          >
-            {theme === "dark" ? "☀" : "☾"}
-          </button>
-          <button
-            type="button"
             onClick={() => setPanelOpen((open) => !open)}
-            className="rounded-full bg-tb-panel/90 px-4 py-2 text-sm font-semibold text-tb-ink ring-1 ring-tb-line backdrop-blur transition hover:brightness-105 lg:hidden"
+            aria-expanded={panelOpen}
+            className="tb-plate px-4 py-2 text-sm font-semibold text-tb-ink transition-colors duration-150 ease-out hover:text-tb-hero lg:hidden"
           >
             {panelOpen ? "Скрыть настройки" : "Настроить"}
           </button>
@@ -911,63 +1225,74 @@ export default function App() {
           cities={cities}
           origin={origin}
           date={date}
+          modes={modes}
+          loading={loading}
+          needsSearch={needsSearch}
           budget={budget}
           maxHours={maxHours}
-          modes={modes}
-          deep={deep}
-          loading={loading}
-          onOrigin={setOrigin}
-          onDate={chooseDate}
-          onBudget={setBudget}
-          onMaxHours={setMaxHours}
-          onToggleMode={toggleMode}
-          onDeep={setDeep}
           passengers={passengers}
-          needsSearch={needsSearch}
-          onPassengers={setPassengers}
+          departAfter={departAfter}
+          arriveBefore={arriveBefore}
+          deep={deep}
           abroadOnly={abroadOnly}
-          onAbroadOnly={setAbroadOnly}
           roundTrip={roundTrip}
           stayMin={stayMin}
           stayMax={stayMax}
-          departAfter={departAfter}
-          arriveBefore={arriveBefore}
+          onOrigin={setOrigin}
+          onDate={chooseDate}
+          onToggleMode={toggleMode}
+          onBudget={setBudget}
+          onMaxHours={setMaxHours}
+          onPassengers={setPassengers}
+          onDepartAfter={setDepartAfter}
+          onArriveBefore={setArriveBefore}
+          onDeep={setDeep}
+          onAbroadOnly={setAbroadOnly}
           onRoundTrip={setRoundTrip}
           onStay={(min, max) => {
             setStayMin(min);
             setStayMax(max);
           }}
-          onDepartAfter={setDepartAfter}
-          onArriveBefore={setArriveBefore}
           onSearch={() => void search(origin, date, deep, passengers)}
         />
         </div>
         {chosen && (
-          <TripCard
-            reach={chosen}
-            trip={chosenTrip ?? { kind: "unavailable" }}
-            origin={data?.origin.name ?? origin}
-            passengers={passengers}
-            onClose={() => setSelected(null)}
-          />
+          <div className="flex min-h-0 flex-1 flex-col lg:hidden">
+            <TripCard
+              reach={chosen}
+              trip={chosenTrip ?? { kind: "unavailable" }}
+              origin={data?.origin.name ?? origin}
+              passengers={passengers}
+              onClose={() => setSelected(null)}
+            />
+          </div>
         )}
       </div>
 
       <div
-        className={`pointer-events-none absolute bottom-6 left-6 z-10 hidden w-64 lg:block ${card}`}
+        className={`pointer-events-none absolute bottom-6 left-6 z-10 hidden w-60 ${
+          chosen ? "" : "lg:block"
+        } ${card}`}
       >
-        <div className="text-[11px] font-semibold tracking-wider text-tb-muted uppercase">
-          Цена поездки
-        </div>
-        <div className="mt-2 flex h-2.5 overflow-hidden rounded-full">
+        <div className="tb-tag">Цена поездки</div>
+        <div className="mt-2 flex h-2 overflow-hidden rounded-xs">
           {legendStops(24).map((color) => (
             <span key={color} className="flex-1" style={{ backgroundColor: color }} />
           ))}
         </div>
-        <div className="mt-1 flex justify-between text-[11px] text-tb-muted">
+        <div className="tb-num mt-1.5 flex justify-between text-2xs text-tb-muted">
           <span>{visible.length ? formatPrice(bounds.min) : "дёшево"}</span>
           <span>{visible.length ? formatPrice(bounds.max) : "дорого"}</span>
         </div>
+        {unreachable > 0 && (
+          <div className="mt-2 flex items-center gap-2 border-t border-tb-line pt-2 text-2xs text-tb-muted">
+            <span
+              className="size-1.5 shrink-0 rounded-full"
+              style={{ backgroundColor: UNREACHABLE, opacity: 0.5 }}
+            />
+            скрытые точки — вне бюджета или фильтров
+          </div>
+        )}
       </div>
     </div>
   );

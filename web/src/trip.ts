@@ -17,8 +17,7 @@ export function tripForModes(reach: ReachOut, modes: Mode[]): DisplayedTrip {
   if (
     modes.length === 4 &&
     legs !== null &&
-    legs.length === 2 &&
-    reach.beats_direct_by !== null
+    legs.length === 2
   ) {
     return { kind: "composite", legs: [legs[0], legs[1]] };
   }
@@ -27,7 +26,11 @@ export function tripForModes(reach: ReachOut, modes: Mode[]): DisplayedTrip {
   // новый ответ всегда содержит полный `variants`.
   const offers = reach.variants.length > 0 ? reach.variants : reach.direct ? [reach.direct] : [];
   const allowed = offers.filter((offer) => modes.includes(offer.transport as Mode));
-  const variant = allowed.reduce<VariantOut | null>(
+  // Расписание без цены можно открыть, но оно не должно выигрывать сравнение
+  // с реальным платным оффером как «бесплатное».
+  const priced = allowed.filter((offer) => offer.price > 0);
+  const comparable = priced.length > 0 ? priced : allowed;
+  const variant = comparable.reduce<VariantOut | null>(
     (best, offer) => (best === null || offer.price < best.price ? offer : best),
     null,
   );

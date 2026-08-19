@@ -71,6 +71,10 @@ class VariantOut(BaseModel):
     arrival_at: str | None = None
     checkout_url: str | None = None
     route: str | None = None
+    waypoints: list[str] = Field(
+        default_factory=list,
+        description="Города фактических сегментов оффера, включая пересадки",
+    )
     checkout_ref: dict[str, Any] | None = Field(
         default=None, description="Ссылка на конкретный рейс строится из него через /api/checkout"
     )
@@ -129,6 +133,8 @@ class ReachableRequest(BaseModel):
     date: Date = Field(description="Дата поездки")
     modes: list[TransportMode] = Field(
         default=["avia", "railway", "bus", "etrain"],
+        min_length=1,
+        max_length=4,
         description="Разрешённые виды транспорта",
     )
     price_max: int | None = Field(default=None, gt=0, description="Жёсткий потолок цены, ₽")
@@ -174,6 +180,12 @@ class CheckoutResponse(BaseModel):
     kind: str = Field(default="deeplink", description="deeplink или fallback на страницу поиска")
 
 
+class Progress(BaseModel):
+    """Счётчик обращений к Туту — по нему фронт рисует полосу расчёта."""
+
+    calls: int = Field(description="Сколько вызовов MCP сделано с момента старта сервиса")
+
+
 class Health(BaseModel):
     """Ответ health-check."""
 
@@ -192,6 +204,7 @@ def _variant_out(variant: reach.Variant) -> VariantOut:
         arrival_at=variant.arrival_at,
         checkout_url=variant.checkout_url,
         route=variant.route,
+        waypoints=list(variant.waypoints),
         checkout_ref=variant.checkout_ref,
     )
 
@@ -243,6 +256,18 @@ async def health() -> Health:
     return Health(status="ok", version=__version__, cities=len(cities.CITIES))
 
 
+@app.get("/api/progress", response_model=Progress, summary="Ход текущего расчёта")
+async def progress() -> Progress:
+    """Сколько запросов к Туту уже сделано.
+
+    Счётчик сквозной, не привязан к запросу: расчёт — один блокирующий POST,
+    и другого способа показать пользователю, что веер идёт, а не завис, нет.
+    Фронт снимает базовое значение перед стартом и считает разницу.
+    """
+    mcp: TutuMCP = app.state.mcp
+    return Progress(calls=len(mcp.stats))
+
+
 @app.get("/api/cities", response_model=list[CityOut], summary="Справочник городов")
 async def list_cities() -> list[CityOut]:
     """Города-кандидаты с координатами — карте они нужны до первого расчёта."""
@@ -292,16 +317,17 @@ async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableRespo
         adults=request.passengers,
         abroad_only=request.abroad_only,
     )
-    if request.deep:
-        results = await reach.deepen(
-            mcp,
-            origin,
-            request.date,
-            results,
-            cities.HUBS,
-            modes=tuple(request.modes),
-            adults=request.passengers,
-        )
+    # Поиск составных вариантов — стандарт, а не опциональная галочка: парсер
+    # и конструктор стыковок ограничивают маршрут тремя пересадками.
+    results = await reach.deepen(
+        mcp,
+        origin,
+        request.date,
+        results,
+        cities.HUBS,
+        modes=tuple(request.modes),
+        adults=request.passengers,
+    )
     if request.round_trip:
         results = await reach.add_return_trips(
             mcp,
@@ -341,7 +367,19 @@ async def checkout(request: Annotated[CheckoutRequest, ...]) -> CheckoutResponse
     mcp: TutuMCP = app.state.mcp
     args = dict(request.checkout_ref)
     if request.passengers > 1:
-        args.setdefault("passengers", request.passengers)
+        # `create_checkout_link` использует не те же поля, что поиск. Для
+        # авиа обязательно передать passengers_full: иначе конкретный билет
+        # откроется в корзине на одного человека, хотя карта считала компанию.
+        # У поезда число мест выбирается на следующем экране Туту, а у автобуса
+        # это безопасный prefill страницы мест — ни один вариант не скатывается
+        # в общий поисковый URL.
+        transport = args.get("transport")
+        if transport == "avia":
+            args["passengers_full"] = request.passengers
+            args.setdefault("passengers_child", 0)
+            args.setdefault("passengers_infant", 0)
+        elif transport == "bus":
+            args["passengers"] = request.passengers
     try:
         data = await mcp.call("create_checkout_link", **args)
     except TutuError as exc:

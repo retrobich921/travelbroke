@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { fetchCitySuggestions, type CityOut } from "../api";
+import { Icon } from "./Icon";
 import { POPOVER, useDismiss } from "./Popover";
 
 interface Props {
   cities: CityOut[];
   value: string;
   onChange: (value: string) => void;
-  /** Светлая форма поверх тёмного лендинга. */
-  surface?: "default" | "light";
 }
 
 /**
@@ -17,13 +16,12 @@ interface Props {
  * Это combobox, а не ограниченный `<select>`: пользователь может сразу напечатать
  * любой город. Список внизу — быстрые варианты, а не полный каталог мира.
  */
-export function CitySelect({ cities, value, onChange, surface = "default" }: Props) {
+export function CitySelect({ cities, value, onChange }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [remote, setRemote] = useState<CityOut[]>([]);
   const [suggesting, setSuggesting] = useState(false);
-  const light = surface === "light";
 
   useDismiss(root, open, () => setOpen(false));
 
@@ -32,9 +30,10 @@ export function CitySelect({ cities, value, onChange, surface = "default" }: Pro
     const local = !needle
       ? cities
       : cities.filter(
-      (city) =>
-        city.name.toLowerCase().includes(needle) || city.country.toLowerCase().includes(needle),
-      );
+          (city) =>
+            city.name.toLowerCase().includes(needle) ||
+            city.country.toLowerCase().includes(needle),
+        );
     const seen = new Set(local.map((city) => `${city.name}::${city.country}`));
     const remoteMatches = needle.length >= 2 ? remote : [];
     return [...local, ...remoteMatches.filter((city) => !seen.has(`${city.name}::${city.country}`))];
@@ -69,13 +68,7 @@ export function CitySelect({ cities, value, onChange, surface = "default" }: Pro
 
   return (
     <div ref={root} className="relative">
-      <div
-        className={`mt-1 flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-[13px] font-medium transition focus:ring-2 focus:ring-tb-accent focus:outline-none ${
-          light
-            ? "bg-[#eff0ff] text-[#17124f] hover:bg-[#e3e2ff]"
-            : "bg-tb-fill text-tb-ink hover:brightness-105"
-        }`}
-      >
+      <div className="mt-1 flex w-full items-center gap-2 rounded-sm border border-tb-line bg-tb-fill px-3 py-2 text-left text-sm font-medium transition-colors duration-150 ease-out focus-within:border-tb-accent">
         <input
           value={open ? query : value}
           onFocus={() => {
@@ -95,21 +88,26 @@ export function CitySelect({ cities, value, onChange, surface = "default" }: Pro
           }}
           aria-label="Город отправления"
           aria-autocomplete="list"
+          aria-expanded={open}
           aria-controls={open ? "city-suggestions" : undefined}
           placeholder="Начните вводить город"
-          className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8c88aa]"
+          className="min-w-0 flex-1 bg-transparent text-tb-ink outline-none placeholder:text-tb-muted/70"
         />
-        <span className="shrink-0 text-tb-muted" aria-hidden="true">⌕</span>
+        <Icon name="search" size={15} className="shrink-0 text-tb-muted" />
       </div>
 
       {open && (
-        <div className={`${POPOVER} left-0 w-full ${light ? "!bg-white !ring-[#d9d6ff]" : ""}`}>
+        <div className={`${POPOVER} left-0 w-full`}>
           <div className="border-b border-tb-line px-3 py-2 text-xs text-tb-muted">
             {query.trim().length < 2
               ? "Начни вводить название — ищем города по всему миру."
               : "Enter — использовать введённый город; ниже — точные подсказки."}
           </div>
-          <ul id="city-suggestions" role="listbox" className="tb-scroll max-h-64 overflow-y-auto px-1 py-1">
+          <ul
+            id="city-suggestions"
+            role="listbox"
+            className="tb-scroll max-h-64 overflow-y-auto p-1"
+          >
             {suggesting && <li className="px-3 py-2 text-xs text-tb-muted">Ищем по миру…</li>}
             {!suggesting && found.length === 0 && query.trim().length > 1 && (
               <li className="px-3 py-4 text-center text-xs text-tb-muted">
@@ -123,23 +121,17 @@ export function CitySelect({ cities, value, onChange, surface = "default" }: Pro
                   role="option"
                   aria-selected={city.name === value}
                   onClick={() => choose(city.name)}
-                  className={`flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-[13px] transition ${
+                  className={`flex w-full items-center justify-between gap-2 rounded-xs px-3 py-1.5 text-left text-sm transition-colors duration-150 ease-out ${
                     city.name === value
                       ? "bg-tb-accent font-semibold text-white"
-                      : light
-                        ? "text-[#17124f] hover:bg-[#eff0ff]"
-                        : "text-tb-ink hover:bg-tb-fill"
+                      : "text-tb-ink hover:bg-tb-fill"
                   }`}
                 >
                   <span className="truncate">{city.name}</span>
                   {city.country !== "Россия" && (
                     <span
-                      className={`shrink-0 text-[11px] ${
-                        city.name === value
-                          ? "text-white/70"
-                          : light
-                            ? "text-[#6b6790]"
-                            : "text-tb-muted"
+                      className={`shrink-0 text-xs ${
+                        city.name === value ? "text-white/75" : "text-tb-muted"
                       }`}
                     >
                       {city.country}

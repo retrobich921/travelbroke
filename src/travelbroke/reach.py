@@ -27,7 +27,7 @@ from typing import Any, cast
 
 import networkx as nx
 
-from travelbroke.cities import MAJOR_HUBS, City, destinations
+from travelbroke.cities import MAJOR_HUBS, City, destinations, matches_name
 from tutukit.client import ToolCallError, TutuError, TutuMCP
 from tutukit.diagnose import diagnose
 
@@ -50,6 +50,9 @@ STATION_CHANGE_BUFFER_MIN = 60
 MAX_BUFFER_MIN = 20 * 60
 """Потолок ожидания: сутки на вокзале — это уже не пересадка, а вторая поездка."""
 
+MAX_TRANSFERS = 3
+"""Больше трёх пересадок превращают экономию в плохой пользовательский сценарий."""
+
 
 @dataclass(frozen=True, slots=True)
 class Variant:
@@ -65,6 +68,8 @@ class Variant:
     arrival_point: str | None = None
     checkout_url: str | None = None
     route: str | None = None
+    waypoints: tuple[str, ...] = ()
+    """Города сегментов в фактическом порядке, включая стыковки Туту."""
     checkout_ref: dict[str, Any] | None = None
     """Сырой reference оффера: из него `create_checkout_link` делает ссылку на конкретный рейс."""
 
@@ -79,6 +84,11 @@ class Variant:
     @property
     def arrival_dt(self) -> dt.datetime | None:
         return _parse_dt(self.arrival_at)
+
+    @property
+    def has_known_price(self) -> bool:
+        """Ноль у расписаний означает «цену не отдали», а не бесплатный билет."""
+        return self.price > 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -140,7 +150,11 @@ class Reach:
     @property
     def best_price(self) -> int | None:
         """Цена лучшего из найденных маршрутов: прямого или составного."""
-        prices = [variant.price for variant in (self.direct,) if variant is not None]
+        prices = [
+            variant.price
+            for variant in (self.direct,)
+            if variant is not None and variant.has_known_price
+        ]
         if self.connection is not None:
             prices.append(self.connection.price)
         return min(prices) if prices else None
@@ -148,7 +162,7 @@ class Reach:
     @property
     def beats_direct_by(self) -> int | None:
         """Насколько составной маршрут дешевле прямого, если он вообще дешевле."""
-        if self.connection is None or self.direct is None:
+        if self.connection is None or self.direct is None or not self.direct.has_known_price:
             return None
         saved = self.direct.price - self.connection.price
         return saved if saved > 0 else None
@@ -205,10 +219,16 @@ def best_connection(firsts: list[Variant], seconds: list[Variant]) -> Connection
     """Самая дешёвая пара плеч, между которыми пересадка физически выполнима."""
     best: Connection | None = None
     for first in firsts:
+        if not first.has_known_price:
+            continue
         arrival = first.arrival_dt
         if arrival is None:
             continue
         for second in seconds:
+            if not second.has_known_price:
+                continue
+            if first.transfers + 1 + second.transfers > MAX_TRANSFERS:
+                continue
             departure = second.departure_dt
             if departure is None:
                 continue
@@ -259,6 +279,51 @@ def _endpoints(raw: dict[str, Any]) -> tuple[str | None, str | None]:
     return first.get("from"), last.get("to")
 
 
+def _city_from_point(point: Any) -> str | None:
+    """Убирает из названия пункта аэропорт, вокзал и IATA-код.
+
+    Туту отдаёт точки как ``Москва — Шереметьево (SVO), терм. B``. На карте
+    нужна Москва, а не отдельная точка аэропорта: так два аэропорта одного
+    города остаются одной понятной пересадкой.
+    """
+    if not isinstance(point, str) or not point.strip():
+        return None
+    city = point.split(" — ", 1)[0].split(",", 1)[0].strip()
+    return city or None
+
+
+def _waypoints(raw: dict[str, Any]) -> tuple[str, ...]:
+    """Собирает города всех фактических сегментов оффера Туту.
+
+    ``legs`` — билет целиком, а ``segments`` внутри него — реальные рейсы.
+    Именно их раньше теряла карта, рисуя один красивый, но ложный прямой луч.
+    """
+    legs = raw.get("legs")
+    if not isinstance(legs, list):
+        return ()
+
+    points: list[str] = []
+
+    def add(point: Any) -> None:
+        city = _city_from_point(point)
+        if city and (not points or points[-1].casefold() != city.casefold()):
+            points.append(city)
+
+    for leg in legs:
+        if not isinstance(leg, dict):
+            continue
+        segments = leg.get("segments")
+        if isinstance(segments, list) and segments:
+            for segment in segments:
+                if isinstance(segment, dict):
+                    add(segment.get("from"))
+                    add(segment.get("to"))
+        else:
+            add(leg.get("from"))
+            add(leg.get("to"))
+    return tuple(points)
+
+
 def parse_variants(data: dict[str, Any], limit: int = 30) -> list[Variant]:
     """Достаёт из ответа `search_multitransport` то немногое, что нужно карте."""
     variants: list[Variant] = []
@@ -268,16 +333,28 @@ def parse_variants(data: dict[str, Any], limit: int = 30) -> list[Variant]:
         if price is None or not isinstance(duration, int):
             continue
         segments = raw.get("segments_count")
+        if not isinstance(segments, int) and isinstance(raw.get("legs"), list):
+            segments = len(raw["legs"])
+        transfers = max(segments - 1, 0) if isinstance(segments, int) else 0
+        if transfers > MAX_TRANSFERS:
+            continue
         departure_point, arrival_point = _endpoints(raw)
+        waypoints = _waypoints(raw)
         route = (
-            f"{departure_point} → {arrival_point}" if departure_point and arrival_point else None
+            " → ".join(waypoints)
+            if len(waypoints) >= 2
+            else (
+                f"{departure_point} → {arrival_point}"
+                if departure_point and arrival_point
+                else None
+            )
         )
         variants.append(
             Variant(
                 transport=str(raw.get("transport") or "unknown"),
                 price=price,
                 duration_min=duration,
-                transfers=max(segments - 1, 0) if isinstance(segments, int) else 0,
+                transfers=transfers,
                 departure_at=raw.get("departure_at"),
                 arrival_at=raw.get("arrival_at"),
                 departure_point=departure_point,
@@ -286,6 +363,7 @@ def parse_variants(data: dict[str, Any], limit: int = 30) -> list[Variant]:
                 # покупки годится исключительно конкретный checkout_url либо ref.
                 checkout_url=raw.get("checkout_url"),
                 route=route,
+                waypoints=waypoints,
                 checkout_ref=raw.get("checkout_ref")
                 if isinstance(raw.get("checkout_ref"), dict)
                 else None,
@@ -310,7 +388,7 @@ def parse_modes_summary(data: dict[str, Any]) -> tuple[dict[str, int], dict[str,
         if not isinstance(stats, dict):
             continue
         price = _to_int_price(stats.get("min_price"))
-        if price is not None:
+        if price is not None and price > 0:
             prices[str(mode)] = price
         duration = stats.get("min_duration_min")
         if isinstance(duration, int | float):
@@ -328,6 +406,8 @@ async def _search_pair(
     *,
     adults: int = 1,
     page_size: int | None = 30,
+    expected_origin: City | None = None,
+    expected_destination: City | None = None,
 ) -> tuple[list[Variant], dict[str, int], dict[str, int], str | None, str | None]:
     """Один поиск между парой городов. Ошибку инструмента считаем пустым результатом."""
     args: dict[str, Any] = {
@@ -355,6 +435,27 @@ async def _search_pair(
         log.warning("поиск %s → %s не удался: %s", origin, target, exc)
         return [], {}, {}, "transport_error", str(exc)
 
+    # GeoNames и Туту — разные справочники. Если Туту подменил нераспознанное
+    # имя ближайшим знакомым городом, оффер нельзя рисовать в точке из GeoNames:
+    # иначе получается «автобус через Атлантику» и ложная цена в чужой стране.
+    meta = data.get("meta")
+    from_meta = meta.get("from") if isinstance(meta, dict) else None
+    to_meta = meta.get("to") if isinstance(meta, dict) else None
+    reported_from = from_meta.get("name") if isinstance(from_meta, dict) else None
+    reported_to = to_meta.get("name") if isinstance(to_meta, dict) else None
+    if expected_origin is not None and (
+        not isinstance(reported_from, str) or not matches_name(expected_origin, reported_from)
+    ):
+        detail = f"Туту распознал отправление как «{reported_from or 'неизвестно'}»"
+        log.warning("отбрасываю подменённое отправление %s → %s: %s", origin, target, detail)
+        return [], {}, {}, "resolved_elsewhere", detail
+    if expected_destination is not None and (
+        not isinstance(reported_to, str) or not matches_name(expected_destination, reported_to)
+    ):
+        detail = f"Туту распознал пункт назначения как «{reported_to or 'неизвестно'}»"
+        log.warning("отбрасываю подменённое направление %s → %s: %s", origin, target, detail)
+        return [], {}, {}, "resolved_elsewhere", detail
+
     verdict = diagnose("search_multitransport", args, data)
     variants = parse_variants(data)
     reason = None if variants else str(verdict.reason)
@@ -379,15 +480,28 @@ async def fan_out(
 
     async def one(target: City) -> Reach:
         variants, by_mode, by_minutes, reason, message = await _search_pair(
-            mcp, origin.name, target.name, when, modes, price_max, adults=adults
+            mcp,
+            origin.name,
+            target.name,
+            when,
+            modes,
+            price_max,
+            adults=adults,
+            expected_origin=origin,
+            expected_destination=target,
         )
-        cheapest = min(variants, key=lambda variant: variant.price) if variants else None
+        priced_variants = [variant for variant in variants if variant.has_known_price]
+        # Расписание с неизвестной ценой оставляем для карточки и перехода в
+        # Туту, но не выдаём его за бесплатную поездку на карте.
+        cheapest = (
+            min(priced_variants, key=lambda variant: variant.price) if priced_variants else None
+        )
 
         # Карта и карточка обязаны опираться на один и тот же конкретный оффер.
         # Сводка `modes_summary` иногда ссылается на вариант за пределами первой
         # страницы выдачи; его нельзя честно отправить в оформление.
         concrete_by_mode: dict[str, Variant] = {}
-        for variant in variants:
+        for variant in priced_variants:
             current = concrete_by_mode.get(variant.transport)
             if current is None or variant.price < current.price:
                 concrete_by_mode[variant.transport] = variant
@@ -397,7 +511,10 @@ async def fan_out(
         return Reach(
             city=target,
             direct=cheapest,
-            options=sorted(variants, key=lambda variant: variant.price)[:5],
+            options=sorted(
+                variants,
+                key=lambda variant: (not variant.has_known_price, variant.price),
+            )[:5],
             variants=variants,
             by_mode=by_mode,
             by_mode_minutes=by_minutes,
@@ -462,8 +579,8 @@ async def deepen(
     leg_cache: dict[tuple[str, str, dt.date], list[Variant]] = {}
     lock = asyncio.Lock()
 
-    async def leg(start: str, finish: str, day: dt.date) -> list[Variant]:
-        key = (start, finish, day)
+    async def leg(start: City, finish: City, day: dt.date) -> list[Variant]:
+        key = (start.name, finish.name, day)
         async with lock:
             cached = leg_cache.get(key)
         if cached is not None:
@@ -471,7 +588,16 @@ async def deepen(
         # Плечам нужен запас вариантов по времени отправления, иначе выполнимой
         # стыковки может не найтись там, где она есть.
         variants, _, _, _, _ = await _search_pair(
-            mcp, start, finish, day, modes, None, adults=adults, page_size=20
+            mcp,
+            start.name,
+            finish.name,
+            day,
+            modes,
+            None,
+            adults=adults,
+            page_size=20,
+            expected_origin=start,
+            expected_destination=finish,
         )
         async with lock:
             leg_cache[key] = variants
@@ -479,11 +605,11 @@ async def deepen(
 
     async def one(reach: Reach) -> None:
         for hub in hub_candidates(origin, reach.city, hubs)[:hubs_per_city]:
-            firsts = await leg(origin.name, hub.name, when)
+            firsts = await leg(origin, hub, when)
             if not firsts:
                 continue
-            seconds = await leg(hub.name, reach.city.name, when)
-            seconds = seconds + await leg(hub.name, reach.city.name, when + dt.timedelta(days=1))
+            seconds = await leg(hub, reach.city, when)
+            seconds = seconds + await leg(hub, reach.city, when + dt.timedelta(days=1))
             candidate = best_connection(firsts, seconds)
             if candidate is None:
                 continue
@@ -506,7 +632,7 @@ def build_graph(origin: City, reaches: list[Reach]) -> nx.DiGraph[str]:
     graph.add_node(origin.name, lat=origin.lat, lon=origin.lon)
     for reach in reaches:
         graph.add_node(reach.city.name, lat=reach.city.lat, lon=reach.city.lon)
-        if reach.direct is not None:
+        if reach.direct is not None and reach.direct.has_known_price:
             graph.add_edge(
                 origin.name,
                 reach.city.name,
@@ -581,11 +707,20 @@ async def add_return_trips(
         for days in span:
             back_day = when + dt.timedelta(days=days)
             variants, _, _, _, _ = await _search_pair(
-                mcp, reach.city.name, origin.name, back_day, modes, None, adults=adults
+                mcp,
+                reach.city.name,
+                origin.name,
+                back_day,
+                modes,
+                None,
+                adults=adults,
+                expected_origin=reach.city,
+                expected_destination=origin,
             )
-            if not variants:
+            priced_variants = [variant for variant in variants if variant.has_known_price]
+            if not priced_variants:
                 continue
-            cheapest = min(variants, key=lambda variant: variant.price)
+            cheapest = min(priced_variants, key=lambda variant: variant.price)
             if best is None or cheapest.price < best[0].price:
                 best = (cheapest, back_day)
         if best is not None:

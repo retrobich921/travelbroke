@@ -2,17 +2,19 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import json
 from pathlib import Path
 
 import pytest
 
-from travelbroke.cities import BY_NAME, HUBS, City, resolve
+from travelbroke.cities import BY_NAME, HUBS, City, matches_name, resolve
 from travelbroke.reach import (
     BASE_BUFFER_MIN,
     Connection,
     Reach,
     Variant,
+    _search_pair,
     best_connection,
     build_graph,
     cheapest_paths,
@@ -83,6 +85,110 @@ def test_parse_variants_survives_garbage() -> None:
 
     assert len(variants) == 1
     assert variants[0].price == 900
+
+
+def test_city_aliases_accept_translation_but_not_another_city() -> None:
+    cairo = City("Cairo", 30.04, 31.23, aliases=("Каир",))
+    zarqa = City("Zarqa", 32.07, 36.09, aliases=("Зарка",))
+
+    assert matches_name(cairo, "Каир")
+    assert not matches_name(zarqa, "Навои")
+
+
+@pytest.mark.asyncio
+async def test_search_rejects_tutu_city_substitution() -> None:
+    class MCP:
+        async def call(self, _tool: str, **_args: object) -> dict:
+            return {
+                "meta": {"from": {"name": "Москва"}, "to": {"name": "Санкт-Петербург"}},
+                "variants": [{"transport": "bus", "price": {"amount": 1771}, "duration_min": 510}],
+            }
+
+    _, _, _, reason, _ = await _search_pair(
+        MCP(),  # type: ignore[arg-type]
+        "Москва",
+        "Le Lamentin",
+        dt.date(2026, 9, 13),
+        ("bus",),
+        None,
+        expected_origin=City("Москва", 55.75, 37.62),
+        expected_destination=City("Le Lamentin", 14.6, -61.0, aliases=("Ле-Ламантен",)),
+    )
+
+    assert reason == "resolved_elsewhere"
+
+
+def test_parse_variants_caps_route_at_three_transfers() -> None:
+    variants = parse_variants(
+        {
+            "variants": [
+                {
+                    "transport": "bus",
+                    "price": {"amount": 900},
+                    "duration_min": 300,
+                    "segments_count": 4,
+                },
+                {
+                    "transport": "bus",
+                    "price": {"amount": 800},
+                    "duration_min": 400,
+                    "segments_count": 5,
+                },
+            ]
+        }
+    )
+
+    assert [variant.transfers for variant in variants] == [3]
+
+
+def test_parse_variants_keeps_actual_internal_transfer_cities() -> None:
+    variants = parse_variants(
+        {
+            "variants": [
+                {
+                    "transport": "avia",
+                    "price": {"amount": 59_776},
+                    "duration_min": 588,
+                    "segments_count": 2,
+                    "legs": [
+                        {
+                            "from": "Нижнекамск — Бегишево (NBC)",
+                            "to": "Пекин — Дасин (PKX)",
+                            "segments": [
+                                {
+                                    "from": "Нижнекамск — Бегишево (NBC)",
+                                    "to": "Москва — Шереметьево (SVO)",
+                                },
+                                {
+                                    "from": "Москва — Домодедово (DME)",
+                                    "to": "Пекин — Дасин (PKX)",
+                                },
+                            ],
+                        }
+                    ],
+                }
+            ]
+        }
+    )
+
+    assert variants[0].waypoints == ("Нижнекамск", "Москва", "Пекин")
+    assert variants[0].route == "Нижнекамск → Москва → Пекин"
+
+
+def test_zero_price_is_not_treated_as_a_free_ticket() -> None:
+    """Электрички могут вернуть расписание, но не вернуть стоимость."""
+    variants = parse_variants(
+        {"variants": [{"transport": "etrain", "price": {"amount": 0}, "duration_min": 204}]}
+    )
+
+    assert len(variants) == 1  # расписание и переход в Туту не теряем
+    assert not variants[0].has_known_price
+    assert Reach(city=City("Ижевск", 56.85, 53.2), direct=variants[0]).best_price is None
+
+    prices, _ = parse_modes_summary(
+        {"meta": {"modes_summary": {"etrain": {"min_price": 0, "min_duration_min": 204}}}}
+    )
+    assert prices == {}
 
 
 def test_parse_variants_never_uses_generic_search_as_checkout() -> None:
@@ -266,17 +372,21 @@ def test_resolve_accepts_slug_and_name() -> None:
     assert resolve("Нью-Йорк") is None
 
 
-def test_destinations_split_by_country() -> None:
-    """Пул назначений делится по стране отправления, а не смешивается."""
-    from travelbroke.cities import destinations
+def test_destinations_search_the_whole_world_by_default() -> None:
+    """Обычный поиск смешивает свою страну и заграницу, галочка оставляет заграницу."""
+    from travelbroke.cities import ABROAD_QUOTA, destinations
 
     chelny = BY_NAME["Набережные Челны"]
 
-    home = destinations(chelny)
+    everywhere = destinations(chelny)
     abroad = destinations(chelny, abroad_only=True)
 
-    assert home, "по своей стране ехать всегда есть куда"
-    assert all(city.country == "Россия" for city in home)
+    countries = {city.country for city in everywhere}
+    assert "Россия" in countries, "по своей стране ехать всегда есть куда"
+    assert len(countries) > 1, "без галочки ищем по всему миру, а не по своему региону"
+    foreign = sum(1 for city in everywhere if city.country != "Россия")
+    assert foreign >= ABROAD_QUOTA, "заграница не должна вытесняться ближайшими соседями"
+
     assert abroad and all(city.country != "Россия" for city in abroad)
     assert "Москва" not in {city.name for city in abroad}
 
@@ -286,6 +396,18 @@ def test_destinations_capped_for_far_origins() -> None:
     from travelbroke.cities import MAX_DESTINATIONS, destinations
 
     assert len(destinations(BY_NAME["Дубай"], abroad_only=True)) <= MAX_DESTINATIONS
+
+
+def test_destinations_include_long_haul_regions() -> None:
+    """Мир не должен сводиться к России и ближней Европе."""
+    from travelbroke.cities import country_id, destinations, global_catalog
+
+    continents = {city.country_code: continent for city, continent in global_catalog()}
+    pool = destinations(BY_NAME["Москва"])
+    regions = {continents.get(country_id(city)) for city in pool}
+
+    assert {"AF", "NA", "SA", "OC"} <= regions
+    assert {"EG", "US", "BR", "AU"} <= {country_id(city) for city in pool}
 
 
 def test_major_hubs_are_checked_first() -> None:

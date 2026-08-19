@@ -28,6 +28,8 @@ export interface VariantOut {
   arrival_at: string | null;
   checkout_url: string | null;
   route: string | null;
+  /** Города реальных сегментов оффера Туту; средние — пересадки. */
+  waypoints: string[];
   checkout_ref: Record<string, unknown> | null;
 }
 
@@ -79,6 +81,12 @@ export async function fetchCitySuggestions(query: string): Promise<CityOut[]> {
   );
 }
 
+/** Сквозной счётчик вызовов Туту: по нему полоса расчёта заполняется по факту. */
+export async function fetchProgress(): Promise<number> {
+  const payload = await json<{ calls: number }>(await fetch("/api/progress"));
+  return payload.calls;
+}
+
 export async function fetchReachable(params: {
   origin: string;
   date: string;
@@ -126,7 +134,11 @@ export function nextSaturday(): string {
   return day.toISOString().slice(0, 10);
 }
 
-export function formatPrice(value: number): string {
+/** Туту может отдать расписание без стоимости как 0 — это не бесплатный билет. */
+export function formatPrice(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value) || value <= 0) {
+    return "Цена неизвестна";
+  }
   return `${value.toLocaleString("ru-RU")} ₽`;
 }
 

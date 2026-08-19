@@ -7,6 +7,13 @@
  */
 import { MODES, nextSaturday, type Mode } from "./api";
 
+export const BUDGET_MIN = 100;
+export const BUDGET_MAX = 100_000;
+/** Последнее положение бегунка: «без ограничения». */
+export const BUDGET_UNLIMITED = 100_100;
+export const HOURS_MIN = 2;
+export const HOURS_MAX = 7 * 24;
+
 export interface MapState {
   origin: string;
   date: string;
@@ -53,23 +60,28 @@ function parseNumber(raw: string | null, fallback: number): number {
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
 /** Читает состояние из адресной строки, подставляя значения по умолчанию. */
 export function readState(search: string = window.location.search): MapState {
   const params = new URLSearchParams(search);
   return {
     origin: params.get("from") ?? DEFAULT_STATE.origin,
     date: params.get("date") ?? DEFAULT_STATE.date,
-    budget: parseNumber(params.get("budget"), DEFAULT_STATE.budget),
-    maxHours: parseNumber(params.get("hours"), DEFAULT_STATE.maxHours),
+    budget: clamp(parseNumber(params.get("budget"), DEFAULT_STATE.budget), BUDGET_MIN, BUDGET_UNLIMITED),
+    maxHours: clamp(parseNumber(params.get("hours"), DEFAULT_STATE.maxHours), HOURS_MIN, HOURS_MAX),
     modes: parseModes(params.get("modes")),
-    deep: params.get("deep") !== "0",
+    // До трёх пересадок — постоянное правило поиска, отключать его ссылкой нельзя.
+    deep: true,
     passengers: Math.min(6, Math.max(1, parseNumber(params.get("pax"), 1))),
     abroadOnly: params.get("abroad") === "1",
     roundTrip: params.get("rt") === "1",
-    stayMin: parseNumber(params.get("smin"), 1),
-    stayMax: parseNumber(params.get("smax"), 3),
-    departAfter: Number(params.get("after") ?? 0) || 0,
-    arriveBefore: Number(params.get("before") ?? 24) || 24,
+    stayMin: clamp(parseNumber(params.get("smin"), 1), 1, 30),
+    stayMax: clamp(parseNumber(params.get("smax"), 3), 1, 30),
+    departAfter: clamp(Number(params.get("after") ?? 0) || 0, 0, 23),
+    arriveBefore: clamp(Number(params.get("before") ?? 24) || 24, 1, 24),
     selected: params.get("city"),
   };
 }
@@ -82,7 +94,6 @@ export function writeState(state: MapState): void {
   params.set("budget", String(state.budget));
   params.set("hours", String(state.maxHours));
   if (state.modes.length !== MODES.length) params.set("modes", state.modes.join(","));
-  if (!state.deep) params.set("deep", "0");
   if (state.passengers > 1) params.set("pax", String(state.passengers));
   if (state.abroadOnly) params.set("abroad", "1");
   if (state.roundTrip) {

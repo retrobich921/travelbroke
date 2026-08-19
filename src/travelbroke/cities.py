@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Any
 
 import httpx
@@ -28,6 +29,10 @@ class City:
     """Хаб участвует в поиске составных маршрутов как промежуточная точка."""
     country: str = "Россия"
     """Страна. Заграница помечается отдельно — до неё не всякий транспорт ходит."""
+    country_code: str = ""
+    """ISO-код страны, когда он известен. Нужен для корректного поиска внутри страны."""
+    aliases: tuple[str, ...] = ()
+    """Написания города на других языках для сверки результата Туту."""
 
     @property
     def abroad(self) -> bool:
@@ -183,13 +188,226 @@ def resolve(name: str) -> City | None:
     return BY_NAME.get(key) or BY_SLUG.get(key.lower().replace(" ", "-").replace("ё", "е"))
 
 
+def _normalized_name(value: str) -> str:
+    """Сравнение городов без регистра, дефисов и диакритических различий."""
+    return " ".join(
+        "".join(
+            char if char.isalnum() else " " for char in value.casefold().replace("ё", "е")
+        ).split()
+    )
+
+
+def matches_name(city: City, reported: str) -> bool:
+    """Совпадает ли город, который Туту реально зарезолвил, с ожидаемым.
+
+    GeoNames использует английские названия, Туту чаще возвращает русские.
+    Алиасы позволяют признать Cairo → Каир, но не Zarqa → Навои.
+    """
+    normalized = _normalized_name(reported)
+    return normalized in {_normalized_name(name) for name in (city.name, *city.aliases)}
+
+
 MAJOR_HUBS: frozenset[str] = frozenset(
     {"Москва", "Санкт-Петербург", "Стамбул", "Дубай", "Алматы", "Минск"}
 )
 """Узлы, через которые реально летают и ездят. Их проверяем первыми."""
 
-MAX_DESTINATIONS = 70
-"""Потолок городов в одном веере: дальше время расчёта растёт быстрее пользы."""
+MAX_DESTINATIONS = 380
+"""Потолок веера: вся Россия плюс сбалансированный обзор пяти континентов."""
+
+# В одном запросе нельзя честно опросить десятки тысяч городов: каждый из них —
+# отдельный вызов поиска Туту. Поэтому каталог широкий, а веер ограничен и
+# раскладывается по регионам. Так Африка и обе Америки не проигрывают Европе по
+# одному лишь расстоянию от Москвы.
+REGION_QUOTA: dict[str, int] = {
+    "EU": 55,
+    "AS": 70,
+    "AF": 55,
+    "NA": 50,
+    "SA": 40,
+    "OC": 25,
+}
+
+# Сохранено как публичная константа для старых интеграционных проверок. Реальная
+# квота теперь существенно больше и задаётся REGION_QUOTA.
+ABROAD_QUOTA = 24
+
+SMALL_COUNTRY_CITIES = 15
+LARGE_COUNTRY_CITIES = 50
+LARGE_COUNTRY_POPULATION = 50_000_000
+
+# Имена из Nominatim и из нашего русского каталога приводим к одному ISO-коду.
+# Для остальных стран код приходит прямо из GeoNames.
+COUNTRY_CODES: dict[str, str] = {
+    "Россия": "RU",
+    "Russia": "RU",
+    "Беларусь": "BY",
+    "Belarus": "BY",
+    "Абхазия": "GE",
+    "Грузия": "GE",
+    "Georgia": "GE",
+    "Армения": "AM",
+    "Armenia": "AM",
+    "Азербайджан": "AZ",
+    "Azerbaijan": "AZ",
+    "Казахстан": "KZ",
+    "Kazakhstan": "KZ",
+    "Киргизия": "KG",
+    "Кыргызстан": "KG",
+    "Kyrgyzstan": "KG",
+    "Узбекистан": "UZ",
+    "Uzbekistan": "UZ",
+    "Таджикистан": "TJ",
+    "Tajikistan": "TJ",
+    "Туркменистан": "TM",
+    "Turkmenistan": "TM",
+    "Молдова": "MD",
+    "Moldova": "MD",
+    "Турция": "TR",
+    "Turkey": "TR",
+    "ОАЭ": "AE",
+    "United Arab Emirates": "AE",
+    "Израиль": "IL",
+    "Israel": "IL",
+    "Египет": "EG",
+    "Egypt": "EG",
+    "Китай": "CN",
+    "China": "CN",
+    "Монголия": "MN",
+    "Mongolia": "MN",
+    "Таиланд": "TH",
+    "Thailand": "TH",
+    "Индия": "IN",
+    "India": "IN",
+    "Сербия": "RS",
+    "Serbia": "RS",
+    "Венгрия": "HU",
+    "Hungary": "HU",
+    "Чехия": "CZ",
+    "Czechia": "CZ",
+    "Финляндия": "FI",
+    "Finland": "FI",
+    "Латвия": "LV",
+    "Latvia": "LV",
+    "Эстония": "EE",
+    "Estonia": "EE",
+    "Литва": "LT",
+    "Lithuania": "LT",
+    "Польша": "PL",
+    "Poland": "PL",
+    "Германия": "DE",
+    "Germany": "DE",
+    "Франция": "FR",
+    "France": "FR",
+    "Италия": "IT",
+    "Italy": "IT",
+    "Испания": "ES",
+    "Spain": "ES",
+    "США": "US",
+    "United States": "US",
+    "Бразилия": "BR",
+    "Brazil": "BR",
+    "Австралия": "AU",
+    "Australia": "AU",
+}
+
+
+def country_id(city: City) -> str:
+    """Устойчивая страна города: ISO-код либо нормализованное имя."""
+    return city.country_code or COUNTRY_CODES.get(city.country, city.country.casefold())
+
+
+@lru_cache(maxsize=1)
+def global_catalog() -> tuple[tuple[City, str], ...]:
+    """Города мира из локального справочника GeoNames, без сетевого запроса.
+
+    От каждой небольшой страны оставляем 15 наиболее населённых городов, от
+    крупных — до 50. Это именно *каталог кандидатов*: в один поиск попадёт
+    регионально сбалансированная выборка из него, а не тысячи обращений к Туту.
+    """
+    import geonamescache  # type: ignore[import-untyped]
+
+    cache = geonamescache.GeonamesCache()
+    countries = cache.get_countries()
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for raw in cache.get_cities().values():
+        code = raw.get("countrycode")
+        population = raw.get("population")
+        if not isinstance(code, str) or not isinstance(population, int) or population < 20_000:
+            continue
+        grouped.setdefault(code, []).append(raw)
+
+    catalog: list[tuple[City, str]] = []
+    for code, values in grouped.items():
+        country = countries.get(code)
+        if not isinstance(country, dict):
+            continue
+        continent = country.get("continentcode")
+        name = country.get("name")
+        population = country.get("population")
+        if not isinstance(continent, str) or not isinstance(name, str):
+            continue
+        cap = (
+            LARGE_COUNTRY_CITIES
+            if isinstance(population, int) and population >= LARGE_COUNTRY_POPULATION
+            else SMALL_COUNTRY_CITIES
+        )
+        for raw in sorted(values, key=lambda item: int(item["population"]), reverse=True)[:cap]:
+            city_name = raw.get("name")
+            latitude = raw.get("latitude")
+            longitude = raw.get("longitude")
+            aliases = raw.get("alternatenames")
+            names = (
+                tuple(alias for alias in aliases if isinstance(alias, str))
+                if isinstance(aliases, list)
+                else ()
+            )
+            if (
+                isinstance(city_name, str)
+                and isinstance(latitude, int | float)
+                and isinstance(longitude, int | float)
+            ):
+                catalog.append(
+                    (
+                        City(
+                            city_name,
+                            float(latitude),
+                            float(longitude),
+                            country=name,
+                            country_code=code,
+                            aliases=names,
+                        ),
+                        continent,
+                    )
+                )
+    return tuple(catalog)
+
+
+def _balanced(candidates: list[City], limit: int, origin: City) -> list[City]:
+    """Берёт города кругами по странам, начиная с главных городов каждой страны."""
+    per_country: dict[str, list[City]] = {}
+    for city in candidates:
+        per_country.setdefault(country_id(city), []).append(city)
+    # В global_catalog города уже отсортированы по населению. Расстояние тут
+    # годится только для порядка *стран*: иначе вместо Нью-Йорка и Каира в
+    # выдачу попадут пограничные, но не самые полезные для поездки города.
+    groups = sorted(
+        per_country.values(), key=lambda group: min(distance_km(origin, city) for city in group)
+    )
+    selected: list[City] = []
+    offset = 0
+    while len(selected) < limit:
+        added = False
+        for group in groups:
+            if offset < len(group):
+                selected.append(group[offset])
+                added = True
+                if len(selected) == limit:
+                    break
+        if not added:
+            break
+        offset += 1
+    return selected
 
 
 def distance_km(a: City, b: City) -> float:
@@ -205,24 +423,64 @@ def distance_km(a: City, b: City) -> float:
 def destinations(
     origin: City, limit: int | None = None, *, abroad_only: bool = False
 ) -> tuple[City, ...]:
-    """Список городов, до которых считаем досягаемость из точки отправления.
+    """Список направлений для веера, сбалансированный по континентам.
 
-    Пул делится по стране отправления: либо ищем поездки по своей стране, либо
-    только за границу. Держать оба пула сразу дорого — веер по всем городам
-    справочника не укладывается в разумное время.
+    Россия остаётся полной: дальние города вроде Владивостока никогда не
+    вытесняются. Заграница берётся не «по близости к Москве», а квотами регионов
+    с круговым выбором городов по странам — поэтому в ответ попадают Африка и
+    Америка, а не только Европа.
     """
-    others = [
+    origin_country = country_id(origin)
+    local = [city for city in CITIES if city.name != origin.name]
+    worldwide = global_catalog()
+    known_coordinates = {(round(city.lat, 1), round(city.lon, 1)) for city in local}
+    extra = [
         city
-        for city in CITIES
-        if city.name != origin.name
-        and ((city.country != origin.country) if abroad_only else (city.country == origin.country))
+        for city, _ in worldwide
+        if (round(city.lat, 1), round(city.lon, 1)) not in known_coordinates
     ]
-    # Если кандидатов слишком много, оставляем ближайшие: из Дубая нет смысла
-    # считать Владивосток, а веер на сто с лишним городов не успеет отработать.
-    if len(others) > MAX_DESTINATIONS:
-        others.sort(key=lambda city: distance_km(origin, city))
-        others = others[:MAX_DESTINATIONS]
-    return tuple(others if limit is None else others[:limit])
+    all_cities = [*local, *extra]
+    local_domestic = [city for city in local if country_id(city) == origin_country]
+    # У России уже есть вручную проверенный полный набор. Для произвольного
+    # города из Nominatim локального списка может не быть — тогда добавляем
+    # города его страны из мирового каталога, но не даём одной стране съесть
+    # весь глобальный веер.
+    domestic_source = (
+        local_domestic
+        or [city for city in extra if country_id(city) == origin_country][:LARGE_COUNTRY_CITIES]
+    )
+    domestic = sorted(
+        domestic_source,
+        key=lambda city: distance_km(origin, city),
+    )
+    if abroad_only:
+        domestic = []
+
+    by_region: dict[str, list[City]] = {region: [] for region in REGION_QUOTA}
+    continent_by_code = {city.country_code: continent for city, continent in worldwide}
+    for city in all_cities:
+        if country_id(city) == origin_country:
+            continue
+        region = continent_by_code.get(country_id(city))
+        if region in by_region:
+            by_region[region].append(city)
+
+    foreign: list[City] = []
+    for region, quota in REGION_QUOTA.items():
+        foreign.extend(_balanced(by_region[region], quota, origin))
+
+    # Географическая дедупликация не позволяет дважды спросить Туту про один
+    # и тот же город с русским и английским написанием.
+    pool: list[City] = []
+    seen: set[tuple[float, float]] = set()
+    for city in [*domestic, *foreign]:
+        key = round(city.lat, 1), round(city.lon, 1)
+        if key not in seen:
+            seen.add(key)
+            pool.append(city)
+        if len(pool) == MAX_DESTINATIONS:
+            break
+    return tuple(pool if limit is None else pool[:limit])
 
 
 _GEOCODE_CACHE: dict[str, City | None] = {}

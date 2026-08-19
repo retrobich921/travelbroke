@@ -1,53 +1,72 @@
 @import "tailwindcss";
 
+/* Hallmark · macrostructure: Statement · tone: utilitarian-editorial (вокзальное табло)
+ * theme: custom · vibe: «табло вокзала, дешёвый билет, честная цена»
+ * paper oklch(14.5% 0.028 277) dark-first · accent oklch(93.4% 0.223 122) lime + oklch(66% 0.2 283) violet
+ * display Unbounded · body Onest · numerals JetBrains Mono
+ * axes: dark paper / geometric-display / chromatic-lime
+ * pre-emit critique: P5 H5 E4 S5 R4 V5
+ */
+
 /* Фирменные цвета не зависят от темы: лайм и фиолет остаются собой. */
 @theme {
-  --color-tb-cheap: #d0ff1a;
-  --color-tb-expensive: #c1acff;
-  --color-tb-accent: #7d71ff;
+  --color-tb-cheap: oklch(93.4% 0.223 122.3);
+  --color-tb-expensive: oklch(79.3% 0.118 295.2);
+  --color-tb-accent: oklch(66% 0.2 283);
 
-  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Onest", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Unbounded", "Onest", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  /* Шкала кегля: 11 → 13 → 15 — плотный приборный ряд, без промежуточных. */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1.3;
+  --text-xs: 0.6875rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.4;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.5;
+
+  /* Радиусы: панель — 14, орган управления — 7, метка — 3. Пузырей нет. */
+  --radius-xs: 3px;
+  --radius-sm: 7px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 /* Семантические токены ссылаются на переменные, которые переключает тема. */
 @theme inline {
   --color-tb-bg: var(--tb-bg);
   --color-tb-panel: var(--tb-panel);
+  --color-tb-raised: var(--tb-raised);
   --color-tb-ink: var(--tb-ink);
   --color-tb-muted: var(--tb-muted);
   --color-tb-line: var(--tb-line);
   --color-tb-hero: var(--tb-hero);
   --color-tb-fill: var(--tb-fill);
+  --color-tb-band: var(--tb-band);
 }
 
-/* Светлая тема — значение по умолчанию. */
+/* Тёмная тема — значение по умолчанию: карта цен читается на чернильном фоне. */
 :root {
-  --tb-bg: #eff0ff;
-  --tb-panel: #ffffff;
-  --tb-ink: #151047;
-  --tb-muted: #6b6790;
-  --tb-line: rgba(21, 16, 71, 0.12);
-  --tb-hero: #7d71ff;
-  --tb-fill: rgba(21, 16, 71, 0.06);
+  --tb-bg: oklch(14.5% 0.028 277);
+  --tb-panel: oklch(19% 0.03 277);
+  --tb-raised: oklch(25% 0.033 277);
+  --tb-ink: oklch(96% 0.012 277);
+  --tb-muted: oklch(70.5% 0.03 283);
+  --tb-line: oklch(31% 0.035 277);
+  --tb-hero: oklch(93.4% 0.223 122.3);
+  --tb-fill: oklch(24% 0.032 277);
 
-  --tb-halo: rgba(255, 255, 255, 0.92);
-  --tb-label: #151047;
-
-  color-scheme: light;
-}
-
-/* Тёмная тема — по выбору пользователя. */
-:root[data-theme="dark"] {
-  --tb-bg: #0d0b66;
-  --tb-panel: #171267;
-  --tb-ink: #eff0ff;
-  --tb-muted: #b9b6d6;
-  --tb-line: rgba(255, 255, 255, 0.12);
-  --tb-hero: #d0ff1a;
-  --tb-fill: rgba(255, 255, 255, 0.08);
-
-  --tb-halo: rgba(13, 11, 102, 0.92);
-  --tb-label: #ffffff;
+  --tb-halo: oklch(14.5% 0.028 277 / 0.9);
+  --tb-label: oklch(97% 0.01 277);
+  --tb-shadow: 0 20px 44px -24px oklch(0% 0 0 / 0.85);
+  --tb-grid: oklch(100% 0 0 / 0.045);
+  --tb-band: oklch(29% 0.155 284);
 
   color-scheme: dark;
 }
@@ -59,26 +78,140 @@ body,
   margin: 0;
 }
 
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background: var(--tb-bg);
   color: var(--tb-ink);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01";
   -webkit-text-size-adjust: 100%;
+}
+
+/* Цифры в приборе не пляшут: цена и время всегда одной ширины. */
+.tb-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.02em;
+}
+
+/* Служебная надпись: мелкий моноширинный капс, как на табло. */
+.tb-tag {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tb-muted);
+}
+
+/* Плита прибора: плоская поверхность, волосяная рамка, одна тень. */
+.tb-plate {
+  background: var(--tb-panel);
+  border: 1px solid var(--tb-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--tb-shadow);
+}
+
+/* Фокус виден всегда и появляется мгновенно — анимировать кольцо нельзя. */
+:where(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-tb-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/**
+ * Полоса-шапка стартового экрана.
+ *
+ * Тёмный фиолет — язык самого Туту, поэтому лендинг читается как часть их
+ * экосистемы, а не как чужой продукт рядом. Токены переопределены прямо на
+ * элементе: всё внутри полосы получает светлый текст независимо от темы.
+ */
+.tb-band {
+  --tb-band: oklch(29% 0.155 284);
+  --tb-panel: oklch(36% 0.14 284);
+  --tb-raised: oklch(41% 0.14 284);
+  --tb-ink: oklch(98% 0.012 284);
+  --tb-muted: oklch(81% 0.05 288);
+  --tb-line: oklch(46% 0.12 284);
+  --tb-fill: oklch(38% 0.13 284);
+  --tb-hero: oklch(93.4% 0.223 122.3);
+  background: var(--tb-band);
+  color: var(--tb-ink);
+}
+
+/**
+ * Белый остров внутри тёмной полосы.
+ *
+ * Раньше светлую строку поиска красили поштучно (`surface="light"`), и
+ * выпадающий календарь получал белый фон, но цвет дня наследовал от тёмной
+ * темы — белым по белому. Переопределяем не отдельные элементы, а сами токены:
+ * тогда любой вложенный поповер светлеет заодно и разъехаться уже не может.
+ */
+.tb-light-island {
+  --tb-panel: oklch(100% 0 0);
+  --tb-raised: oklch(97.5% 0.011 280);
+  --tb-ink: oklch(22.4% 0.098 279);
+  --tb-muted: oklch(50% 0.052 285);
+  --tb-line: oklch(90% 0.015 280);
+  --tb-fill: oklch(96.5% 0.012 280);
+  --tb-hero: oklch(47% 0.216 283);
+  --tb-halo: oklch(100% 0 0 / 0.92);
+  --tb-shadow: 0 18px 40px -26px oklch(22.4% 0.098 279 / 0.5);
+  color: var(--tb-ink);
+}
+
+/* Координатная сетка вместо градиентных пятен: продукт про карту, не про блики. */
+.tb-graticule {
+  background-image:
+    linear-gradient(to right, var(--tb-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--tb-grid) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center;
 }
 
 /* MapLibre подтягивает свои стили сам, но контейнер обязан иметь высоту. */
 .maplibregl-map {
   height: 100%;
   width: 100%;
+  font-family: var(--font-sans);
 }
 
-/* Бегунок прогресса поверх карты, пока идёт расчёт. */
-@keyframes slide {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(400%);
+/* Родное оформление контролов карты не совпадает с прибором — приводим к теме. */
+.maplibregl-ctrl-group {
+  background: var(--tb-panel) !important;
+  border: 1px solid var(--tb-line) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: none !important;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--tb-line) !important;
+}
+
+/* Иконки контролов MapLibre — тёмные PNG-спрайты, на чернильной плите их не видно. */
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1);
+}
+
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  background: var(--tb-panel) !important;
+  border-radius: var(--radius-xs) !important;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: var(--tb-muted) !important;
+}
+
+/* Правый нижний угол на большом экране занимает пульт: сдвигаем контролы карты
+   левее, иначе кнопки масштаба наполовину уезжают под панель. */
+@media (min-width: 1024px) {
+  .maplibregl-ctrl-bottom-right {
+    right: 23rem !important;
   }
 }
 
@@ -86,7 +219,7 @@ body {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -95,62 +228,144 @@ body {
 }
 
 .tb-rise {
-  animation: rise 0.22s ease-out both;
+  animation: rise 200ms var(--ease-out) both;
 }
 
-/* На узких экранах панель прокручивается внутри себя, а не растягивает страницу. */
-@media (max-width: 1023px) {
-  .tb-sheet {
-    max-height: 62vh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
+/* Ползунок: системный на Windows выглядит чужой пластмассой — рисуем свой. */
+.tb-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* Свои полосы прокрутки со стрелками: системные в тёмной теме выглядят чужеродно. */
+.tb-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--color-tb-accent) 0 var(--tb-progress, 50%),
+    var(--tb-line) var(--tb-progress, 50%) 100%
+  );
+}
+
+.tb-range::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--tb-line);
+}
+
+.tb-range::-moz-range-progress {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-tb-accent);
+}
+
+.tb-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4px;
+  height: 18px;
+  margin-top: -7.5px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--tb-ink);
+  box-shadow: 0 0 0 3px var(--tb-panel);
+  transition: background 120ms var(--ease-out);
+}
+
+.tb-range::-moz-range-thumb {
+  width: 4px;
+  height: 18px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--tb-ink);
+  box-shadow: 0 0 0 3px var(--tb-panel);
+}
+
+.tb-range:hover::-webkit-slider-thumb,
+.tb-range:focus-visible::-webkit-slider-thumb {
+  background: var(--color-tb-accent);
+}
+
+.tb-range:hover::-moz-range-thumb {
+  background: var(--color-tb-accent);
+}
+
+.tb-range:focus-visible {
+  outline-offset: 4px;
+}
+
+/* Флажок: системный квадрат тоже рисуется ОС, поэтому свой. */
+.tb-check {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  flex: none;
+  border: 1px solid var(--tb-line);
+  border-radius: var(--radius-xs);
+  background: var(--tb-fill);
+  cursor: pointer;
+  transition:
+    background 120ms var(--ease-out),
+    border-color 120ms var(--ease-out);
+}
+
+.tb-check:hover {
+  border-color: var(--color-tb-accent);
+}
+
+.tb-check:checked {
+  background: var(--color-tb-accent);
+  border-color: var(--color-tb-accent);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M2.5 6.2 4.8 8.5 9.5 3.8' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+}
+
+/* Свои полосы прокрутки: системные в тёмной теме выглядят чужеродно. */
 .tb-scroll {
   scrollbar-width: thin;
-  scrollbar-color: var(--tb-muted) transparent;
+  scrollbar-color: var(--tb-line) transparent;
 }
 
 .tb-scroll::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
 
 .tb-scroll::-webkit-scrollbar-track {
-  background: var(--tb-fill);
-  border-radius: 999px;
+  background: transparent;
 }
 
 .tb-scroll::-webkit-scrollbar-thumb {
-  background: var(--tb-muted);
+  background: var(--tb-line);
   border: 3px solid transparent;
   background-clip: content-box;
   border-radius: 999px;
 }
 
 .tb-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--color-tb-accent);
+  background: var(--tb-muted);
   border: 3px solid transparent;
   background-clip: content-box;
 }
 
-.tb-scroll::-webkit-scrollbar-button:single-button {
-  display: block;
-  height: 12px;
-  background-color: var(--tb-fill);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 8px;
-}
+/* Движение — украшение. Кому оно мешает, тот его не увидит. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 
-.tb-scroll::-webkit-scrollbar-button:single-button:vertical:decrement {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path d='M4 1.5 7 6H1z' fill='%237b61ff'/></svg>");
-  border-radius: 999px 999px 0 0;
-}
-
-.tb-scroll::-webkit-scrollbar-button:single-button:vertical:increment {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path d='M4 6.5 1 2h6z' fill='%237b61ff'/></svg>");
-  border-radius: 0 0 999px 999px;
+  .tb-rise {
+    animation: none;
+  }
 }
