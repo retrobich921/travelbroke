@@ -5,7 +5,12 @@ description = "Куда можно уехать за эти деньги — т�
 readme = "README.md"
 authors = [{ name = "retrobich921", email = "albert1yandex@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["httpx>=0.28.1"]
+dependencies = [
+    "fastapi>=0.141.1",
+    "httpx>=0.28.1",
+    "networkx>=3.6.1",
+    "uvicorn[standard]>=0.52.4",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.16,<0.10.0"]
