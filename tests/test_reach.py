@@ -85,6 +85,24 @@ def test_parse_variants_survives_garbage() -> None:
     assert variants[0].price == 900
 
 
+def test_parse_variants_never_uses_generic_search_as_checkout() -> None:
+    """Кнопка покупки не должна молча превращаться в общий поиск Туту."""
+    variants = parse_variants(
+        {
+            "variants": [
+                {
+                    "transport": "bus",
+                    "price": {"amount": 900},
+                    "duration_min": 300,
+                    "search_results_url": "https://www.tutu.ru/bus/search/",
+                }
+            ]
+        }
+    )
+
+    assert variants[0].checkout_url is None
+
+
 def test_parse_modes_summary(multitransport: dict) -> None:
     prices, minutes = parse_modes_summary(multitransport)
 

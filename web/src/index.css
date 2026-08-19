@@ -4,7 +4,7 @@
 @theme {
   --color-tb-cheap: #d0ff1a;
   --color-tb-expensive: #c1acff;
-  --color-tb-accent: #7b61ff;
+  --color-tb-accent: #7d71ff;
 
   --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
 }
@@ -22,12 +22,12 @@
 
 /* Светлая тема — значение по умолчанию. */
 :root {
-  --tb-bg: #eeecff;
+  --tb-bg: #eff0ff;
   --tb-panel: #ffffff;
   --tb-ink: #151047;
   --tb-muted: #6b6790;
   --tb-line: rgba(21, 16, 71, 0.12);
-  --tb-hero: #4b2fc9;
+  --tb-hero: #7d71ff;
   --tb-fill: rgba(21, 16, 71, 0.06);
 
   --tb-halo: rgba(255, 255, 255, 0.92);
@@ -38,15 +38,15 @@
 
 /* Тёмная тема — по выбору пользователя. */
 :root[data-theme="dark"] {
-  --tb-bg: #0d0a2b;
-  --tb-panel: #151047;
-  --tb-ink: #f3f2ff;
+  --tb-bg: #0d0b66;
+  --tb-panel: #171267;
+  --tb-ink: #eff0ff;
   --tb-muted: #b9b6d6;
   --tb-line: rgba(255, 255, 255, 0.12);
   --tb-hero: #d0ff1a;
   --tb-fill: rgba(255, 255, 255, 0.08);
 
-  --tb-halo: rgba(13, 10, 43, 0.92);
+  --tb-halo: rgba(13, 11, 102, 0.92);
   --tb-label: #ffffff;
 
   color-scheme: dark;

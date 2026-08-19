@@ -41,6 +41,8 @@ function startOfDay(day: Date): Date {
 interface Props {
   value: string;
   onChange: (value: string) => void;
+  /** Светлая форма поверх тёмного лендинга. */
+  surface?: "default" | "light";
   /** Дальше горизонта продаж билетов всё равно нет: авиа ~210 дней. */
   maxDays?: number;
 }
@@ -53,9 +55,10 @@ interface Props {
  * нужно именно здесь: подсказки «сегодня» и «ближайшая суббота» и запрет на
  * даты в прошлом.
  */
-export function DatePicker({ value, onChange, maxDays = 210 }: Props) {
+export function DatePicker({ value, onChange, maxDays = 210, surface = "default" }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const light = surface === "light";
   const selected = useMemo(() => parse(value), [value]);
   const [month, setMonth] = useState(() => new Date(selected.getFullYear(), selected.getMonth(), 1));
 
@@ -100,14 +103,18 @@ export function DatePicker({ value, onChange, maxDays = 210 }: Props) {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="mt-1 flex w-full items-center justify-between gap-2 rounded-xl bg-tb-fill px-3 py-2 text-left text-[13px] font-medium text-tb-ink transition hover:brightness-105 focus:ring-2 focus:ring-tb-accent focus:outline-none"
+        className={`mt-1 flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-[13px] font-medium transition focus:ring-2 focus:ring-tb-accent focus:outline-none ${
+          light
+            ? "bg-[#eff0ff] text-[#17124f] hover:bg-[#e3e2ff]"
+            : "bg-tb-fill text-tb-ink hover:brightness-105"
+        }`}
       >
         <span className="truncate">{label}</span>
         <span className="shrink-0 text-tb-muted">▾</span>
       </button>
 
       {open && (
-        <div className={`${POPOVER} p-3`}>
+        <div className={`${POPOVER} right-0 w-64 p-3 ${light ? "!bg-white !ring-[#d9d6ff]" : ""}`}>
           <div className="flex items-center justify-between">
             <button
               type="button"

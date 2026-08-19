@@ -31,6 +31,6 @@ export function useDismiss(
   }, [ref, open, close]);
 }
 
-/** Общий вид всплывающей панели: над полем, с прокруткой и тенью. */
+/** Общий вид всплывающей панели: раскрывается вниз, с прокруткой и тенью. */
 export const POPOVER =
-  "tb-scroll absolute bottom-full left-0 z-50 mb-2 w-full overflow-hidden rounded-2xl bg-tb-panel shadow-2xl ring-1 ring-tb-line";
+  "tb-scroll absolute top-full z-50 mt-2 min-w-full overflow-hidden rounded-2xl bg-tb-panel shadow-2xl ring-1 ring-tb-line";

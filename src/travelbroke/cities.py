@@ -11,6 +11,9 @@ MCP Туту резолвит города по названию и отдаёт
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
+
+import httpx
 
 
 @dataclass(frozen=True, slots=True)
@@ -135,3 +138,115 @@ def destinations(origin: City, limit: int | None = None) -> tuple[City, ...]:
     """Список городов, до которых считаем досягаемость из точки отправления."""
     others = tuple(city for city in CITIES if city.name != origin.name)
     return others if limit is None else others[:limit]
+
+
+_GEOCODE_CACHE: dict[str, City | None] = {}
+_SUGGEST_CACHE: dict[str, list[City]] = {}
+
+
+def _from_geocoder(query: str, item: dict[str, Any]) -> City | None:
+    """Нормализует городской результат Nominatim в доменную модель."""
+    try:
+        lat, lon = float(item["lat"]), float(item["lon"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    raw_address = item.get("address")
+    address: dict[str, Any] = raw_address if isinstance(raw_address, dict) else {}
+    name = query.strip()
+    for key in ("city", "town", "municipality", "village", "county"):
+        candidate = address.get(key)
+        if isinstance(candidate, str) and candidate:
+            name = candidate
+            break
+    raw_country = address.get("country")
+    country = raw_country if isinstance(raw_country, str) else "Мир"
+    return City(name=name, lat=lat, lon=lon, country=country)
+
+
+async def resolve_global(name: str) -> City | None:
+    """Город из локального списка или глобального геокодера OpenStreetMap.
+
+    Туту остаётся источником транспортных предложений и сам резолвит название
+    в своём поиске. Геокодер нужен лишь для координаты точки на карте и для
+    подсказок при вводе, поэтому его ответ кэшируем в памяти.
+    """
+    local = resolve(name)
+    if local is not None:
+        return local
+    query = name.strip()
+    if not query:
+        return None
+    key = query.casefold()
+    if key in _GEOCODE_CACHE:
+        return _GEOCODE_CACHE[key]
+    try:
+        async with httpx.AsyncClient(
+            timeout=5,
+            headers={"User-Agent": "TravelBroke/0.1 (travel map prototype)"},
+        ) as client:
+            response = await client.get(
+                "https://nominatim.openstreetmap.org/search",
+                params={
+                    "q": query,
+                    "format": "jsonv2",
+                    "limit": 1,
+                    "addressdetails": 1,
+                    "accept-language": "ru",
+                },
+            )
+            response.raise_for_status()
+            payload = response.json()
+    except (httpx.HTTPError, ValueError):
+        return None
+    item = (
+        payload[0]
+        if isinstance(payload, list) and payload and isinstance(payload[0], dict)
+        else None
+    )
+    city = _from_geocoder(query, item) if item else None
+    _GEOCODE_CACHE[key] = city
+    return city
+
+
+async def suggest_global(query: str, limit: int = 10) -> list[City]:
+    """Подсказки городов по всему миру для поля отправления."""
+    needle = query.strip()
+    if len(needle) < 2:
+        return []
+    key = needle.casefold()
+    if key in _SUGGEST_CACHE:
+        return _SUGGEST_CACHE[key][:limit]
+    local = [city for city in CITIES if needle.casefold() in city.name.casefold()]
+    try:
+        async with httpx.AsyncClient(
+            timeout=5,
+            headers={"User-Agent": "TravelBroke/0.1 (travel map prototype)"},
+        ) as client:
+            response = await client.get(
+                "https://nominatim.openstreetmap.org/search",
+                params={
+                    "q": needle,
+                    "format": "jsonv2",
+                    "limit": limit,
+                    "addressdetails": 1,
+                    "accept-language": "ru",
+                },
+            )
+            response.raise_for_status()
+            payload = response.json()
+    except (httpx.HTTPError, ValueError):
+        return local[:limit]
+    remote: list[City] = []
+    if isinstance(payload, list):
+        for item in payload:
+            if isinstance(item, dict) and (city := _from_geocoder(needle, item)) is not None:
+                remote.append(city)
+    seen: set[tuple[str, str]] = set()
+    unique: list[City] = []
+    for city in [*local, *remote]:
+        city_key = city.name.casefold(), city.country.casefold()
+        if city_key not in seen:
+            seen.add(city_key)
+            unique.append(city)
+    _SUGGEST_CACHE[key] = unique
+    return unique[:limit]

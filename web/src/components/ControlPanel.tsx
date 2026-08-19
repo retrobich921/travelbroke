@@ -14,6 +14,7 @@ interface Props {
   deep: boolean;
   passengers: number;
   loading: boolean;
+  needsSearch: boolean;
   onOrigin: (value: string) => void;
   onDate: (value: string) => void;
   onBudget: (value: number) => void;
@@ -48,6 +49,7 @@ export function ControlPanel(props: Props) {
     deep,
     passengers,
     loading,
+    needsSearch,
     onOrigin,
     onDate,
     onBudget,
@@ -187,7 +189,7 @@ export function ControlPanel(props: Props) {
         disabled={loading}
         className="mt-4 w-full rounded-xl bg-tb-accent px-4 py-2.5 text-[15px] font-black text-white transition hover:brightness-110 disabled:cursor-progress disabled:opacity-60"
       >
-        {loading ? "Считаем маршруты…" : "Куда я могу уехать"}
+        {loading ? "Считаем маршруты…" : needsSearch ? "Обновить карту" : "Куда я могу уехать"}
       </button>
 
       <button

@@ -113,6 +113,8 @@ class Reach:
 
     city: City
     direct: Variant | None = None
+    variants: list[Variant] = field(default_factory=list)
+    """Конкретные прямые офферы, из которых клиент выбирает вариант по фильтрам."""
     via: City | None = None
     connection: Connection | None = None
     by_mode: dict[str, int] = field(default_factory=dict)
@@ -251,7 +253,7 @@ def _endpoints(raw: dict[str, Any]) -> tuple[str | None, str | None]:
     return first.get("from"), last.get("to")
 
 
-def parse_variants(data: dict[str, Any], limit: int = 12) -> list[Variant]:
+def parse_variants(data: dict[str, Any], limit: int = 30) -> list[Variant]:
     """Достаёт из ответа `search_multitransport` то немногое, что нужно карте."""
     variants: list[Variant] = []
     for raw in (data.get("variants") or [])[:limit]:
@@ -274,7 +276,9 @@ def parse_variants(data: dict[str, Any], limit: int = 12) -> list[Variant]:
                 arrival_at=raw.get("arrival_at"),
                 departure_point=departure_point,
                 arrival_point=arrival_point,
-                checkout_url=raw.get("checkout_url") or raw.get("search_results_url"),
+                # search_results_url ведёт только на общий поиск. Для карточки
+                # покупки годится исключительно конкретный checkout_url либо ref.
+                checkout_url=raw.get("checkout_url"),
                 route=route,
                 checkout_ref=raw.get("checkout_ref")
                 if isinstance(raw.get("checkout_ref"), dict)
@@ -317,7 +321,7 @@ async def _search_pair(
     price_max: int | None,
     *,
     adults: int = 1,
-    page_size: int | None = None,
+    page_size: int | None = 30,
 ) -> tuple[list[Variant], dict[str, int], dict[str, int], str | None, str | None]:
     """Один поиск между парой городов. Ошибку инструмента считаем пустым результатом."""
     args: dict[str, Any] = {
@@ -371,9 +375,22 @@ async def fan_out(
             mcp, origin.name, target.name, when, modes, price_max, adults=adults
         )
         cheapest = min(variants, key=lambda variant: variant.price) if variants else None
+
+        # Карта и карточка обязаны опираться на один и тот же конкретный оффер.
+        # Сводка `modes_summary` иногда ссылается на вариант за пределами первой
+        # страницы выдачи; его нельзя честно отправить в оформление.
+        concrete_by_mode: dict[str, Variant] = {}
+        for variant in variants:
+            current = concrete_by_mode.get(variant.transport)
+            if current is None or variant.price < current.price:
+                concrete_by_mode[variant.transport] = variant
+        if concrete_by_mode:
+            by_mode = {mode: variant.price for mode, variant in concrete_by_mode.items()}
+            by_minutes = {mode: variant.duration_min for mode, variant in concrete_by_mode.items()}
         return Reach(
             city=target,
             direct=cheapest,
+            variants=variants,
             by_mode=by_mode,
             by_mode_minutes=by_minutes,
             empty_reason=reason,

@@ -12,7 +12,7 @@ from datetime import date as Date
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -86,6 +86,10 @@ class ReachOut(BaseModel):
     price: int | None = Field(default=None, description="Лучшая найденная цена, ₽")
     hours: float | None = None
     direct: VariantOut | None = None
+    variants: list[VariantOut] = Field(
+        default_factory=list,
+        description="Конкретные прямые варианты: карточка выбирает из них оффер по фильтрам",
+    )
     via: str | None = Field(default=None, description="Город пересадки, если так дешевле")
     via_legs: list[VariantOut] | None = None
     transfer_wait_minutes: int | None = Field(
@@ -196,6 +200,7 @@ def _reach_out(item: reach.Reach) -> ReachOut:
         price=item.best_price,
         hours=total_hours,
         direct=_variant_out(item.direct) if item.direct else None,
+        variants=[_variant_out(variant) for variant in item.variants],
         via=item.via.name if item.via else None,
         via_legs=[_variant_out(leg) for leg in legs] if legs else None,
         transfer_wait_minutes=connection.wait_min if connection else None,
@@ -224,6 +229,22 @@ async def list_cities() -> list[CityOut]:
     ]
 
 
+@app.get("/api/city-suggest", response_model=list[CityOut], summary="Глобальные подсказки городов")
+async def city_suggest(q: str = Query(min_length=2, max_length=120)) -> list[CityOut]:
+    """Ищет город по всему миру; транспорт затем резолвит сам Туту."""
+    return [
+        CityOut(
+            slug=city.slug,
+            name=city.name,
+            lat=city.lat,
+            lon=city.lon,
+            hub=city.hub,
+            country=city.country,
+        )
+        for city in await cities.suggest_global(q)
+    ]
+
+
 @app.post("/api/reachable", response_model=ReachableResponse, summary="Карта досягаемости")
 async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableResponse:
     """Считает, куда и за сколько можно уехать из точки в заданную дату.
@@ -231,7 +252,7 @@ async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableRespo
     Возвращает матрицу целиком: ползунки бюджета и времени на клиенте работают
     по ней локально, без единого дополнительного запроса.
     """
-    origin = cities.resolve(request.origin)
+    origin = await cities.resolve_global(request.origin)
     if origin is None:
         raise HTTPException(status_code=422, detail=f"город «{request.origin}» не в справочнике")
 
@@ -291,11 +312,16 @@ async def checkout(request: Annotated[CheckoutRequest, ...]) -> CheckoutResponse
     except TutuError as exc:
         raise HTTPException(status_code=502, detail=f"Туту не отдал ссылку: {exc}") from exc
 
-    url = data.get("url") or data.get("checkout_url") or data.get("fallback_url")
+    kind = data.get("kind")
+    if kind != "deeplink":
+        raise HTTPException(
+            status_code=409,
+            detail="Туту не отдал ссылку на конкретный рейс — общий поиск не открываем",
+        )
+    url = data.get("url") or data.get("checkout_url")
     if not isinstance(url, str) or not url:
         raise HTTPException(status_code=502, detail="в ответе Туту нет ссылки на оформление")
-    kind = data.get("kind")
-    return CheckoutResponse(url=url, kind=str(kind) if isinstance(kind, str) else "deeplink")
+    return CheckoutResponse(url=url, kind="deeplink")
 
 
 # Собранный фронтенд монтируется последним, чтобы не перехватывать /api.

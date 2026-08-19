@@ -35,6 +35,8 @@ export interface ReachOut extends CityOut {
   price: number | null;
   hours: number | null;
   direct: VariantOut | null;
+  /** Конкретные офферы, на которых держатся переключатели транспорта и покупка. */
+  variants: VariantOut[];
   via: string | null;
   via_legs: VariantOut[] | null;
   beats_direct_by: number | null;
@@ -64,6 +66,13 @@ async function json<T>(response: Response): Promise<T> {
 
 export async function fetchCities(): Promise<CityOut[]> {
   return json<CityOut[]>(await fetch("/api/cities"));
+}
+
+/** Подсказки городов со всего мира; координаты нужны карте, предложения — Туту. */
+export async function fetchCitySuggestions(query: string): Promise<CityOut[]> {
+  return json<CityOut[]>(
+    await fetch(`/api/city-suggest?q=${encodeURIComponent(query)}`),
+  );
 }
 
 export async function fetchReachable(params: {

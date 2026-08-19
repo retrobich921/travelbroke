@@ -9,6 +9,7 @@ import {
   type ReachOut,
   type VariantOut,
 } from "../api";
+import type { DisplayedTrip } from "../trip";
 
 const TRANSPORT_LABEL: Record<string, string> = {
   ...MODE_LABELS,
@@ -96,51 +97,60 @@ interface BuyProps {
  */
 function BuyButton({ variant, caption, passengers, primary }: BuyProps) {
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const open = async () => {
     if (busy) return;
     setBusy(true);
+    setError(null);
     try {
       const url = variant.checkout_ref
         ? await fetchCheckout(variant.checkout_ref, passengers)
         : variant.checkout_url;
-      if (url) window.open(url, "_blank", "noopener");
+      if (!url) {
+        setError("Для этого варианта нет ссылки на конкретный рейс.");
+        return;
+      }
+      window.open(url, "_blank", "noopener");
     } catch {
-      // Точную ссылку построить не удалось — отправляем на поиск по направлению.
-      if (variant.checkout_url) window.open(variant.checkout_url, "_blank", "noopener");
+      setError("Туту не смог подготовить ссылку на этот рейс. Общий поиск не открываем.");
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <button
-      type="button"
-      onClick={open}
-      disabled={busy}
-      className={`block w-full rounded-xl px-4 py-2.5 text-center text-[13px] font-black transition hover:brightness-110 disabled:cursor-progress ${
-        primary ? "bg-tb-accent text-white" : "bg-tb-fill text-tb-ink ring-1 ring-tb-accent/40"
-      }`}
-    >
-      {busy ? "Открываем Туту…" : caption}
-    </button>
+    <div>
+      <button
+        type="button"
+        onClick={open}
+        disabled={busy}
+        className={`block w-full rounded-xl px-4 py-2.5 text-center text-[13px] font-black transition hover:brightness-110 disabled:cursor-progress ${
+          primary ? "bg-tb-accent text-white" : "bg-tb-fill text-tb-ink ring-1 ring-tb-accent/40"
+        }`}
+      >
+        {busy ? "Открываем Туту…" : caption}
+      </button>
+      {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
+    </div>
   );
 }
 
 interface Props {
   reach: ReachOut;
+  trip: DisplayedTrip;
   origin: string;
   passengers: number;
-  /** Город не проходит по текущим фильтрам — показан только потому, что выбран. */
-  filtered?: boolean;
   onClose: () => void;
 }
 
 /** Карточка выбранного города: из чего складывается поездка и где её купить. */
-export function TripCard({ reach, origin, passengers, filtered = false, onClose }: Props) {
-  const legs = reach.via_legs;
-  const composite = legs !== null && reach.beats_direct_by !== null;
-  const total = composite ? legs.reduce((sum, leg) => sum + leg.price, 0) : reach.price;
+export function TripCard({ reach, trip, origin, passengers, onClose }: Props) {
+  const composite = trip.kind === "composite";
+  const legs = composite ? trip.legs : null;
+  const direct = trip.kind === "direct" ? trip.variant : null;
+  const total = composite ? legs![0].price + legs![1].price : direct?.price ?? null;
+  const hours = composite ? reach.hours : direct?.hours ?? null;
 
   return (
     <section className="tb-rise pointer-events-auto flex w-full min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain rounded-3xl bg-tb-panel/97 shadow-2xl ring-1 ring-tb-line backdrop-blur-xl">
@@ -161,24 +171,22 @@ export function TripCard({ reach, origin, passengers, filtered = false, onClose 
         </button>
       </header>
 
-      {filtered && (
-        <div className="mx-5 mb-3 rounded-xl bg-tb-fill px-3 py-2 text-xs text-tb-muted">
-          Этот город не проходит по текущим фильтрам — он показан, потому что выбран.
-        </div>
-      )}
-
-      {total === null ? (
+      {trip.kind === "unavailable" ? (
         <div className="px-5 pb-5 text-sm text-tb-muted">
-          {reach.empty_message ?? "Туда ничего не нашлось на эту дату."}
+          <p className="font-semibold text-tb-ink">В оставшихся видах транспорта маршрута нет.</p>
+          <p className="mt-1">
+            Включи другой транспорт или выбери другой город — старый вариант не показываем,
+            чтобы не запутать.
+          </p>
         </div>
       ) : (
         <>
           <div className="px-5">
             <div className="flex flex-wrap items-end justify-between gap-2">
-              <span className="text-4xl font-black text-tb-hero">{formatPrice(total)}</span>
-              {reach.hours !== null && (
+              <span className="text-4xl font-black text-tb-hero">{formatPrice(total ?? 0)}</span>
+              {hours !== null && (
                 <span className="pb-1 text-sm font-semibold text-tb-muted">
-                  {formatHours(reach.hours)} в пути
+                  {formatHours(hours)} в пути
                 </span>
               )}
             </div>
@@ -202,12 +210,12 @@ export function TripCard({ reach, origin, passengers, filtered = false, onClose 
           <div className="mt-3 divide-y divide-tb-line px-5">
             {composite ? (
               <>
-                <Leg variant={legs[0]} index={1} />
+                <Leg variant={legs![0]} index={1} />
                 <Transfer reach={reach} />
-                <Leg variant={legs[1]} index={2} />
+                <Leg variant={legs![1]} index={2} />
               </>
             ) : (
-              reach.direct && <Leg variant={reach.direct} />
+              direct && <Leg variant={direct} />
             )}
           </div>
 
@@ -226,22 +234,22 @@ export function TripCard({ reach, origin, passengers, filtered = false, onClose 
                   Билеты — покупаются отдельно
                 </div>
                 <BuyButton
-                  variant={legs[0]}
+                  variant={legs![0]}
                   caption={`1. ${origin} → ${reach.via}`}
                   passengers={passengers}
                   primary
                 />
                 <BuyButton
-                  variant={legs[1]}
+                  variant={legs![1]}
                   caption={`2. ${reach.via} → ${reach.name}`}
                   passengers={passengers}
                   primary={false}
                 />
               </>
             ) : (
-              reach.direct && (
+              direct && (
                 <BuyButton
-                  variant={reach.direct}
+                  variant={direct}
                   caption="Выбрать места на Туту"
                   passengers={passengers}
                   primary

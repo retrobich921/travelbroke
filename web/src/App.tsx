@@ -14,9 +14,11 @@ import {
   type ReachableResponse,
 } from "./api";
 import { ControlPanel } from "./components/ControlPanel";
+import { StartScreen } from "./components/StartScreen";
 import { TripCard } from "./components/TripCard";
 import { UNREACHABLE, legendStops, priceColor, priceRatio } from "./palette";
 import { useTheme, type Theme } from "./theme";
+import { tripForModes, type DisplayedTrip } from "./trip";
 import { readState, writeState } from "./urlState";
 
 // Воркер и его общий чанк лежат статикой в public/ (см. scripts/copy-maplibre-worker.mjs):
@@ -114,7 +116,12 @@ function effective(reach: ReachOut, modes: Mode[]): MapPoint {
  * выбранным маршрутом (линия уходила в никуда) и скрывают важное — что дальше
  * денег уже не хватает.
  */
-function toGeoJSON(points: MapPoint[], min: number, max: number): FeatureCollection<Point> {
+function toGeoJSON(
+  points: MapPoint[],
+  min: number,
+  max: number,
+  showSavings: boolean,
+): FeatureCollection<Point> {
   return {
     type: "FeatureCollection",
     features: points.map(({ reach, price, hours, passes }) => {
@@ -131,9 +138,11 @@ function toGeoJSON(points: MapPoint[], min: number, max: number): FeatureCollect
           radius: dimmed ? 4 : 7 + 7 * (1 - ratio),
           opacity: dimmed ? 0.28 : 0.95,
           cheap: !dimmed && ratio < 0.35,
-          saved: dimmed ? 0 : (reach.beats_direct_by ?? 0),
+          saved: dimmed || !showSavings ? 0 : (reach.beats_direct_by ?? 0),
           savedLabel:
-            !dimmed && reach.beats_direct_by ? `−${formatPrice(reach.beats_direct_by)}` : "",
+            !dimmed && showSavings && reach.beats_direct_by
+              ? `−${formatPrice(reach.beats_direct_by)}`
+              : "",
           hours: hours ?? 0,
         },
       };
@@ -156,26 +165,94 @@ function originGeoJSON(city: CityOut | null): FeatureCollection<Point> {
   };
 }
 
-/** Линия выбранного маршрута: из точки отправления, при необходимости через хаб. */
+type Coordinates = [number, number];
+
+const TRANSPORT_SYMBOL: Record<string, string> = {
+  avia: "✈",
+  railway: "🚆",
+  etrain: "🚊",
+  bus: "🚌",
+};
+
+/** Квадратичная дуга для самолёта: длинный перелёт не выглядит как автодорога. */
+function curvedCoordinates(from: Coordinates, to: Coordinates, bend: number): Coordinates[] {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const distance = Math.hypot(dx, dy);
+  if (distance < 0.1) return [from, to];
+
+  const normal: Coordinates = [-dy / distance, dx / distance];
+  const middle: Coordinates = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2];
+  const control: Coordinates = [
+    middle[0] + normal[0] * Math.min(distance * bend, 7),
+    middle[1] + normal[1] * Math.min(distance * bend, 7),
+  ];
+  return Array.from({ length: 25 }, (_, index) => {
+    const t = index / 24;
+    const inverse = 1 - t;
+    return [
+      inverse * inverse * from[0] + 2 * inverse * t * control[0] + t * t * to[0],
+      inverse * inverse * from[1] + 2 * inverse * t * control[1] + t * t * to[1],
+    ];
+  });
+}
+
+/**
+ * Схема маршрута по виду транспорта.
+ *
+ * Это не навигационная геометрия: Туту отдаёт станции и рейсы, но не треки
+ * рельсов и дорог. Поэтому автобус и поезд честно обозначаются стилем линии,
+ * а самолёт получает читаемую воздушную дугу.
+ */
+function segmentCoordinates(from: Coordinates, to: Coordinates, transport: string): Coordinates[] {
+  if (transport === "avia") return curvedCoordinates(from, to, 0.18);
+  if (transport === "bus") return curvedCoordinates(from, to, 0.035);
+  return [from, to];
+}
+
+/** Линии выбранного маршрута: по одному плечу с соответствующим транспортом. */
 function routeGeoJSON(
   origin: CityOut | null,
   target: ReachOut | null,
   byName: Map<string, CityOut>,
+  trip: DisplayedTrip | null,
 ): FeatureCollection<LineString> {
-  if (!origin || !target) return { type: "FeatureCollection", features: [] };
-  const hub = target.via ? byName.get(target.via) : undefined;
-  const coordinates: [number, number][] = [[origin.lon, origin.lat]];
-  if (hub) coordinates.push([hub.lon, hub.lat]);
-  coordinates.push([target.lon, target.lat]);
+  if (!origin || !target || !trip || trip.kind === "unavailable") {
+    return { type: "FeatureCollection", features: [] };
+  }
+  const start: Coordinates = [origin.lon, origin.lat];
+  const finish: Coordinates = [target.lon, target.lat];
+  const segments:
+    | Array<{ from: Coordinates; to: Coordinates; transport: string }>
+    | [] =
+    trip.kind === "composite" && target.via && byName.get(target.via)
+      ? [
+          {
+            from: start,
+            to: [byName.get(target.via)!.lon, byName.get(target.via)!.lat],
+            transport: trip.legs[0].transport,
+          },
+          {
+            from: [byName.get(target.via)!.lon, byName.get(target.via)!.lat],
+            to: finish,
+            transport: trip.legs[1].transport,
+          },
+        ]
+      : [{ from: start, to: finish, transport: trip.kind === "direct" ? trip.variant.transport : "unknown" }];
   return {
     type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        geometry: { type: "LineString", coordinates },
-        properties: { via: Boolean(hub) },
+    features: segments.map((segment, index) => ({
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: segmentCoordinates(segment.from, segment.to, segment.transport),
       },
-    ],
+      properties: {
+        transport: segment.transport,
+        symbol: TRANSPORT_SYMBOL[segment.transport] ?? "●",
+        segment: index + 1,
+      },
+    })),
   };
 }
 
@@ -186,18 +263,81 @@ function installLayers(instance: maplibregl.Map, palette: Palette): void {
     if (!instance.getSource(id)) instance.addSource(id, { type: "geojson", data: empty });
   }
 
-  // Линия маршрута рисуется под точками, чтобы не перекрывать города.
+  // Общий контур держит путь читаемым на любой подложке.
   instance.addLayer({
-    id: "route-line",
+    id: "route-casing",
     type: "line",
     source: ROUTE_SOURCE,
     layout: { "line-cap": "round", "line-join": "round" },
     paint: {
-      "line-color": ["case", ["get", "via"], palette.saved, palette.origin],
-      "line-width": 2.5,
-      "line-opacity": 0.85,
-      "line-dasharray": [2, 1.5],
+      "line-color": palette.halo,
+      "line-width": 7,
+      "line-opacity": 0.8,
     },
+  });
+
+  // Воздушный коридор: дуга + пунктир.
+  instance.addLayer({
+    id: "route-avia",
+    type: "line",
+    source: ROUTE_SOURCE,
+    filter: ["==", ["get", "transport"], "avia"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": "#c1acff", "line-width": 3, "line-opacity": 0.95, "line-dasharray": [2, 1.4] },
+  });
+
+  // Поезд: две рельсы и пунктирные шпалы посередине.
+  instance.addLayer({
+    id: "route-railway",
+    type: "line",
+    source: ROUTE_SOURCE,
+    filter: ["==", ["get", "transport"], "railway"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": "#d0ff1a", "line-width": 4, "line-opacity": 0.95 },
+  });
+  instance.addLayer({
+    id: "route-railway-sleepers",
+    type: "line",
+    source: ROUTE_SOURCE,
+    filter: ["==", ["get", "transport"], "railway"],
+    layout: { "line-cap": "butt", "line-join": "round" },
+    paint: { "line-color": palette.halo, "line-width": 1.3, "line-opacity": 0.9, "line-dasharray": [0.15, 1.1] },
+  });
+
+  // Электричка сохраняет рельсовую фактуру, но отличается холодным цветом.
+  instance.addLayer({
+    id: "route-etrain",
+    type: "line",
+    source: ROUTE_SOURCE,
+    filter: ["==", ["get", "transport"], "etrain"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": "#4de3ff", "line-width": 4, "line-opacity": 0.95, "line-dasharray": [1.4, 0.5] },
+  });
+
+  // Автобус — тёплая дорожная разметка, визуально не смешивается с поездом.
+  instance.addLayer({
+    id: "route-bus",
+    type: "line",
+    source: ROUTE_SOURCE,
+    filter: ["==", ["get", "transport"], "bus"],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": "#ffb454", "line-width": 3.2, "line-opacity": 0.95, "line-dasharray": [1.4, 0.75] },
+  });
+
+  instance.addLayer({
+    id: "route-icons",
+    type: "symbol",
+    source: ROUTE_SOURCE,
+    layout: {
+      "symbol-placement": "line",
+      "symbol-spacing": 220,
+      "text-field": ["get", "symbol"],
+      "text-size": 16,
+      "text-keep-upright": true,
+      "text-rotation-alignment": "map",
+      "text-allow-overlap": true,
+    },
+    paint: { "text-color": palette.label, "text-halo-color": palette.halo, "text-halo-width": 1.5 },
   });
 
   // Мягкое свечение под самыми дешёвыми городами — глаз находит их первыми.
@@ -325,6 +465,23 @@ export default function App() {
   const [passengers, setPassengers] = useState(initial.passengers);
   const [selected, setSelected] = useState<string | null>(initial.selected);
   const [panelOpen, setPanelOpen] = useState(true);
+  const [lastSearch, setLastSearch] = useState<{
+    origin: string;
+    date: string;
+    deep: boolean;
+    passengers: number;
+  } | null>(() => ({
+    origin: initial.origin,
+    date: initial.date,
+    deep: initial.deep,
+    passengers: initial.passengers,
+  }));
+  const previousQuery = useRef({
+    origin: initial.origin,
+    date: initial.date,
+    deep: initial.deep,
+    passengers: initial.passengers,
+  });
 
   useEffect(() => {
     writeState({ origin, date, budget, maxHours, modes, deep, passengers, selected });
@@ -428,8 +585,8 @@ export default function App() {
   useEffect(() => {
     if (!styleEpoch || !map.current) return;
     const source = map.current.getSource(SOURCE) as maplibregl.GeoJSONSource | undefined;
-    source?.setData(toGeoJSON(visible, bounds.min, bounds.max));
-  }, [styleEpoch, visible, bounds]);
+    source?.setData(toGeoJSON(visible, bounds.min, bounds.max, modes.length === MODES.length));
+  }, [styleEpoch, visible, bounds, modes]);
 
   useEffect(() => {
     if (!styleEpoch || !map.current) return;
@@ -439,12 +596,43 @@ export default function App() {
 
   const byName = useMemo(() => new Map(cities.map((city) => [city.name, city])), [cities]);
   const chosen = data?.cities.find((reach) => reach.slug === selected) ?? null;
+  const chosenTrip = useMemo(
+    () => (chosen ? tripForModes(chosen, modes) : null),
+    [chosen, modes],
+  );
+  const chosenRoute = chosenTrip?.kind === "unavailable" ? null : chosen;
+  const needsSearch =
+    data !== null &&
+    (lastSearch === null ||
+      lastSearch.origin !== origin ||
+      lastSearch.date !== date ||
+      lastSearch.deep !== deep ||
+      lastSearch.passengers !== passengers);
+
+  // Откуда, дата, пересадки и число пассажиров меняют сами данные. Старую
+  // карточку при таких изменениях не держим — она относится к прошлому запросу.
+  useEffect(() => {
+    const changed =
+      previousQuery.current.origin !== origin ||
+      previousQuery.current.date !== date ||
+      previousQuery.current.deep !== deep ||
+      previousQuery.current.passengers !== passengers;
+    if (changed) setSelected(null);
+    previousQuery.current = { origin, date, deep, passengers };
+  }, [origin, date, deep, passengers]);
 
   useEffect(() => {
     if (!styleEpoch || !map.current) return;
     const source = map.current.getSource(ROUTE_SOURCE) as maplibregl.GeoJSONSource | undefined;
-    source?.setData(routeGeoJSON(data?.origin ?? null, chosen, byName));
-  }, [styleEpoch, data, chosen, byName]);
+    source?.setData(
+      routeGeoJSON(
+        data?.origin ?? null,
+        chosenRoute,
+        byName,
+        chosenTrip,
+      ),
+    );
+  }, [styleEpoch, data, chosenRoute, chosenTrip, byName]);
 
   const search = useCallback(
     async (city: string, when: string, withTransfers: boolean, people: number) => {
@@ -460,6 +648,7 @@ export default function App() {
         passengers: people,
       });
       setData(response);
+      setLastSearch({ origin: city, date: when, deep: withTransfers, passengers: people });
       map.current?.easeTo({
         center: [response.origin.lon, response.origin.lat],
         zoom: 3.5,
@@ -474,13 +663,13 @@ export default function App() {
     [],
   );
 
-  // Первый расчёт запускаем сами: пустая карта на старте — потерянное впечатление.
-  const started = useRef(false);
-  useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-    void search(origin, date, deep, passengers);
-  }, [search, origin, date, deep, passengers]);
+  const chooseDate = useCallback(
+    (value: string) => {
+      setDate(value);
+      void search(origin, value, deep, passengers);
+    },
+    [deep, origin, passengers, search],
+  );
 
   const toggleMode = useCallback((mode: Mode) => {
     setModes((current) =>
@@ -497,7 +686,7 @@ export default function App() {
       best === null || (point.price ?? Infinity) < (best.price ?? Infinity) ? point : best,
     null,
   );
-  const hidden = points.filter((point) => point.reach.beats_direct_by).length;
+  const hidden = modes.length === MODES.length ? points.filter((point) => point.reach.beats_direct_by).length : 0;
   const unreachable = points.length - visible.length;
 
   const card = "rounded-2xl bg-tb-panel/90 px-4 py-3 ring-1 ring-tb-line backdrop-blur";
@@ -505,6 +694,19 @@ export default function App() {
   return (
     <div className="relative h-full w-full overflow-hidden bg-tb-bg">
       <div ref={container} className="absolute inset-0" />
+
+      {!data && (
+        <StartScreen
+          cities={cities}
+          origin={origin}
+          date={date}
+          loading={loading}
+          error={error}
+          onOrigin={setOrigin}
+          onDate={chooseDate}
+          onStart={() => void search(origin, date, deep, passengers)}
+        />
+      )}
 
       {loading && (
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-1 overflow-hidden bg-tb-fill">
@@ -545,6 +747,13 @@ export default function App() {
               {data.calls} запросов к Туту, {data.cached} из кэша
               {unreachable > 0 && ` · ${unreachable} не проходит по фильтрам`}
             </div>
+          </div>
+        )}
+
+        {needsSearch && !loading && (
+          <div className={`tb-rise pointer-events-auto shrink-0 text-sm ${card}`}>
+            <span className="font-semibold text-tb-ink">Настройки поездки изменились.</span>
+            <span className="text-tb-muted"> Нажми «Обновить карту», чтобы получить новые варианты.</span>
           </div>
         )}
 
@@ -608,12 +817,13 @@ export default function App() {
           deep={deep}
           loading={loading}
           onOrigin={setOrigin}
-          onDate={setDate}
+          onDate={chooseDate}
           onBudget={setBudget}
           onMaxHours={setMaxHours}
           onToggleMode={toggleMode}
           onDeep={setDeep}
           passengers={passengers}
+          needsSearch={needsSearch}
           onPassengers={setPassengers}
           onSearch={() => void search(origin, date, deep, passengers)}
         />
@@ -621,9 +831,9 @@ export default function App() {
         {chosen && (
           <TripCard
             reach={chosen}
+            trip={chosenTrip ?? { kind: "unavailable" }}
             origin={data?.origin.name ?? origin}
             passengers={passengers}
-            filtered={points.some((point) => point.reach.slug === chosen.slug && !point.passes)}
             onClose={() => setSelected(null)}
           />
         )}
