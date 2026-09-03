@@ -81,10 +81,74 @@ export async function fetchCitySuggestions(query: string): Promise<CityOut[]> {
   );
 }
 
-/** Сквозной счётчик вызовов Туту: по нему полоса расчёта заполняется по факту. */
-export async function fetchProgress(): Promise<number> {
-  const payload = await json<{ calls: number }>(await fetch("/api/progress"));
-  return payload.calls;
+/** Достопримечательность города с фотографией из Википедии. */
+export interface CityPhoto {
+  title: string;
+  description: string | null;
+  image: string;
+  article: string;
+  kind: string;
+}
+
+/**
+ * Что посмотреть в выбранном городе.
+ *
+ * Отдельным запросом по клику: тянуть фотографии для всех трёхсот шестидесяти
+ * пяти городов сразу — это лишние секунды к расчёту ради того, что человек
+ * посмотрит для одного.
+ */
+export async function fetchCityPhotos(
+  name: string,
+  lat: number,
+  lon: number,
+): Promise<CityPhoto[]> {
+  const query = new URLSearchParams({ name, lat: String(lat), lon: String(lon) });
+  return json<CityPhoto[]>(await fetch(`/api/city-photos?${query.toString()}`));
+}
+
+/** Ход расчёта: в каких городах сейчас идёт перебор и сколько осталось ждать. */
+export interface ProgressOut {
+  active: boolean;
+  /** Человеческое название фазы: «Перебираем города», «Проверяем пересадки». */
+  phase: string;
+  done: number;
+  total: number;
+  /** Доля всей работы от 0 до 1 с учётом веса фаз. */
+  fraction: number;
+  elapsed_s: number;
+  /** Оценка остатка в секундах; null, пока оценивать не по чему. */
+  eta_s: number | null;
+  calls: number;
+}
+
+export const IDLE_PROGRESS: ProgressOut = {
+  active: false,
+  phase: "Готовим запрос",
+  done: 0,
+  total: 0,
+  fraction: 0,
+  elapsed_s: 0,
+  eta_s: null,
+  calls: 0,
+};
+
+/**
+ * Ход расчёта с сервера.
+ *
+ * Расчёт — один блокирующий POST, поэтому единственный способ показать
+ * пользователю движение — отдельно спрашивать сервер, где он сейчас.
+ */
+export async function fetchProgress(): Promise<ProgressOut> {
+  return json<ProgressOut>(await fetch("/api/progress"));
+}
+
+/** Остаток времени словами: «3 мин 20 с». */
+export function formatEta(seconds: number): string {
+  const total = Math.max(0, Math.round(seconds));
+  const minutes = Math.floor(total / 60);
+  const rest = total % 60;
+  if (!minutes) return `${rest} с`;
+  return rest ? `${minutes} мин ${rest} с` : `${minutes} мин`;
 }
 
 export async function fetchReachable(params: {

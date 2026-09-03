@@ -7,7 +7,9 @@
 from __future__ import annotations
 
 import os
+import time
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from datetime import date as Date
 from pathlib import Path
 from typing import Annotated, Any, Literal
@@ -16,7 +18,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from travelbroke import __version__, cities, reach
+from travelbroke import __version__, cities, places, reach
 from tutukit.cache import CacheMode, DiskCache
 from tutukit.client import TutuError, TutuMCP
 
@@ -25,16 +27,117 @@ TransportMode = Literal["avia", "railway", "bus", "etrain"]
 CACHE_DIR = Path(os.environ.get("TB_CACHE_DIR", ".mcp_cache"))
 CACHE_MODE: CacheMode = os.environ.get("TB_CACHE_MODE", "record")  # type: ignore[assignment]
 CACHE_TTL_S = float(os.environ.get("TB_CACHE_TTL_S", 7 * 24 * 3600))
+PHOTO_TTL_S = float(os.environ.get("TB_PHOTO_TTL_S", 30 * 24 * 3600))
+"""Месяц: Кремль за неделю никуда не денется, а лишний поход в Википедию — задержка."""
+
+MCP_CONCURRENCY = int(os.environ.get("TB_CONCURRENCY", 16))
+"""Сколько запросов к Туту держим в воздухе одновременно.
+
+Расчёт целиком упирается в это число: работы на шесть сотен вызовов, и время
+ожидания — это очередь, а не сами запросы. Значение вынесено в окружение,
+чтобы подбирать его замером на живом сервере, а не правкой кода.
+
+Подобрано замерами на живом MCP с выключенным кэшем. Абсолютное время сравнивать
+нельзя — сервер Туту то быстрее, то медленнее, — поэтому сравнивались пары
+прогонов подряд по скорости в вызовах в секунду: 8 даёт 1.2 · 1.2 · 5.3, а 16 на
+тех же парах 2.1 · 1.8 · 7.0. Выигрыш 1.3–1.8× и тем больше, чем сильнее загружен
+MCP: мы упираемся в собственную очередь, а не в сервер.
+
+Выше поднимать нельзя: на 32 выдача теряет города — часть запросов не доживает
+даже до повтора, — а на 24 в логе появляются повторы при выигрыше в пять
+процентов. Шестнадцать — последнее значение, где быстрее и результат ровно тот же."""
 """Неделя вместо шести часов по умолчанию: прогретый кэш должен пережить показ."""
 STATIC_DIR = Path(__file__).resolve().parents[2] / "static"
+
+
+# Веса фаз в общей полосе. Перебор городов — самая долгая часть и почти всё
+# ожидание пользователя; пересадки считаются по сорока направлениям, обратные
+# билеты — по тридцати. Веса подобраны по замерам, а не по числу городов:
+# фаза пересадок делает по несколько запросов на город и идёт дольше, чем её
+# доля в штуках.
+PHASE_WEIGHTS: dict[str, tuple[float, float]] = {
+    "fan_out": (0.0, 0.62),
+    "transfers": (0.62, 0.92),
+    "return": (0.92, 1.0),
+}
+
+PHASE_LABELS: dict[str, str] = {
+    "idle": "Ожидание",
+    "fan_out": "Перебираем города",
+    "transfers": "Проверяем пересадки",
+    "return": "Ищем обратные билеты",
+}
+
+
+@dataclass
+class SearchTracker:
+    """Состояние одного расчёта: сколько сделано, сколько осталось и сколько ждать.
+
+    Расчёт — один блокирующий POST, узнать его ход изнутри нельзя. Поэтому домен
+    отчитывается сюда обратным вызовом, а фронт опрашивает `/api/progress`.
+    Трекер один на приложение: параллельных расчётов сценарий не предполагает,
+    а гонка за него в худшем случае показывает чужую полосу, но ничего не ломает.
+    """
+
+    active: bool = False
+    phase: str = "idle"
+    done: int = 0
+    total: int = 0
+    started_at: float = 0.0
+
+    def start(self) -> None:
+        self.active = True
+        self.phase = "fan_out"
+        self.done = 0
+        self.total = 0
+        self.started_at = time.monotonic()
+
+    def update(self, phase: str, done: int, total: int) -> None:
+        self.phase, self.done, self.total = phase, done, total
+
+    def finish(self) -> None:
+        self.active = False
+        self.phase = "idle"
+
+    @property
+    def elapsed_s(self) -> float:
+        return time.monotonic() - self.started_at if self.started_at else 0.0
+
+    @property
+    def fraction(self) -> float:
+        """Доля всей работы: положение внутри фазы, растянутое на её вес."""
+        start, end = PHASE_WEIGHTS.get(self.phase, (0.0, 1.0))
+        inner = self.done / self.total if self.total else 0.0
+        return min(1.0, start + (end - start) * inner)
+
+    @property
+    def eta_s(self) -> float | None:
+        """Остаток по фактической скорости с начала расчёта.
+
+        Пока сделано меньше пяти процентов, оценка скачет так, что вредна:
+        лучше честно не показывать ничего, чем «осталось 4 минуты», а через
+        секунду — «осталось 20 секунд».
+        """
+        done = self.fraction
+        if not self.active or done < 0.05:
+            return None
+        elapsed = self.elapsed_s
+        if elapsed <= 0:
+            return None
+        return max(0.0, elapsed / done - elapsed)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> Any:
     """Один клиент MCP на всё приложение: соединения и кэш переживают запросы."""
     cache = DiskCache(root=CACHE_DIR, mode=CACHE_MODE, ttl_s=CACHE_TTL_S)
-    async with TutuMCP(cache=cache, concurrency=8) as mcp:
+    # Отдельный кэш с длинным сроком: подборка достопримечательностей живёт
+    # месяцами, в отличие от цен, которым хватает недели.
+    photo_cache = DiskCache(root=CACHE_DIR / "places", mode=CACHE_MODE, ttl_s=PHOTO_TTL_S)
+    async with TutuMCP(cache=cache, concurrency=MCP_CONCURRENCY) as mcp:
         app.state.mcp = mcp
+        app.state.tracker = SearchTracker()
+        app.state.photo_cache = photo_cache
         yield
 
 
@@ -178,9 +281,30 @@ class CheckoutResponse(BaseModel):
 
 
 class Progress(BaseModel):
-    """Счётчик обращений к Туту — по нему фронт рисует полосу расчёта."""
+    """Ход текущего расчёта — по нему фронт рисует полосу и остаток времени."""
 
+    active: bool = Field(description="Идёт ли расчёт прямо сейчас")
+    phase: str = Field(
+        description="fan_out — перебор городов, transfers — пересадки, return — обратные"
+    )
+    done: int = Field(description="Сколько городов текущей фазы уже обработано")
+    total: int = Field(description="Сколько городов в текущей фазе всего")
+    fraction: float = Field(description="Доля всей работы от 0 до 1 с учётом веса фаз")
+    elapsed_s: float = Field(description="Сколько идёт расчёт, секунды")
+    eta_s: float | None = Field(
+        default=None, description="Оценка остатка, секунды; null пока не по чему оценивать"
+    )
     calls: int = Field(description="Сколько вызовов MCP сделано с момента старта сервиса")
+
+
+class PhotoOut(BaseModel):
+    """Одна достопримечательность с фотографией."""
+
+    title: str
+    description: str | None = None
+    image: str = Field(description="Прямая ссылка на превью с Викисклада")
+    article: str = Field(description="Статья Википедии: источник и подпись по CC-BY-SA")
+    kind: str = Field(description="Тип объекта: музей, культовое, природа, сцена, здание, город")
 
 
 class Health(BaseModel):
@@ -262,7 +386,65 @@ async def progress() -> Progress:
     Фронт снимает базовое значение перед стартом и считает разницу.
     """
     mcp: TutuMCP = app.state.mcp
-    return Progress(calls=len(mcp.stats))
+    tracker: SearchTracker = app.state.tracker
+    return Progress(
+        active=tracker.active,
+        phase=PHASE_LABELS.get(tracker.phase, tracker.phase),
+        done=tracker.done,
+        total=tracker.total,
+        fraction=round(tracker.fraction, 4),
+        elapsed_s=round(tracker.elapsed_s, 1),
+        eta_s=None if tracker.eta_s is None else round(tracker.eta_s, 1),
+        calls=len(mcp.stats),
+    )
+
+
+@app.get(
+    "/api/city-photos",
+    response_model=list[PhotoOut],
+    summary="Что посмотреть в городе",
+)
+async def city_photos(
+    name: str = Query(min_length=1, max_length=120),
+    lat: float = Query(ge=-90, le=90),
+    lon: float = Query(ge=-180, le=180),
+) -> list[PhotoOut]:
+    """Подборка достопримечательностей с фотографиями по координатам города.
+
+    Отдельным запросом, а не внутри `/api/reachable`: карточка открывается по
+    клику на один город, и тянуть фотографии для всех трёхсот шестидесяти пяти
+    ради этого нельзя. Подборка кэшируется надолго — достопримечательности не
+    меняются от того, что мы пересчитали цены.
+
+    Пустой список — нормальный ответ, а не ошибка: у маленького города может не
+    быть ни одной статьи с фотографией, и карточка просто обходится без них.
+    """
+    cache: DiskCache = app.state.photo_cache
+    key = {"name": name, "lat": round(lat, 3), "lon": round(lon, 3)}
+    cached = cache.get("wiki_places", key)
+    if cached is not None:
+        raw = cached.get("photos", [])
+        return [PhotoOut(**item) for item in raw]
+
+    try:
+        found = await places.fetch(name, lat, lon)
+    except Exception:
+        # Витрина не должна ронять карточку с ценами: Википедия недоступна —
+        # значит, фотографий просто не будет.
+        return []
+
+    result = [
+        PhotoOut(
+            title=photo.title,
+            description=photo.description,
+            image=photo.image,
+            article=photo.article,
+            kind=photo.kind,
+        )
+        for photo in found
+    ]
+    cache.put("wiki_places", key, {"photos": [item.model_dump() for item in result]})
+    return result
 
 
 @app.get("/api/cities", response_model=list[CityOut], summary="Справочник городов")
@@ -302,40 +484,50 @@ async def reachable(request: Annotated[ReachableRequest, ...]) -> ReachableRespo
         raise HTTPException(status_code=422, detail=f"город «{request.origin}» не в справочнике")
 
     mcp: TutuMCP = app.state.mcp
+    tracker: SearchTracker = app.state.tracker
     before = len(mcp.stats)
+    tracker.start()
 
-    results = await reach.fan_out(
-        mcp,
-        origin,
-        request.date,
-        modes=tuple(request.modes),
-        price_max=request.price_max,
-        limit=request.limit,
-        adults=request.passengers,
-        abroad_only=request.abroad_only,
-    )
-    # Поиск составных вариантов — стандарт, а не опциональная галочка: парсер
-    # и конструктор стыковок ограничивают маршрут тремя пересадками.
-    results = await reach.deepen(
-        mcp,
-        origin,
-        request.date,
-        results,
-        cities.HUBS,
-        modes=tuple(request.modes),
-        adults=request.passengers,
-    )
-    if request.round_trip:
-        results = await reach.add_return_trips(
+    try:
+        results = await reach.fan_out(
+            mcp,
+            origin,
+            request.date,
+            modes=tuple(request.modes),
+            price_max=request.price_max,
+            limit=request.limit,
+            adults=request.passengers,
+            abroad_only=request.abroad_only,
+            on_progress=tracker.update,
+        )
+        # Поиск составных вариантов — стандарт, а не опциональная галочка: парсер
+        # и конструктор стыковок ограничивают маршрут тремя пересадками.
+        results = await reach.deepen(
             mcp,
             origin,
             request.date,
             results,
-            stay_min=request.stay_min,
-            stay_max=request.stay_max,
+            cities.HUBS,
             modes=tuple(request.modes),
             adults=request.passengers,
+            on_progress=tracker.update,
         )
+        if request.round_trip:
+            results = await reach.add_return_trips(
+                mcp,
+                origin,
+                request.date,
+                results,
+                stay_min=request.stay_min,
+                stay_max=request.stay_max,
+                modes=tuple(request.modes),
+                adults=request.passengers,
+                on_progress=tracker.update,
+            )
+    finally:
+        # Полоса обязана погаснуть и когда расчёт упал: иначе следующий поиск
+        # стартует поверх чужого прогресса и покажет ерунду.
+        tracker.finish()
 
     calls = mcp.stats[before:]
     return ReachableResponse(

@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 
-import { MODES, MODE_LABELS, type CityOut, type Mode } from "../api";
+import { MODES, MODE_LABELS, formatPrice, type CityOut, type Mode, type ProgressOut } from "../api";
+import {
+  BUDGET_SLIDER_STEPS,
+  BUDGET_UNLIMITED,
+  budgetToSlider,
+  sliderToBudget,
+} from "../urlState";
 import { AdvancedFilters, type FilterHandlers, type FilterValues } from "./AdvancedFilters";
 import { CitySelect } from "./CitySelect";
 import { DatePicker } from "./DatePicker";
-import { Icon } from "./Icon";
+import { Icon, type IconName } from "./Icon";
 import { SearchProgress } from "./SearchProgress";
 import type { SearchHistoryEntry } from "../searchHistory";
+
+/** Частые ответы на «сколько у меня есть»: один клик вместо возни с ползунком. */
+const BUDGET_PRESETS = [
+  { label: "3 000 ₽", value: 3000 },
+  { label: "6 000 ₽", value: 6000 },
+  { label: "15 000 ₽", value: 15000 },
+  { label: "Без лимита", value: BUDGET_UNLIMITED },
+];
+
+/** Что стоит знать до первого поиска. Каждый пункт проверяется по коду. */
+const FACTS: Array<{ icon: IconName; text: string }> = [
+  { icon: "globe", text: "365 направлений" },
+  { icon: "swap", text: "до 3 пересадок" },
+  { icon: "check", text: "покупка на Туту" },
+];
 
 /** Города, из которых уезжают чаще всего — быстрый выбор под строкой поиска. */
 const QUICK_CITIES = ["Москва", "Санкт-Петербург", "Казань", "Екатеринбург"];
@@ -40,7 +61,8 @@ interface Props extends FilterValues, FilterHandlers {
   date: string;
   modes: Mode[];
   loading: boolean;
-  calls: number;
+  progress: ProgressOut;
+  eta: number | null;
   error: string | null;
   onOrigin: (value: string) => void;
   onDate: (value: string) => void;
@@ -69,7 +91,8 @@ export function StartScreen(props: Props) {
     modes,
     passengers,
     loading,
-    calls,
+    progress,
+    eta,
     error,
     onOrigin,
     onDate,
@@ -82,7 +105,9 @@ export function StartScreen(props: Props) {
     ...filters
   } = props;
 
+  const { budget, onBudget } = filters;
   const [advanced, setAdvanced] = useState(false);
+  const budgetLabel = budget >= BUDGET_UNLIMITED ? "без лимита" : formatPrice(budget);
 
   const quickDates = [
     { label: "Сегодня", value: isoIn(0) },
@@ -95,66 +120,132 @@ export function StartScreen(props: Props) {
       <div className="tb-band">
         <div className="mx-auto w-full max-w-6xl px-5 py-5 sm:px-8 sm:py-7">
           <header className="flex flex-wrap items-center justify-between gap-3">
-            <div className="font-display text-xl font-extrabold tracking-[-0.05em] text-tb-ink">
-              Travel<span className="text-tb-hero">Broke</span>
+            <div>
+              <div className="font-display text-xl font-extrabold tracking-[-0.05em] text-tb-ink">
+                Travel<span className="text-tb-hero">Broke</span>
+              </div>
+              <div className="mt-0.5 text-xs text-tb-muted">
+                Ты на мели. Мы всё равно тебя увезём.
+              </div>
             </div>
             <div className="tb-tag">на данных MCP Туту</div>
           </header>
 
           <h1 className="font-display mt-8 max-w-3xl text-2xl font-extrabold tracking-[-0.045em] text-tb-ink sm:text-3xl lg:text-4xl">
-            Ты на мели. <span className="text-tb-hero">Мы всё равно тебя увезём.</span>
+            Задай бюджет. <span className="text-tb-hero">Увидишь карту, куда на него можно уехать.</span>
           </h1>
-          <p className="mt-3 max-w-2xl text-base text-tb-muted">
-            Не «сколько стоит билет до Сочи», а «покажи всё, куда я уеду за эти деньги» —
-            по всему миру и всеми видами транспорта сразу.
+          <p className="mt-3 max-w-xl text-base text-tb-muted">
+            Один поиск проверяет 365 направлений и раскрашивает карту по цене.
           </p>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            {["252 страны · 34 000 городов", "4 вида транспорта", "составные маршруты"].map((fact) => (
+            {FACTS.map((fact) => (
               <span
-                key={fact}
-                className="rounded-full border border-tb-line px-3 py-1 text-xs font-medium text-tb-ink"
+                key={fact.text}
+                className="flex items-center gap-2 rounded-full bg-tb-fill px-3 py-1.5 text-xs font-medium text-tb-ink"
               >
-                {fact}
+                <Icon name={fact.icon} size={14} className="shrink-0 text-tb-hero" />
+                {fact.text}
               </span>
             ))}
           </div>
 
-          {/* Ряд видов транспорта — он же фильтр: карта считается по включённым. */}
-          <div className="mt-7 flex flex-wrap gap-1">
-            {MODES.map((mode) => {
-              const active = modes.includes(mode);
-              return (
-                <button
-                  key={mode}
-                  type="button"
-                  onClick={() => onToggleMode(mode)}
-                  aria-pressed={active}
-                  title={active ? "Выключить этот транспорт" : "Включить этот транспорт"}
-                  className="group flex w-20 flex-col items-center gap-1.5 rounded-md py-2 transition-colors duration-150 ease-out hover:bg-tb-fill"
-                >
-                  <span
-                    className={`grid size-9 place-items-center rounded-full transition-colors duration-150 ease-out ${
+          {/* Виды транспорта — не вкладки, а тумблеры: включены все четыре, и
+              любой можно выключить. Прежний ряд «знак в кружке + подпись» читался
+              как декоративная иконка, поэтому здесь форма чипа с галочкой: она
+              сама говорит, что состояние переключается и сейчас оно «включено». */}
+          <div className="mt-6">
+            <div className="tb-tag mb-2">Чем едем — можно отключить</div>
+            <div className="flex flex-wrap gap-2">
+              {MODES.map((mode) => {
+                const active = modes.includes(mode);
+                const last = active && modes.length === 1;
+                return (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => onToggleMode(mode)}
+                    aria-pressed={active}
+                    title={
+                      last
+                        ? "Хотя бы один вид транспорта должен остаться включённым"
+                        : active
+                          ? `Выключить: ${MODE_LABELS[mode]}`
+                          : `Включить: ${MODE_LABELS[mode]}`
+                    }
+                    className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-semibold transition-[background-color,border-color,color,transform] duration-150 ease-out active:translate-y-px ${
                       active
-                        ? "bg-tb-ink text-tb-band"
-                        : "border border-tb-line text-tb-muted group-hover:text-tb-ink"
+                        ? "border-tb-ink bg-tb-ink text-tb-band"
+                        : "border-tb-line text-tb-muted hover:border-tb-muted hover:text-tb-ink"
                     }`}
                   >
                     <Icon name={mode} size={18} />
-                  </span>
-                  <span
-                    className={`text-xs font-medium ${active ? "text-tb-ink" : "text-tb-muted"}`}
-                  >
                     {MODE_LABELS[mode]}
-                  </span>
-                </button>
-              );
-            })}
+                    <Icon
+                      name={active ? "check" : "plus"}
+                      size={13}
+                      className={active ? "opacity-70" : "opacity-50"}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Белый остров: строка поиска и её выпадающие списки всегда светлые. */}
           <div className="tb-light-island tb-plate mt-3 p-3 sm:p-4">
-            <div className="grid gap-3 md:grid-cols-[minmax(12rem,1.4fr)_minmax(10rem,1fr)_8rem_auto] md:items-end">
+            {/* Бюджет — главный фильтр продукта, а не строка в «расширенных».
+                Весь вопрос звучит как «куда я уеду за эти деньги», поэтому цена
+                стоит первой и крупнее всего остального в строке поиска. */}
+            <div className="border-b border-tb-line pb-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <label htmlFor="tb-budget" className="tb-tag">
+                  Сколько готов потратить на человека
+                </label>
+                <span className="tb-num text-2xl font-bold text-tb-hero sm:text-3xl">
+                  {budgetLabel}
+                </span>
+              </div>
+              <input
+                id="tb-budget"
+                type="range"
+                min={0}
+                max={BUDGET_SLIDER_STEPS}
+                step={1}
+                value={budgetToSlider(budget)}
+                onChange={(event) => onBudget(sliderToBudget(Number(event.target.value)))}
+                className="tb-range mt-1"
+                style={
+                  {
+                    "--tb-progress": `${(budgetToSlider(budget) / BUDGET_SLIDER_STEPS) * 100}%`,
+                  } as CSSProperties
+                }
+                aria-valuetext={budgetLabel}
+                aria-label="Бюджет на человека: крайнее правое положение снимает ограничение"
+              />
+              <div className="tb-num mb-2 flex justify-between text-2xs text-tb-muted">
+                <span>100 ₽</span>
+                <span>без лимита</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {BUDGET_PRESETS.map((preset) => (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => onBudget(preset.value)}
+                    className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors duration-150 ease-out ${
+                      budget === preset.value
+                        ? "bg-tb-accent text-white"
+                        : "bg-tb-fill text-tb-muted hover:text-tb-ink"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-3 grid gap-3 md:grid-cols-[minmax(12rem,1.4fr)_minmax(10rem,1fr)_8rem_auto] md:items-end">
               <label className="block">
                 <span className="tb-tag">Откуда</span>
                 <CitySelect cities={cities} value={origin} onChange={onOrigin} />
@@ -249,6 +340,7 @@ export function StartScreen(props: Props) {
                 <AdvancedFilters
                   layout="wide"
                   showPassengers={false}
+                  showBudget={false}
                   passengers={passengers}
                   onPassengers={onPassengers}
                   {...filters}
@@ -258,15 +350,13 @@ export function StartScreen(props: Props) {
 
             {loading && (
               <div className="mt-3 border-t border-tb-line pt-3">
-                <SearchProgress
-                  calls={calls}
-                  note="и составные маршруты"
-                />
+                <SearchProgress progress={progress} eta={eta} />
               </div>
             )}
 
             {error && <p className="mt-3 text-xs font-medium text-red-500">{error}</p>}
           </div>
+
 
         </div>
       </div>

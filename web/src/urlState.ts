@@ -14,6 +14,33 @@ export const BUDGET_UNLIMITED = 100_100;
 export const HOURS_MIN = 2;
 export const HOURS_MAX = 7 * 24;
 
+/**
+ * Ползунок бюджета живёт в своих делениях, а не в рублях.
+ *
+ * Шкала линейная от 100 до 100 100 бесполезна: почти все поездки стоят до
+ * 15 000 ₽, а это первые 15 % дорожки — попасть в 3 000 или 6 000 мышью нельзя.
+ * Логарифмическая шкала отдаёт этому диапазону больше половины хода, а хвост
+ * до ста тысяч сжимает. Последние деления зарезервированы под «без лимита»:
+ * это отдельное состояние, а не очень большая сумма.
+ */
+export const BUDGET_SLIDER_STEPS = 1000;
+const UNLIMITED_ZONE = 40;
+
+export function budgetToSlider(budget: number): number {
+  if (budget >= BUDGET_UNLIMITED) return BUDGET_SLIDER_STEPS;
+  const clamped = Math.min(BUDGET_MAX, Math.max(BUDGET_MIN, budget));
+  const ratio = Math.log(clamped / BUDGET_MIN) / Math.log(BUDGET_MAX / BUDGET_MIN);
+  return Math.round(ratio * (BUDGET_SLIDER_STEPS - UNLIMITED_ZONE));
+}
+
+export function sliderToBudget(position: number): number {
+  if (position >= BUDGET_SLIDER_STEPS - UNLIMITED_ZONE / 2) return BUDGET_UNLIMITED;
+  const ratio = position / (BUDGET_SLIDER_STEPS - UNLIMITED_ZONE);
+  const raw = BUDGET_MIN * (BUDGET_MAX / BUDGET_MIN) ** ratio;
+  // Округляем до сотен: пользователю нужен «6 000 ₽», а не «5 987 ₽».
+  return Math.min(BUDGET_MAX, Math.max(BUDGET_MIN, Math.round(raw / 100) * 100));
+}
+
 export interface MapState {
   origin: string;
   date: string;
@@ -83,7 +110,37 @@ export function readState(search: string = window.location.search): MapState {
 }
 
 /** Обновляет адресную строку, не перезагружая страницу и не плодя историю. */
-export function writeState(state: MapState): void {
+/** Состояние ровно такое, каким страница открывается сама по себе. */
+function isPristine(state: MapState): boolean {
+  return (
+    state.origin === DEFAULT_STATE.origin &&
+    state.date === DEFAULT_STATE.date &&
+    state.budget === DEFAULT_STATE.budget &&
+    state.maxHours === DEFAULT_STATE.maxHours &&
+    state.passengers === DEFAULT_STATE.passengers &&
+    state.modes.length === MODES.length &&
+    !state.abroadOnly &&
+    !state.roundTrip &&
+    state.departAfter === DEFAULT_STATE.departAfter &&
+    state.arriveBefore === DEFAULT_STATE.arriveBefore &&
+    state.selected === null
+  );
+}
+
+/**
+ * Состояние в строку запроса.
+ *
+ * Пока пользователь ничего не трогал, в адресе нечего показывать: набор
+ * умолчаний он и так получит, открыв страницу. Как только тронул — пишем
+ * полный набор, включая дату: ссылка обязана воспроизводиться точно, а не
+ * подставлять получателю его собственную «ближайшую субботу».
+ *
+ * Функция чистая и не знает про `window` — поэтому её можно проверить тестом
+ * без поднятия браузерного окружения.
+ */
+export function toQuery(state: MapState): string {
+  if (isPristine(state)) return "";
+
   const params = new URLSearchParams();
   params.set("from", state.origin);
   params.set("date", state.date);
@@ -100,5 +157,10 @@ export function writeState(state: MapState): void {
   if (state.departAfter > 0) params.set("after", String(state.departAfter));
   if (state.arriveBefore < 24) params.set("before", String(state.arriveBefore));
   if (state.selected) params.set("city", state.selected);
-  window.history.replaceState(null, "", `?${params.toString()}`);
+  return `?${params.toString()}`;
+}
+
+/** Обновляет адресную строку, не перезагружая страницу и не плодя историю. */
+export function writeState(state: MapState): void {
+  window.history.replaceState(null, "", toQuery(state) || window.location.pathname);
 }

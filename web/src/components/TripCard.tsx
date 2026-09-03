@@ -10,6 +10,7 @@ import {
   type VariantOut,
 } from "../api";
 import type { DisplayedTrip } from "../trip";
+import { CityPhotos } from "./CityPhotos";
 import { TRANSPORT_PATHS } from "../transport";
 import { Icon, type IconName } from "./Icon";
 
@@ -198,6 +199,11 @@ export function TripCard({ reach, trip, origin, passengers, onClose }: Props) {
           <Icon name="close" size={13} />
         </button>
       </header>
+
+      {/* Сразу под названием города: человек кликнул точку на карте, чтобы
+          понять, что это за место, — фотографии отвечают на это первыми, а цена
+          остаётся видна следующей строкой. */}
+      <CityPhotos city={reach.name} lat={reach.lat} lon={reach.lon} />
 
       {trip.kind === "unavailable" ? (
         <div className="p-4 text-sm text-tb-muted">

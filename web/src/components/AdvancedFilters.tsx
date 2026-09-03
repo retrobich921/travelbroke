@@ -2,9 +2,11 @@ import { useState, type CSSProperties } from "react";
 
 import { formatPrice } from "../api";
 import {
-  BUDGET_MAX,
   BUDGET_MIN,
+  BUDGET_SLIDER_STEPS,
   BUDGET_UNLIMITED,
+  budgetToSlider,
+  sliderToBudget,
   HOURS_MAX,
   HOURS_MIN,
 } from "../urlState";
@@ -134,6 +136,8 @@ interface Props extends FilterValues, FilterHandlers {
   layout?: "column" | "wide";
   /** На лендинге счётчик вынесен в основную строку поиска. */
   showPassengers?: boolean;
+  /** На лендинге бюджет вынесен в основную строку поиска как главный фильтр. */
+  showBudget?: boolean;
 }
 
 /** Все границы продублированы в URL и API: в интерфейсе нельзя выставить невалидное. */
@@ -158,6 +162,7 @@ export function AdvancedFilters(props: Props) {
     onStay,
     layout = "column",
     showPassengers = true,
+    showBudget = true,
   } = props;
   const [timeUnit, setTimeUnit] = useState<"hours" | "days">("hours");
   const wide = layout === "wide";
@@ -174,7 +179,7 @@ export function AdvancedFilters(props: Props) {
   return (
     <div className={wide ? "grid gap-4 md:grid-cols-2" : "space-y-4"}>
       <div className={`space-y-4 ${wide ? "rounded-sm border border-tb-line bg-tb-fill/45 p-3" : ""}`}>
-        <section>
+        {showBudget && <section>
           <div className="flex items-baseline justify-between gap-2">
             <SectionTitle
               title="Бюджет на человека"
@@ -184,23 +189,24 @@ export function AdvancedFilters(props: Props) {
           </div>
           <input
             type="range"
-            min={BUDGET_MIN}
-            max={BUDGET_UNLIMITED}
-            step={100}
-            value={budget}
-            onChange={(event) => onBudget(Number(event.target.value))}
+            min={0}
+            max={BUDGET_SLIDER_STEPS}
+            step={1}
+            value={budgetToSlider(budget)}
+            onChange={(event) => onBudget(sliderToBudget(Number(event.target.value)))}
             className="tb-range mt-1"
-            style={fill(budget, BUDGET_MIN, BUDGET_UNLIMITED)}
+            style={fill(budgetToSlider(budget), 0, BUDGET_SLIDER_STEPS)}
+            aria-valuetext={budgetLabel(budget)}
             aria-label="Бюджет поездки: последнее положение снимает ограничение"
           />
           <div className="tb-num mt-1 flex justify-between text-2xs text-tb-muted">
             <span>{formatPrice(BUDGET_MIN)}</span>
-            <span>{formatPrice(BUDGET_MAX)}</span>
+            <span>без лимита</span>
           </div>
           <p className="mt-1 text-2xs leading-snug text-tb-muted">Один билет туда · крайнее положение без лимита.</p>
-        </section>
+        </section>}
 
-        <section className="border-t border-tb-line pt-3">
+        <section className={showBudget ? "border-t border-tb-line pt-3" : ""}>
           <div className="flex items-baseline justify-between gap-2">
             <SectionTitle
               title="Время в пути"

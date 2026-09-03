@@ -27,3 +27,6 @@ web/dist/
 Thumbs.db
 .DS_Store
 static/
+
+# Архив документации — дубль docs/, пересобирается
+docs/docs.rar

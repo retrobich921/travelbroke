@@ -8,6 +8,7 @@ import {
   HOURS_MAX,
   HOURS_MIN,
   readState,
+  toQuery,
 } from "./urlState";
 
 describe("readState", () => {
@@ -63,5 +64,38 @@ describe("readState", () => {
     expect(readState("?abroad=1&rt=1").roundTrip).toBe(true);
     expect(readState("?abroad=0").abroadOnly).toBe(false);
     expect(readState("?abroad=true").abroadOnly).toBe(false);
+  });
+});
+
+describe("toQuery", () => {
+  it("на нетронутой странице не пишет в адрес ничего", () => {
+    expect(toQuery(DEFAULT_STATE)).toBe("");
+  });
+
+  // Дату пишем всегда, как только состояние тронуто: без неё получатель ссылки
+  // увидит свою «ближайшую субботу», а не ту, которую искал отправитель.
+  it("после первой правки пишет полный набор, включая дату", () => {
+    const params = new URLSearchParams(toQuery({ ...DEFAULT_STATE, budget: 3000 }));
+
+    expect(params.get("budget")).toBe("3000");
+    expect(params.get("date")).toBe(DEFAULT_STATE.date);
+    expect(params.get("from")).toBe(DEFAULT_STATE.origin);
+  });
+
+  it("то, что записали, читается обратно без потерь", () => {
+    const state = { ...DEFAULT_STATE, budget: 12000, passengers: 3, abroadOnly: true };
+    const restored = readState(toQuery(state));
+
+    expect(restored.budget).toBe(12000);
+    expect(restored.passengers).toBe(3);
+    expect(restored.abroadOnly).toBe(true);
+  });
+
+  it("умолчания не засоряют адрес и после правки", () => {
+    const params = new URLSearchParams(toQuery({ ...DEFAULT_STATE, budget: 3000 }));
+
+    expect(params.has("pax")).toBe(false);
+    expect(params.has("abroad")).toBe(false);
+    expect(params.has("modes")).toBe(false);
   });
 });

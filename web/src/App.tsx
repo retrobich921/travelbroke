@@ -6,11 +6,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   MODES,
   fetchCities,
+  IDLE_PROGRESS,
   fetchProgress,
   fetchReachable,
   formatPrice,
   type CityOut,
   type Mode,
+  type ProgressOut,
   type ReachOut,
   type ReachableResponse,
   type VariantOut,
@@ -665,7 +667,11 @@ export default function App() {
   const [cities, setCities] = useState<CityOut[]>([]);
   const [data, setData] = useState<ReachableResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [calls, setCalls] = useState(0);
+  const [progress, setProgress] = useState<ProgressOut>(IDLE_PROGRESS);
+  const [eta, setEta] = useState<number | null>(null);
+  // Сырая оценка остатка скачет вместе со скоростью сети: сглаживаем её,
+  // иначе цифра прыгает «4 минуты → 20 секунд → 4 минуты» и ей не верят.
+  const smoothedEta = useRef<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Начальное состояние берём из адресной строки: ссылкой можно поделиться.
@@ -890,28 +896,48 @@ export default function App() {
       const searchModes = [...modes];
       const searchAbroadOnly = abroadOnly;
       const searchRoundTrip = roundTrip;
+      const searchBudget = budget;
       const searchStayMin = stayMin;
       const searchStayMax = stayMax;
       setLoading(true);
       setError(null);
-      setCalls(0);
+      setProgress(IDLE_PROGRESS);
+      setEta(null);
+      smoothedEta.current = null;
       if (!keepSelected) setSelected(null);
       let ticker: number | null = null;
 
       try {
-        // Полоса расчёта заполняется по факту. Если пока ждали baseline уже
-        // запустился новый поиск, этот старый запуск тихо заканчиваем.
-        const baseline = await fetchProgress().catch(() => null);
-        if (run !== searchRun.current) return;
-        if (baseline !== null) {
-          ticker = window.setInterval(() => {
-            void fetchProgress()
-              .then((now) => {
-                if (run === searchRun.current) setCalls(Math.max(0, now - baseline));
-              })
-              .catch(() => undefined);
-          }, 400);
-        }
+        // Полоса заполняется по факту: сервер отчитывается, сколько городов уже
+        // перебрано и сколько осталось. Опрашиваем раз в 700 мс — чаще незачем,
+        // за это время успевает измениться несколько городов.
+        ticker = window.setInterval(() => {
+          void fetchProgress()
+            .then((now) => {
+              if (run !== searchRun.current) return;
+              setProgress(now);
+              if (now.eta_s === null) {
+                setEta(null);
+                smoothedEta.current = null;
+                return;
+              }
+              // Экспоненциальное сглаживание: новая оценка входит на треть,
+              // поэтому цифра ползёт ровно, а не дёргается вслед за сетью.
+              const previous = smoothedEta.current;
+              if (previous === null) {
+                smoothedEta.current = now.eta_s;
+              } else {
+                const blended = previous * 0.7 + now.eta_s * 0.3;
+                // Вниз оценка идёт свободно, вверх — вязко. Расти ей нельзя
+                // запретить совсем: если сеть замедлилась, честнее показать
+                // рост, чем застыть на «осталось 5 с» на целую минуту.
+                smoothedEta.current =
+                  blended <= previous ? blended : previous + (blended - previous) * 0.15;
+              }
+              setEta(smoothedEta.current);
+            })
+            .catch(() => undefined);
+        }, 700);
       const response = await fetchReachable({
         origin: city,
         date: when,
@@ -938,7 +964,16 @@ export default function App() {
       // Показываем всю найденную географию, а не фиксированный масштаб вокруг
       // точки отправления: поиск идёт по всему миру, и Стамбул с Ереваном при
       // жёстком zoom 3.5 просто оставались за краем экрана.
-      const found = response.cities.filter((item) => item.price !== null);
+      // Масштаб подгоняем по городам, которые проходят бюджет, а не по всем, у
+      // кого вообще нашлась цена. Каталог теперь глобальный: цена находится и
+      // до Веллингтона, и карта после поиска раскрывалась на весь глобус, хотя
+      // по карману были соседние области. Если бюджет не прошёл никто —
+      // показываем всё найденное, чтобы экран не остался пустым.
+      const priced = response.cities.filter((item) => item.price !== null);
+      const affordable = priced.filter(
+        (item) => searchBudget >= BUDGET_UNLIMITED || (item.price ?? 0) <= searchBudget,
+      );
+      const found = affordable.length ? affordable : priced;
       if (map.current && found.length) {
         const box = new maplibregl.LngLatBounds(
           [response.origin.lon, response.origin.lat],
@@ -1066,7 +1101,8 @@ export default function App() {
           date={date}
           modes={modes}
           loading={loading}
-          calls={calls}
+          progress={progress}
+          eta={eta}
           error={error}
           budget={budget}
           maxHours={maxHours}
@@ -1105,7 +1141,7 @@ export default function App() {
 
       {loading && data && (
         <div className="tb-plate pointer-events-none absolute top-4 left-1/2 z-30 w-[min(22rem,calc(100vw-2rem))] -translate-x-1/2 px-4 py-3">
-          <SearchProgress calls={calls} note="и составные маршруты" />
+          <SearchProgress progress={progress} eta={eta} />
         </div>
       )}
 

@@ -22,6 +22,7 @@ import asyncio
 import datetime as dt
 import logging
 import math
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any, cast
 
@@ -52,6 +53,14 @@ MAX_BUFFER_MIN = 20 * 60
 
 MAX_TRANSFERS = 3
 """Больше трёх пересадок превращают экономию в плохой пользовательский сценарий."""
+
+ProgressFn = Callable[[str, int, int], None]
+"""Обратный вызов хода расчёта: (фаза, сделано, всего).
+
+Единица работы — город, а не запрос к MCP: пользователь ждёт перебора городов,
+и честный знаменатель у него именно такой. Сколько при этом уйдёт вызовов,
+заранее не знает никто — часть плечей берётся из кэша, часть переиспользуется
+между направлениями."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -474,9 +483,13 @@ async def fan_out(
     limit: int | None = None,
     adults: int = 1,
     abroad_only: bool = False,
+    on_progress: ProgressFn | None = None,
 ) -> list[Reach]:
     """Фаза 1: прямая досягаемость каждого города-кандидата из точки отправления."""
     targets = destinations(origin, limit, abroad_only=abroad_only)
+    done = 0
+    if on_progress is not None:
+        on_progress("fan_out", 0, len(targets))
 
     async def one(target: City) -> Reach:
         variants, by_mode, by_minutes, reason, message = await _search_pair(
@@ -508,6 +521,10 @@ async def fan_out(
         if concrete_by_mode:
             by_mode = {mode: variant.price for mode, variant in concrete_by_mode.items()}
             by_minutes = {mode: variant.duration_min for mode, variant in concrete_by_mode.items()}
+        nonlocal done
+        done += 1
+        if on_progress is not None:
+            on_progress("fan_out", done, len(targets))
         return Reach(
             city=target,
             direct=cheapest,
@@ -554,6 +571,7 @@ async def deepen(
     top_expensive: int = 40,
     hubs_per_city: int = 3,
     adults: int = 1,
+    on_progress: ProgressFn | None = None,
 ) -> list[Reach]:
     """Фаза 2: ищет составные маршруты туда, где прямой вариант дорогой.
 
@@ -574,17 +592,19 @@ async def deepen(
         reverse=True,
     )
     ranked = (unreachable + priced)[:top_expensive]
+    checked = 0
+    if on_progress is not None:
+        on_progress("transfers", 0, len(ranked))
 
-    # Плечо «отправление → хаб» одно и то же для всех городов, считаем его один раз.
-    leg_cache: dict[tuple[str, str, dt.date], list[Variant]] = {}
+    # Плечо «отправление → хаб» одно и то же для всех городов. Сорок городов
+    # стартуют одновременно и просят его хором, поэтому в словаре лежит не
+    # результат, а задача: опоздавшие дожидаются уже запущенной, вместо того
+    # чтобы отправить второй такой же запрос. Раньше замок отпускался между
+    # проверкой и запросом, и «считаем один раз» было обещанием, а не фактом.
+    leg_tasks: dict[tuple[str, str, dt.date], asyncio.Task[list[Variant]]] = {}
     lock = asyncio.Lock()
 
-    async def leg(start: City, finish: City, day: dt.date) -> list[Variant]:
-        key = (start.name, finish.name, day)
-        async with lock:
-            cached = leg_cache.get(key)
-        if cached is not None:
-            return cached
+    async def fetch_leg(start: City, finish: City, day: dt.date) -> list[Variant]:
         # Плечам нужен запас вариантов по времени отправления, иначе выполнимой
         # стыковки может не найтись там, где она есть.
         variants, _, _, _, _ = await _search_pair(
@@ -599,9 +619,22 @@ async def deepen(
             expected_origin=start,
             expected_destination=finish,
         )
-        async with lock:
-            leg_cache[key] = variants
         return variants
+
+    async def leg(start: City, finish: City, day: dt.date) -> list[Variant]:
+        key = (start.name, finish.name, day)
+        async with lock:
+            task = leg_tasks.get(key)
+            if task is None:
+                task = asyncio.create_task(fetch_leg(start, finish, day))
+                leg_tasks[key] = task
+        return await task
+
+    def better(candidate: Connection | None, reach: Reach) -> bool:
+        """Годится ли стыковка: она существует и реально дешевле прямого пути."""
+        if candidate is None:
+            return False
+        return reach.best_price is None or candidate.price < reach.best_price
 
     async def one(reach: Reach) -> None:
         for hub in hub_candidates(origin, reach.city, hubs)[:hubs_per_city]:
@@ -609,16 +642,29 @@ async def deepen(
             if not firsts:
                 continue
             seconds = await leg(hub, reach.city, when)
-            seconds = seconds + await leg(hub, reach.city, when + dt.timedelta(days=1))
             candidate = best_connection(firsts, seconds)
+            # Следующий день добираем только там, где сегодня стыковки нет
+            # вовсе. Ради этого он и заведён: ночная пересадка на дальнее
+            # направление нормальна, а несуществующая — нет. Если маршрут на
+            # сегодня сложился, но оказался не дешевле прямого, завтрашний его
+            # дешевле не сделает — это лишний запрос на каждое направление.
             if candidate is None:
+                tomorrow = await leg(hub, reach.city, when + dt.timedelta(days=1))
+                candidate = best_connection(firsts, seconds + tomorrow)
+            if not better(candidate, reach):
                 continue
-            if reach.best_price is not None and candidate.price >= reach.best_price:
-                continue
+            assert candidate is not None
             reach.via = hub
             reach.connection = candidate
 
-    await asyncio.gather(*(one(reach) for reach in ranked))
+    async def tracked(reach: Reach) -> None:
+        await one(reach)
+        nonlocal checked
+        checked += 1
+        if on_progress is not None:
+            on_progress("transfers", checked, len(ranked))
+
+    await asyncio.gather(*(tracked(reach) for reach in ranked))
     return reaches
 
 
@@ -680,6 +726,7 @@ async def add_return_trips(
     adults: int = 1,
     top: int = 30,
     max_dates: int = 3,
+    on_progress: ProgressFn | None = None,
 ) -> list[Reach]:
     """Подбирает обратный билет в окне «сколько дней я готов там пробыть».
 
@@ -701,6 +748,9 @@ async def add_return_trips(
     candidates = [reach for reach in reaches if reach.best_price is not None]
     candidates.sort(key=lambda reach: reach.best_price or 0)
     candidates = candidates[:top]
+    found = 0
+    if on_progress is not None:
+        on_progress("return", 0, len(candidates))
 
     async def one(reach: Reach) -> None:
         best: tuple[Variant, dt.date] | None = None
@@ -725,6 +775,10 @@ async def add_return_trips(
                 best = (cheapest, back_day)
         if best is not None:
             reach.back, reach.back_date = best
+        nonlocal found
+        found += 1
+        if on_progress is not None:
+            on_progress("return", found, len(candidates))
 
     await asyncio.gather(*(one(reach) for reach in candidates))
     return reaches
